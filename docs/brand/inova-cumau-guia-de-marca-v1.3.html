@@ -1,0 +1,2778 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inova Cumaú · Guia de Identidade Visual</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Geist:wght@100..900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --floresta-50:#f7f8f7; --floresta-100:#eaecea; --floresta-200:#d2dbd5; --floresta-300:#b3c2b8;
+    --floresta-400:#93a99b; --floresta-500:#779280; --floresta-600:#5b7162; --floresta-700:#495b4f;
+    --floresta-800:#3d4c42; --floresta-900:#28342c; --floresta-950:#19201b;
+
+    --rio-50:#f9f8f5; --rio-100:#f0ece6; --rio-200:#e5dac7; --rio-300:#d4c0a0;
+    --rio-400:#c2a77a; --rio-500:#b28f57; --rio-600:#8c6f40; --rio-700:#82673b;
+    --rio-800:#5f4b2b; --rio-900:#41321b; --rio-950:#281f10;
+
+    --neutral-50:#f7f7f7; --neutral-100:#ededed; --neutral-200:#d9d9d9; --neutral-300:#bfbfbf;
+    --neutral-400:#a3a3a3; --neutral-500:#8a8a8a; --neutral-600:#696969; --neutral-700:#525252;
+    --neutral-800:#3d3d3d; --neutral-900:#262626; --neutral-950:#141414;
+
+    --success-50:#eef8ee; --success-100:#d7eed9; --success-200:#c0e4c5; --success-300:#a9d9b1; --success-400:#74b480;
+    --success-500:#3f8f4f; --success-600:#367d44; --success-700:#2c6b3a; --success-800:#23582e; --success-900:#1a4423; --success-950:#122e18;
+
+    --warning-50:#fdf3e5; --warning-100:#f8e0bd; --warning-200:#f3ce9c; --warning-300:#eebd7a; --warning-400:#dc9c4a;
+    --warning-500:#c97a1a; --warning-600:#b06b16; --warning-700:#965c13; --warning-800:#794a10; --warning-900:#5c380c; --warning-950:#3f2608;
+
+    --error-50:#fceceb; --error-100:#f6cfc9; --error-200:#eeb6ae; --error-300:#e59d92; --error-400:#d26b5e;
+    --error-500:#c0392b; --error-600:#a93226; --error-700:#922b20; --error-800:#77231a; --error-900:#5c1b14; --error-950:#3f120e;
+
+    --info-50:#eaf3f7; --info-100:#c9e0e9; --info-200:#acd1e0; --info-300:#8fc2d6; --info-400:#5e98b2;
+    --info-500:#2e6f8e; --info-600:#28617c; --info-700:#22536a; --info-800:#1c4457; --info-900:#163544; --info-950:#0f242e;
+
+    --font-serif:'Lora', serif;
+    --font-sans:'Geist', sans-serif;
+    --font-mono:'Space Mono', monospace;
+
+    --nav-w: 272px;
+  }
+
+  /* ===== semantic theme layer ===== */
+  :root, [data-theme="light"]{
+    --bg:var(--neutral-50);
+    --surface:#ffffff;
+    --surface-alt:var(--neutral-100);
+    --text-primary:var(--neutral-900);
+    --text-secondary:var(--neutral-700);
+    --text-muted:var(--neutral-600);
+    --border:var(--neutral-200);
+    --border-strong:var(--neutral-300);
+    --brand-link:var(--floresta-700);
+    --brand-accent:var(--rio-700);
+    --brand-primary-bg:var(--floresta-700);
+    --brand-primary-text:#ffffff;
+    --brand-secondary-border:var(--rio-700);
+    --brand-secondary-text:var(--rio-700);
+    --card-shadow:0 20px 40px -20px rgba(20,17,13,.15);
+    --check-pattern-a:var(--neutral-100);
+    --check-pattern-b:#ffffff;
+
+    --badge-success-bg:var(--success-100); --badge-success-text:var(--success-800);
+    --badge-warning-bg:var(--warning-100); --badge-warning-text:var(--warning-800);
+    --badge-error-bg:var(--error-100); --badge-error-text:var(--error-800);
+    --badge-info-bg:var(--info-100); --badge-info-text:var(--info-800);
+
+    --do-bg:var(--floresta-50); --do-border:var(--floresta-200); --do-flag:var(--floresta-700);
+    --dont-bg:var(--error-50); --dont-border:var(--error-100); --dont-flag:var(--error-700);
+
+    --nav-bg:var(--neutral-100);
+    --nav-hover-bg:var(--neutral-200);
+    --nav-toggle-track:var(--neutral-200);
+    --nav-active-bg:var(--floresta-700);
+    --nav-active-text:#ffffff;
+    --nav-logo-variant-hint: 'color';
+  }
+  [data-theme="dark"]{
+    --bg:var(--neutral-950);
+    --surface:var(--neutral-900);
+    --surface-alt:var(--neutral-800);
+    --text-primary:var(--neutral-50);
+    --text-secondary:var(--neutral-300);
+    --text-muted:var(--neutral-400);
+    --border:var(--neutral-800);
+    --border-strong:var(--neutral-700);
+    --brand-link:var(--floresta-300);
+    --brand-accent:var(--rio-300);
+    --brand-primary-bg:var(--floresta-500);
+    --brand-primary-text:#ffffff;
+    --brand-secondary-border:var(--rio-300);
+    --brand-secondary-text:var(--rio-300);
+    --card-shadow:0 20px 40px -20px rgba(0,0,0,.6);
+    --check-pattern-a:var(--neutral-800);
+    --check-pattern-b:var(--neutral-900);
+
+    --badge-success-bg:var(--success-900); --badge-success-text:var(--success-300);
+    --badge-warning-bg:var(--warning-900); --badge-warning-text:var(--warning-300);
+    --badge-error-bg:var(--error-900); --badge-error-text:var(--error-300);
+    --badge-info-bg:var(--info-900); --badge-info-text:var(--info-300);
+
+    --do-bg:var(--floresta-900); --do-border:var(--floresta-800); --do-flag:var(--floresta-300);
+    --dont-bg:var(--error-900); --dont-border:var(--error-800); --dont-flag:var(--error-300);
+
+    --nav-bg:var(--neutral-900);
+    --nav-hover-bg:var(--neutral-800);
+    --nav-toggle-track:var(--neutral-900);
+    --nav-active-bg:var(--floresta-700);
+    --nav-active-text:#ffffff;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; background:var(--bg); color:var(--text-primary);
+    font-family:var(--font-sans); font-size:16px; line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    transition:background .25s ease, color .25s ease;
+  }
+  ::selection{background:var(--floresta-200); color:var(--floresta-950);}
+
+  h1,h2,h3,h4{ font-family:var(--font-serif); font-weight:600; margin:0 0 .4em 0; color:var(--text-primary); letter-spacing:-0.01em;}
+
+  a{color:var(--brand-link);}
+
+  code, .mono{font-family:var(--font-mono); font-size:.85em;}
+
+  /* ---------- logo slots (SVG real injetado via JS) ---------- */
+  .logo-slot{display:inline-block; line-height:0;}
+  .logo-slot svg{display:block; height:100%; width:auto;}
+
+  /* ---------- layout ---------- */
+  .shell{display:flex; min-height:100vh;}
+
+  nav.side{
+    width:var(--nav-w); flex-shrink:0; position:sticky; top:0; height:100vh; overflow-y:auto;
+    background:var(--nav-bg); color:var(--text-secondary); padding:26px 20px 30px;
+    border-right:1px solid var(--border); transition:background .25s ease;
+  }
+  nav.side .brand{ display:flex; align-items:center; gap:10px; margin-bottom:20px;}
+  nav.side .brand span{font-family:var(--font-serif); font-size:1.05rem; color:var(--text-primary); font-weight:600;}
+
+  .theme-toggle{
+    display:flex; align-items:center; gap:8px; background:var(--nav-toggle-track); border:1px solid var(--border);
+    border-radius:10px; padding:5px; margin-bottom:24px;
+  }
+  .theme-toggle button{
+    flex:1; display:flex; align-items:center; justify-content:center; gap:6px; background:transparent; border:none;
+    color:var(--text-muted); font-family:var(--font-sans); font-size:.75rem; font-weight:600; padding:8px 6px;
+    border-radius:7px; cursor:pointer; transition:background .15s, color .15s;
+  }
+  .theme-toggle button.active{background:var(--brand-primary-bg); color:var(--brand-primary-text);}
+  .theme-toggle svg{width:14px; height:14px;}
+
+  nav.side .navgroup{margin-bottom:20px;}
+  nav.side .navgroup h5{
+    font-family:var(--font-sans); text-transform:uppercase; letter-spacing:.09em; font-size:.66rem;
+    color:var(--text-muted); margin:0 0 8px 2px; font-weight:600;
+  }
+  nav.side a{
+    display:flex; align-items:center; gap:9px; color:var(--text-secondary); text-decoration:none; font-size:.86rem;
+    padding:7px 8px; border-radius:6px; transition:background .15s, color .15s;
+  }
+  nav.side a:hover{background:var(--nav-hover-bg); color:var(--text-primary);}
+  nav.side a.active{background:var(--nav-active-bg); color:var(--nav-active-text);}
+  nav.side a .ring{width:14px; height:14px; flex-shrink:0; opacity:.7;}
+  nav.side a.active .ring{opacity:1;}
+  nav.side .navfoot{margin-top:24px; padding-top:16px; border-top:1px solid var(--border); font-size:.7rem; color:var(--text-muted);}
+
+  main{flex:1; min-width:0;}
+
+  section{ padding:88px 64px; max-width:1040px; margin:0 auto; border-bottom:1px solid var(--border);}
+  section:last-of-type{border-bottom:none;}
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px; text-transform:uppercase; letter-spacing:.11em;
+    font-size:.72rem; font-weight:600; color:var(--brand-accent); margin-bottom:14px;
+  }
+  .eyebrow .ring{width:16px;height:16px;}
+  section > h2{font-size:2.4rem; margin-bottom:6px;}
+  .lede{font-size:1.15rem; color:var(--text-secondary); max-width:660px; margin-bottom:44px; font-weight:400;}
+
+  .block{margin-bottom:52px;}
+  .block h3{font-size:1.3rem; font-family:var(--font-sans); font-weight:600; color:var(--text-primary); margin-bottom:14px;}
+  .block h3 .tag{
+    font-family:var(--font-sans); font-size:.65rem; text-transform:uppercase; letter-spacing:.08em;
+    background:var(--floresta-100); color:var(--floresta-800); padding:3px 8px; border-radius:20px; margin-left:10px; vertical-align:middle; font-weight:700;
+  }
+  [data-theme="dark"] .block h3 .tag{background:var(--floresta-800); color:var(--floresta-100);}
+  .block p{color:var(--text-secondary); max-width:700px;}
+  .block .note{font-size:.82rem; color:var(--text-muted); margin-top:10px;}
+
+  /* ---------- hero (fixo, sempre escuro: declaração de marca) ---------- */
+  .hero{
+    position:relative; background:var(--floresta-700); color:var(--neutral-50); padding:0; overflow:hidden;
+    border-bottom:none; max-width:none;
+  }
+  .hero-inner{ position:relative; z-index:2; max-width:1040px; margin:0 auto; padding:110px 64px 90px;}
+  .hero-eyebrow{text-transform:uppercase; letter-spacing:.14em; font-size:.75rem; color:#f7f7f7; font-weight:600; margin-bottom:22px;}
+  .hero h1{font-size:5rem; color:var(--rio-300); line-height:.98; margin-bottom:20px; font-weight:500;}
+  .hero .sub{font-size:1.2rem; color:#f7f7f7; max-width:540px; margin-bottom:32px; font-weight:400;}
+  .hero-badge{
+    position:absolute; top:44px; right:60px; z-index:3;
+    width:108px; height:108px; display:flex; align-items:center; justify-content:center;
+  }
+  .hero-badge .logo-slot{ position:relative; z-index:2; height:42px; }
+  .hero-watermark{
+    position:absolute; z-index:1; bottom:-220px; right:-200px;
+    height:780px; width:auto; opacity:.16; pointer-events:none;
+  }
+  .hero-watermark .logo-slot, .hero-watermark .logo-slot svg{height:100%; width:auto; display:block;}
+  .hero-note{font-size:.8rem; color:var(--rio-300); max-width:480px; border-left:2px solid var(--rio-300); padding-left:14px;}
+
+  /* ---------- pillars / cards genéricos ---------- */
+  .pillars{display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-top:36px;}
+  .pillar{background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:24px;}
+  .pillar .ring{width:26px;height:26px; margin-bottom:14px; color:var(--floresta-600);}
+  [data-theme="dark"] .pillar .ring{color:var(--floresta-400);}
+  .pillar h4{font-family:var(--font-sans); font-size:1rem; font-weight:600; margin-bottom:8px; color:var(--text-primary);}
+  .pillar p{font-size:.89rem; color:var(--text-muted); margin:0;}
+
+  .insp-grid{display:grid; grid-template-columns:1.1fr .9fr; gap:32px; align-items:start;}
+  .insp-swatchcol{display:flex; flex-direction:column; gap:14px;}
+  .insp-strip{border-radius:12px; height:90px; display:flex; align-items:flex-end; padding:12px 16px; font-family:var(--font-mono); font-size:.72rem; color:#fff;}
+
+  .keywordrow{display:flex; flex-wrap:wrap; gap:10px; margin-top:18px;}
+  .keyword{border:1px solid var(--border-strong); border-radius:20px; padding:7px 14px; font-size:.82rem; color:var(--text-secondary); background:var(--surface);}
+
+  /* ---------- tipografia ---------- */
+  .type-pairing{display:grid; grid-template-columns:1fr 1fr; gap:28px; margin-bottom:40px;}
+  .type-card{background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:28px;}
+  .type-card .label{font-size:.7rem; text-transform:uppercase; letter-spacing:.09em; color:var(--text-muted); font-weight:600; margin-bottom:14px;}
+  .type-card .sample-serif{font-family:var(--font-serif); font-size:2.4rem; line-height:1.05; color:var(--text-primary); font-weight:500;}
+  .type-card .sample-sans{font-family:var(--font-sans); font-size:1.05rem; line-height:1.65; color:var(--text-secondary);}
+  .type-card .meta{margin-top:16px; font-family:var(--font-mono); font-size:.72rem; color:var(--text-muted);}
+
+  .weight-grid{display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:8px;}
+  .weight-col{background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:22px 24px;}
+  .weight-col .col-label{font-size:.7rem; text-transform:uppercase; letter-spacing:.09em; color:var(--text-muted); font-weight:600; margin-bottom:14px;}
+  .weight-row{display:flex; align-items:baseline; justify-content:space-between; gap:16px; padding:11px 0; border-bottom:1px solid var(--border);}
+  .weight-row:last-child{border-bottom:none;}
+  .weight-row .w-sample{font-size:1.35rem; color:var(--text-primary); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .weight-row .w-tag{font-family:var(--font-mono); font-size:.66rem; color:var(--text-muted); white-space:nowrap; flex-shrink:0; padding-left:12px;}
+
+  .usage-demo{background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:28px 26px; margin-bottom:14px;}
+  .usage-demo.stacked{padding:22px 26px;}
+
+  .scale-row{display:grid; grid-template-columns:120px 1fr 170px; gap:20px; align-items:baseline; padding:18px 0; border-bottom:1px solid var(--border);}
+  .scale-row:last-child{border-bottom:none;}
+  .scale-row .tok{font-family:var(--font-mono); font-size:.78rem; color:var(--brand-accent); font-weight:700;}
+  .scale-row .sample{font-family:var(--font-serif); color:var(--text-primary);}
+  .scale-row.sans .sample{font-family:var(--font-sans); color:var(--text-secondary);}
+  .scale-row .specs{font-family:var(--font-mono); font-size:.72rem; color:var(--text-muted); text-align:right;}
+
+  .dodont{display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:24px;}
+  .dodont.triple{grid-template-columns:repeat(3,1fr);}
+  .dodont .card{border-radius:14px; padding:22px 24px;}
+  .dodont .do{background:var(--do-bg); border:1px solid var(--do-border);}
+  .dodont .dont{background:var(--dont-bg); border:1px solid var(--dont-border);}
+  .dodont .card .flag{font-size:.7rem; text-transform:uppercase; letter-spacing:.08em; font-weight:700; margin-bottom:10px; display:block;}
+  .dodont .do .flag{color:var(--do-flag);}
+  .dodont .dont .flag{color:var(--dont-flag);}
+  .dodont .card p{margin:0; font-size:.86rem; color:var(--text-secondary);}
+  .dodont .card .ex{margin-top:12px; font-size:1.05rem; color:var(--text-primary);}
+  .dodont .card .visual{margin-top:8px; display:flex; align-items:center; justify-content:center; border-radius:10px; padding:20px; min-height:96px;}
+
+  /* ---------- cores ---------- */
+  .palette-block{margin-bottom:40px;}
+  .palette-title{display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; flex-wrap:wrap; gap:6px;}
+  .palette-title h4{font-family:var(--font-sans); font-weight:600; font-size:1.05rem; margin:0; color:var(--text-primary);}
+  .palette-title .usage{font-size:.82rem; color:var(--text-muted);}
+  .swatchrow{display:grid; grid-template-columns:repeat(11,1fr); gap:7px;}
+  .swatch{border-radius:9px; overflow:hidden; cursor:pointer; border:1px solid var(--border); position:relative;}
+  .swatch .fill{height:52px;}
+  .swatch .info{padding:6px 5px; background:var(--surface);}
+  .swatch .info .name{font-size:.62rem; font-weight:700; color:var(--text-primary); display:block;}
+  .swatch .info .hex{font-family:var(--font-mono); font-size:.56rem; color:var(--text-muted); display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .swatch:hover{outline:2px solid var(--floresta-500); outline-offset:1px;}
+  .swatch.copied .info .hex::after{content:" ✓"; color:var(--floresta-600);}
+
+  .a11y-table{width:100%; border-collapse:collapse; margin-top:8px; font-size:.86rem;}
+  .a11y-table th{text-align:left; font-size:.66rem; text-transform:uppercase; letter-spacing:.06em; color:var(--text-muted); padding:8px 12px; border-bottom:1px solid var(--border-strong); font-weight:700;}
+  .a11y-table td{padding:12px; border-bottom:1px solid var(--border); vertical-align:middle; color:var(--text-secondary);}
+  .a11y-table .demo{display:inline-flex; align-items:center; padding:6px 12px; border-radius:6px; font-size:.82rem; font-weight:600;}
+  .a11y-table .ratio{font-family:var(--font-mono); font-weight:700;}
+  .a11y-table .pass{color:var(--floresta-600);}
+  [data-theme="dark"] .a11y-table .pass{color:var(--floresta-300);}
+  .a11y-table .warn{color:var(--warning-700);}
+  [data-theme="dark"] .a11y-table .warn{color:var(--warning-300);}
+  .a11y-table .fail{color:var(--error-700);}
+  [data-theme="dark"] .a11y-table .fail{color:var(--error-300);}
+  .a11y-caption{font-size:.72rem; text-transform:uppercase; letter-spacing:.08em; color:var(--text-muted); font-weight:700; margin:34px 0 6px;}
+
+  .combo-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-top:20px;}
+  .combo{border-radius:12px; padding:22px 16px; text-align:center; font-size:.85rem; font-weight:600;}
+
+  .badge-pattern-demo{display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:18px;}
+  .badge-pattern-demo.grid-4{grid-template-columns:repeat(4,1fr);}
+  .badge-pattern-demo .side{border-radius:14px; padding:22px; text-align:center;}
+  .badge-pattern-demo .side .lbl{font-size:.72rem; text-transform:uppercase; letter-spacing:.07em; font-weight:700; margin-bottom:12px; display:block;}
+
+  /* ---------- combinações intra-família ---------- */
+  .samefam-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:16px;}
+  .samefam-card{border-radius:12px; padding:20px 16px; min-height:110px; display:flex; flex-direction:column; justify-content:space-between;}
+  .samefam-card .lbl{font-family:var(--font-sans); font-weight:600; font-size:.92rem;}
+  .samefam-card .ratio{font-family:var(--font-mono); font-size:.68rem; opacity:.85; margin-top:10px;}
+  .samefam-heading{display:flex; align-items:center; gap:10px; margin:28px 0 4px;}
+  .samefam-heading .dot{width:14px; height:14px; border-radius:4px;}
+  .samefam-heading h4{margin:0; font-size:1rem; font-family:var(--font-sans); font-weight:600;}
+
+  /* ---------- iconografia ---------- */
+  .icon-slot{display:inline-block; line-height:0;}
+  .icon-slot svg{display:block; width:100%; height:100%;}
+  .icon-grid{display:grid; grid-template-columns:repeat(7,1fr); gap:12px;}
+  .icon-card{background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:18px 8px; display:flex; flex-direction:column; align-items:center; gap:10px;}
+  .icon-card .icon-slot{color:var(--text-primary);}
+  .icon-card .name{font-family:var(--font-mono); font-size:.64rem; color:var(--text-muted); text-align:center;}
+  .icon-pairing-demo{
+    display:inline-flex; align-items:center; gap:8px; background:var(--surface); border:1px solid var(--border);
+    border-radius:10px; padding:12px 18px; font-size:1rem; color:var(--text-primary);
+  }
+  .icon-pairing-demo .icon-slot{color:var(--text-secondary);}
+
+  /* ---------- logo ---------- */
+  .logo-subhead{font-size:.72rem; text-transform:uppercase; letter-spacing:.08em; color:var(--text-muted); font-weight:700; margin:28px 0 12px;}
+  .logo-subhead:first-child{margin-top:0;}
+  .logo-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:16px;}
+  .logo-tile{border-radius:14px; padding:34px 18px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; min-height:170px; position:relative;}
+  .logo-tile .cap{font-size:.74rem; font-weight:600; text-align:center; color:#262626;}
+
+  .clearspace-demo{
+    display:flex; align-items:center; justify-content:center;
+    background-image:repeating-conic-gradient(var(--check-pattern-a) 0% 25%, var(--check-pattern-b) 0% 50%);
+    background-size:20px 20px;
+    border:1px dashed var(--border-strong); border-radius:14px; padding:60px; margin-top:20px;
+  }
+  .clearspace-demo .box{position:relative; border:1.5px dashed var(--rio-400); padding:34px;}
+  .clearspace-demo .box .x-label{position:absolute; font-family:var(--font-mono); font-size:.65rem; color:var(--rio-500); background:var(--surface); padding:1px 5px;}
+  .clearspace-demo .box .x-top{top:-9px; left:50%; transform:translateX(-50%);}
+  .clearspace-demo .box .x-left{left:-9px; top:50%; transform:translateY(-50%) rotate(-90deg);}
+
+  .min-size-row{display:flex; gap:40px; align-items:flex-start; margin-top:20px;}
+  .min-size-row .item{text-align:center;}
+  .min-size-box{background:#f2f2f2; border-radius:10px; padding:20px 28px; display:flex; align-items:center; justify-content:center; margin-bottom:10px;}
+  .min-size-row .cap{font-size:.78rem; color:var(--text-muted); font-family:var(--font-mono); margin-top:10px;}
+
+  /* ---------- aplicação combinada ---------- */
+  .mock-pair{display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:10px;}
+  .mock-card{border-radius:18px; overflow:hidden; box-shadow:var(--card-shadow);}
+  .mock-card.light{background:#ffffff; border:1px solid var(--neutral-200);}
+  .mock-card.dark{background:var(--neutral-900); border:1px solid var(--neutral-800);}
+  .mock-card .mock-label{font-size:.68rem; text-transform:uppercase; letter-spacing:.08em; font-weight:700; color:var(--text-muted); margin-bottom:10px;}
+  .mock-header{padding:18px 22px; display:flex; align-items:center; justify-content:space-between; background:var(--floresta-950);}
+  .mock-header .lockup{display:flex; align-items:center; gap:9px;}
+  .mock-header .lockup span{color:#fff; font-family:var(--font-serif); font-weight:600; font-size:.98rem;}
+  .mock-header nav{display:flex; gap:18px; font-size:.76rem; color:var(--floresta-200);}
+  .mock-body{padding:30px 22px;}
+  .mock-card.light .mock-body h3{color:var(--neutral-950); font-family:var(--font-serif); font-size:1.5rem; font-weight:500; margin-bottom:8px;}
+  .mock-card.dark .mock-body h3{color:var(--neutral-50); font-family:var(--font-serif); font-size:1.5rem; font-weight:500; margin-bottom:8px;}
+  .mock-card.light .mock-body p{color:var(--neutral-700); font-size:.88rem; margin-bottom:20px;}
+  .mock-card.dark .mock-body p{color:var(--neutral-300); font-size:.88rem; margin-bottom:20px;}
+  .mock-actions{display:flex; gap:10px; margin-bottom:22px;}
+  .btn{font-family:var(--font-sans); font-size:.82rem; font-weight:600; padding:10px 18px; border-radius:8px; border:none; cursor:pointer;}
+  .mock-card.light .btn-primary{background:var(--floresta-700); color:#fff;}
+  .mock-card.light .btn-secondary{background:#fff; color:var(--rio-700); border:1.5px solid var(--rio-700);}
+  .mock-card.dark .btn-primary{background:var(--floresta-500); color:#fff;}
+  .mock-card.dark .btn-secondary{background:transparent; color:var(--rio-300); border:1.5px solid var(--rio-300);}
+  /* ---------- componentes de produto ---------- */
+  .component-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:18px;}
+  .component-card{background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:22px; display:flex; flex-direction:column; gap:16px; min-height:150px;}
+  .component-card .comp-label{font-size:.68rem; text-transform:uppercase; letter-spacing:.08em; color:var(--text-muted); font-weight:700;}
+  .component-card .comp-body{flex:1; display:flex; align-items:center; justify-content:center; width:100%;}
+  .component-card .comp-body.align-start{align-items:flex-start; justify-content:flex-start; flex-direction:column; gap:10px;}
+
+  .ui-btn{font-family:var(--font-sans); font-size:.83rem; font-weight:600; padding:9px 18px; border-radius:8px; border:none; display:inline-block;}
+  .ui-btn-primary{background:var(--floresta-700); color:#fff;}
+  .ui-btn-secondary{background:transparent; color:var(--rio-700); border:1.5px solid var(--rio-700);}
+  .ui-btn-ghost{background:transparent; color:var(--text-secondary);}
+  .ui-btn-row{display:flex; flex-direction:column; gap:10px; align-items:flex-start;}
+
+  .ui-field{width:100%;}
+  .ui-field label{display:block; font-size:.76rem; font-weight:600; color:var(--text-primary); margin-bottom:6px;}
+  .ui-field input{width:100%; font-family:var(--font-sans); font-size:.83rem; padding:9px 12px; border-radius:8px; border:1px solid var(--border-strong); background:var(--surface); color:var(--text-primary); box-sizing:border-box;}
+  .ui-field input::placeholder{color:var(--text-muted);}
+
+  .ui-check-row{display:flex; align-items:center; gap:9px; font-size:.83rem; color:var(--text-primary);}
+  .ui-checkbox{width:17px; height:17px; border-radius:5px; border:1.5px solid var(--border-strong); display:inline-flex; align-items:center; justify-content:center; flex-shrink:0;}
+  .ui-checkbox.checked{background:var(--floresta-700); border-color:var(--floresta-700);}
+  .ui-checkbox.checked svg{width:11px; height:11px; color:#fff;}
+  .ui-radio{width:17px; height:17px; border-radius:50%; border:1.5px solid var(--border-strong); display:inline-flex; align-items:center; justify-content:center; flex-shrink:0;}
+  .ui-radio.checked{border-color:var(--floresta-700);}
+  .ui-radio.checked::after{content:""; width:8px; height:8px; border-radius:50%; background:var(--floresta-700);}
+
+  .ui-switch{width:38px; height:22px; border-radius:20px; background:var(--floresta-700); position:relative; display:inline-block; flex-shrink:0;}
+  .ui-switch::after{content:""; position:absolute; top:2px; right:2px; width:18px; height:18px; border-radius:50%; background:#fff;}
+  .ui-switch.off{background:var(--border-strong);}
+  .ui-switch.off::after{right:auto; left:2px;}
+
+  .ui-avatar{width:42px; height:42px; border-radius:50%; background:var(--floresta-100); color:var(--floresta-800); display:flex; align-items:center; justify-content:center; font-family:var(--font-sans); font-weight:700; font-size:.85rem; flex-shrink:0;}
+  [data-theme="dark"] .ui-avatar{background:var(--floresta-800); color:var(--floresta-100);}
+  .ui-avatar-row{display:flex; align-items:center; gap:12px;}
+  .ui-avatar-row .who{font-size:.82rem;}
+  .ui-avatar-row .who .name{font-weight:600; color:var(--text-primary); display:block;}
+  .ui-avatar-row .who .role{color:var(--text-muted); font-size:.75rem;}
+
+  .ui-tabs{display:flex; gap:4px; background:var(--surface-alt); padding:4px; border-radius:9px; width:100%;}
+  .ui-tab{font-family:var(--font-sans); font-size:.76rem; font-weight:600; padding:7px 0; border-radius:6px; color:var(--text-muted); flex:1; text-align:center;}
+  .ui-tab.active{background:var(--surface); color:var(--text-primary); box-shadow:0 1px 3px rgba(0,0,0,.12);}
+
+  .ui-progress{width:100%; height:8px; border-radius:20px; background:var(--surface-alt); overflow:hidden;}
+  .ui-progress-bar{height:100%; width:64%; background:var(--floresta-700); border-radius:20px;}
+  .ui-progress-label{display:flex; justify-content:space-between; font-size:.72rem; color:var(--text-muted); margin-bottom:8px; font-family:var(--font-mono);}
+
+  .ui-alert{display:flex; gap:10px; padding:13px 14px; border-radius:10px; font-size:.8rem; align-items:flex-start; width:100%;}
+  .ui-alert .icon-slot{flex-shrink:0; margin-top:1px;}
+  .ui-alert strong{display:block; margin-bottom:2px; font-size:.82rem;}
+
+  .ui-select{width:100%; display:flex; align-items:center; justify-content:space-between; font-family:var(--font-sans); font-size:.83rem; padding:9px 12px; border-radius:8px; border:1px solid var(--border-strong); color:var(--text-primary); box-sizing:border-box;}
+  .ui-select .icon-slot{color:var(--text-muted); width:15px; height:15px;}
+
+  .ui-tooltip{background:var(--neutral-900); color:var(--neutral-50); font-size:.76rem; font-family:var(--font-sans); padding:7px 12px; border-radius:7px; position:relative;}
+  [data-theme="dark"] .ui-tooltip{background:var(--neutral-50); color:var(--neutral-900);}
+
+  .badge-row{display:flex; gap:8px; flex-wrap:wrap;}
+  .badge{font-size:.74rem; font-weight:600; padding:6px 12px; border-radius:20px; display:inline-flex; align-items:center; gap:6px;}
+  .badge .icon-slot{width:14px; height:14px; flex-shrink:0;}
+  .demo .icon-slot{display:inline-flex; width:13px; height:13px; vertical-align:middle; flex-shrink:0;}
+  .demo .icon-slot svg{width:100%; height:100%; display:block;}
+
+  /* ---------- tokens table ---------- */
+  .tok-table{width:100%; border-collapse:collapse; font-size:.84rem; margin-top:10px;}
+  .tok-table th{text-align:left; padding:9px 12px; font-size:.68rem; text-transform:uppercase; letter-spacing:.06em; color:var(--text-muted); border-bottom:2px solid var(--border-strong);}
+  .tok-table td{padding:9px 12px; border-bottom:1px solid var(--border); color:var(--text-secondary);}
+  .tok-table .swatchdot{width:16px; height:16px; border-radius:4px; display:inline-block; margin-right:8px; vertical-align:middle; border:1px solid rgba(127,127,127,.25);}
+  .tok-table code{color:var(--brand-accent);}
+
+  /* ---------- download ---------- */
+  .dl-card{background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:28px; display:flex; flex-direction:column; gap:28px;}
+  .dl-controls{display:flex; flex-direction:column; gap:22px;}
+  .dl-row-controls{display:grid; grid-template-columns:1fr auto; gap:22px; align-items:start;}
+  .dl-group-label{font-size:.7rem; text-transform:uppercase; letter-spacing:.09em; color:var(--text-muted); font-weight:700; margin-bottom:10px;}
+  .dl-variants{display:flex; gap:10px; flex-wrap:wrap;}
+  .dl-variant{background:var(--surface-alt); border:1.5px solid var(--border); border-radius:10px; padding:10px 12px; display:flex; align-items:center; gap:10px; cursor:pointer; transition:border-color .15s, background .15s;}
+  .dl-variant:hover{border-color:var(--floresta-500);}
+  .dl-variant.active{border-color:var(--floresta-700); background:var(--floresta-50);}
+  [data-theme="dark"] .dl-variant.active{background:var(--floresta-950);}
+  .dl-preview-wrap{width:46px; height:46px; border-radius:7px; display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+  .dl-vname{font-size:.78rem; font-weight:600; color:var(--text-primary); white-space:nowrap;}
+  .dl-sizes{display:flex; gap:7px; flex-wrap:wrap;}
+  .dl-size{background:transparent; border:1px solid var(--border-strong); border-radius:7px; padding:6px 12px; font-family:var(--font-mono); font-size:.74rem; color:var(--text-secondary); cursor:pointer; transition:border-color .15s, background .15s, color .15s;}
+  .dl-size:hover{border-color:var(--floresta-500); color:var(--text-primary);}
+  .dl-size.active{background:var(--floresta-700); border-color:var(--floresta-700); color:#fff;}
+  .dl-formats{display:flex; gap:7px;}
+  .dl-fmt{background:transparent; border:1px solid var(--border-strong); border-radius:7px; padding:7px 18px; font-family:var(--font-sans); font-size:.82rem; font-weight:600; color:var(--text-secondary); cursor:pointer; transition:border-color .15s, background .15s, color .15s;}
+  .dl-fmt:hover{border-color:var(--floresta-500); color:var(--text-primary);}
+  .dl-fmt.active{background:var(--floresta-700); border-color:var(--floresta-700); color:#fff;}
+  .dl-preview-area{display:flex; flex-direction:column; align-items:center; gap:12px;}
+  .dl-preview-bg{border-radius:14px; padding:40px 60px; display:flex; align-items:center; justify-content:center; transition:background .25s; border:1px solid var(--border);}
+  .dl-preview-symbol{line-height:0; display:flex; align-items:center; justify-content:center;}
+  .dl-preview-meta{font-family:var(--font-mono); font-size:.74rem; color:var(--text-muted);}
+  .dl-action{display:flex; align-items:center; gap:16px;}
+  .dl-btn{display:inline-flex; align-items:center; gap:9px; background:var(--floresta-700); color:#fff; font-family:var(--font-sans); font-size:.88rem; font-weight:600; padding:12px 24px; border-radius:9px; border:none; cursor:pointer; transition:background .15s;}
+  .dl-btn:hover{background:var(--floresta-800);}
+  .dl-btn:active{background:var(--floresta-900);}
+  .dl-btn .icon-slot{color:#fff;}
+  .dl-hint{font-size:.78rem; color:var(--text-muted); max-width:280px;}
+
+  footer{padding:50px 64px; max-width:1040px; margin:0 auto; color:var(--text-muted); font-size:.82rem;}
+
+  /* =============================================
+     RESPONSIVO — 4 breakpoints
+     1024px  tablet landscape
+      768px  tablet portrait / phablet
+      540px  mobile large
+      390px  mobile pequeno
+     ============================================= */
+
+  /* ---- 1024px — tablet landscape ---- */
+  @media (max-width: 1024px){
+    :root{ --nav-w: 220px; }
+    section{ padding:72px 40px; }
+    .hero-inner{ padding:90px 40px 70px; }
+    footer{ padding:40px 40px; }
+    .hero h1{ font-size:4rem; }
+    .samefam-grid{ grid-template-columns: repeat(4,1fr); }
+    .icon-grid{ grid-template-columns: repeat(5,1fr); }
+    .scale-row{ grid-template-columns: 100px 1fr 140px; }
+  }
+
+  /* ---- 768px — tablet portrait / phablet ---- */
+  @media (max-width: 768px){
+    nav.side{ display: none; }
+    .mobile-nav-bar{ display: flex; }
+    section{ padding: 56px 20px; }
+    footer{ padding: 40px 20px; }
+    .hero-inner{ padding: 72px 20px 56px; }
+    .hero h1{ font-size: 3rem; }
+    .hero .sub{ font-size: 1.05rem; }
+    .hero-note{ max-width: 100%; }
+    .hero-badge{ width: 72px; height: 72px; top: 18px; right: 18px; }
+    .hero-badge .logo-slot{ height: 28px; }
+    .hero-watermark{ height: 340px; bottom: -100px; right: -90px; }
+    section > h2{ font-size: 2rem; }
+    .lede{ font-size: 1.05rem; }
+    .eyebrow{ font-size: .68rem; }
+
+    .type-pairing, .mock-pair{ grid-template-columns: 1fr; }
+    .weight-grid{ grid-template-columns: 1fr; }
+    .pillars{ grid-template-columns: 1fr 1fr; }
+    .insp-grid{ grid-template-columns: 1fr; }
+    .logo-grid{ grid-template-columns: 1fr 1fr; }
+    .combo-grid{ grid-template-columns: 1fr 1fr; }
+    .dodont, .dodont.triple{ grid-template-columns: 1fr 1fr; }
+    .samefam-grid{ grid-template-columns: 1fr 1fr; }
+    .badge-pattern-demo, .badge-pattern-demo.grid-4{ grid-template-columns: 1fr 1fr; }
+    .swatchrow{ grid-template-columns: repeat(4,1fr); }
+    .icon-grid{ grid-template-columns: repeat(4,1fr); }
+
+    .scale-row{ grid-template-columns: 80px 1fr; gap: 12px; }
+    .scale-row .specs{ display: none; }
+
+    .dl-row-controls{ grid-template-columns: 1fr; gap: 16px; }
+    .dl-formats{ flex-wrap: nowrap; }
+    .dl-preview-bg{ padding: 28px 32px; }
+    .dl-action{ flex-direction: column; align-items: flex-start; }
+
+    .clearspace-demo{ padding: 36px 20px; }
+    .mock-header nav{ display: none; }
+    .a11y-table{ font-size: .78rem; }
+    .a11y-table td, .a11y-table th{ padding: 9px 8px; }
+  }
+
+  /* ---- 540px — mobile large ---- */
+  @media (max-width: 540px){
+    section{ padding: 48px 16px; }
+    footer{ padding: 36px 16px; }
+    .hero-inner{ padding: 64px 16px 48px; }
+    .hero h1{ font-size: 2.4rem; line-height: 1.0; }
+    .hero .sub{ font-size: 1rem; }
+    .hero-badge{ width: 60px; height: 60px; top: 14px; right: 14px; }
+    .hero-badge .logo-slot{ height: 24px; }
+    .hero-watermark{ height: 260px; bottom: -80px; right: -70px; }
+    section > h2{ font-size: 1.75rem; }
+
+    .pillars{ grid-template-columns: 1fr; }
+    .dodont, .dodont.triple{ grid-template-columns: 1fr; }
+    .logo-grid{ grid-template-columns: 1fr 1fr; }
+    .samefam-grid{ grid-template-columns: 1fr 1fr; }
+    .badge-pattern-demo, .badge-pattern-demo.grid-4{ grid-template-columns: 1fr 1fr; }
+    .swatchrow{ grid-template-columns: repeat(3,1fr); }
+    .swatch .fill{ height: 44px; }
+    .icon-grid{ grid-template-columns: repeat(3,1fr); }
+    .icon-card{ padding: 14px 6px; }
+
+    .type-card .sample-serif{ font-size: 1.8rem; }
+    .weight-row .w-sample{ font-size: 1.1rem; }
+    .samefam-card{ padding: 16px 12px; min-height: 90px; }
+    .samefam-card .lbl{ font-size: .8rem; }
+    .samefam-card .ratio{ font-size: .62rem; }
+
+    .a11y-table{ display: block; overflow-x: auto; white-space: nowrap; }
+    .a11y-table table, .a11y-table thead, .a11y-table tbody, .a11y-table tr{ display: table; width: 100%; }
+
+    .dl-card{ padding: 18px 14px; }
+    .dl-variant{ flex-direction: column; padding: 8px; gap: 6px; }
+    .dl-preview-wrap{ width: 36px; height: 36px; }
+    .dl-vname{ font-size: .7rem; }
+    .dl-sizes{ gap: 5px; }
+    .dl-size{ padding: 5px 9px; font-size: .68rem; }
+    .dl-preview-bg{ padding: 20px; }
+    .dl-btn{ padding: 11px 18px; font-size: .82rem; }
+    .dl-hint{ font-size: .72rem; }
+
+    .clearspace-demo{ padding: 24px 12px; }
+    .min-size-row{ gap: 24px; }
+    .mock-body{ padding: 20px 16px; }
+    .mock-body h3{ font-size: 1.2rem; }
+    .mock-actions{ flex-wrap: wrap; }
+  }
+
+  /* ---- 390px — mobile pequeno ---- */
+  @media (max-width: 390px){
+    section{ padding: 40px 12px; }
+    .hero-inner{ padding: 52px 12px 40px; }
+    .hero h1{ font-size: 2rem; }
+    .hero-badge{ width: 50px; height: 50px; top: 10px; right: 10px; }
+    .hero-badge .logo-slot{ height: 20px; }
+    .hero-watermark{ height: 200px; bottom: -60px; right: -50px; }
+    section > h2{ font-size: 1.55rem; }
+
+    .swatchrow{ grid-template-columns: repeat(4,1fr); }
+    .swatch .info .name{ font-size: .56rem; }
+    .swatch .info .hex{ font-size: .5rem; }
+    .logo-grid{ grid-template-columns: 1fr; }
+    .icon-grid{ grid-template-columns: repeat(3,1fr); }
+    .samefam-grid{ grid-template-columns: 1fr; }
+    .badge-pattern-demo, .badge-pattern-demo.grid-4{ grid-template-columns: 1fr; }
+
+    .dl-variants{ gap: 6px; }
+    .dl-variant{ width: calc(50% - 3px); box-sizing: border-box; }
+    .dl-sizes{ gap: 4px; }
+    .dl-size{ padding: 4px 8px; font-size: .65rem; }
+  }
+
+  /* ---- barra de nav mobile (substitui sidebar em mobile) ---- */
+  .mobile-nav-bar{
+    display: none;
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+    background: var(--nav-bg); border-top: 1px solid var(--border);
+    padding: 0; align-items: stretch; justify-content: space-around;
+    box-shadow: 0 -4px 20px rgba(0,0,0,.12);
+  }
+  .mobile-nav-bar a{
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
+    padding: 10px 8px 12px; font-family: var(--font-sans); font-size: .62rem;
+    font-weight: 600; color: var(--text-muted); text-decoration: none;
+    flex: 1; transition: color .15s;
+  }
+  .mobile-nav-bar a.active{ color: var(--floresta-700); }
+  [data-theme="dark"] .mobile-nav-bar a.active{ color: var(--floresta-300); }
+  .mobile-nav-bar .icon-slot{ width: 22px; height: 22px; }
+  .mobile-nav-bar .mobile-theme-btn{
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
+    padding: 10px 8px 12px; font-family: var(--font-sans); font-size: .62rem;
+    font-weight: 600; color: var(--text-muted); background: transparent;
+    border: none; cursor: pointer; flex: 1;
+  }
+  .mobile-nav-bar .mobile-theme-btn .icon-slot{ width: 22px; height: 22px; }
+
+  /* compensar barra fixa no fundo em mobile */
+  @media (max-width: 768px){
+    body{ padding-bottom: 68px; }
+  }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute">
+  <symbol id="ring-icon" viewBox="0 0 40 40">
+    <circle cx="20" cy="20" r="18" fill="none" stroke="currentColor" stroke-width="1.4"/>
+    <circle cx="20" cy="20" r="12.5" fill="none" stroke="currentColor" stroke-width="1.4"/>
+    <circle cx="20" cy="20" r="7" fill="none" stroke="currentColor" stroke-width="1.4"/>
+    <circle cx="20" cy="20" r="2" fill="currentColor"/>
+  </symbol>
+  <symbol id="sun-icon" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.8"/>
+    <g stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+      <line x1="12" y1="1.5" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22.5"/>
+      <line x1="1.5" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22.5" y2="12"/>
+      <line x1="4.2" y1="4.2" x2="6" y2="6"/><line x1="18" y1="18" x2="19.8" y2="19.8"/>
+      <line x1="19.8" y1="4.2" x2="18" y2="6"/><line x1="6" y1="18" x2="4.2" y2="19.8"/>
+    </g>
+  </symbol>
+  <symbol id="moon-icon" viewBox="0 0 24 24">
+    <path d="M20 13.5A8.5 8.5 0 1 1 10.5 4a6.8 6.8 0 0 0 9.5 9.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+  </symbol>
+</svg>
+
+<div class="shell">
+
+  <nav class="side" id="sidenav">
+    <div class="brand">
+      <span class="logo-slot" data-variant-light="color" data-variant-dark="white" style="height:30px;"></span>
+      <span>Inova Cumaú</span>
+    </div>
+
+    <div class="theme-toggle" role="group" aria-label="Alternar tema">
+      <button type="button" id="btn-light" class="active" aria-pressed="true"><svg><use href="#sun-icon"/></svg>Claro</button>
+      <button type="button" id="btn-dark" aria-pressed="false"><svg><use href="#moon-icon"/></svg>Escuro</button>
+    </div>
+
+    <div class="navgroup">
+      <h5>Guia</h5>
+      <a href="#topo" data-target="topo"><span class="icon-slot ring" data-icon="home" style="width:14px;height:14px;"></span>Capa</a>
+      <a href="#objetivo" data-target="objetivo"><span class="icon-slot ring" data-icon="target" style="width:14px;height:14px;"></span>Objetivo</a>
+      <a href="#inspiracao" data-target="inspiracao"><span class="icon-slot ring" data-icon="bulb" style="width:14px;height:14px;"></span>Inspiração</a>
+    </div>
+    <div class="navgroup">
+      <h5>Elementos</h5>
+      <a href="#tipografia" data-target="tipografia"><span class="icon-slot ring" data-icon="typography" style="width:14px;height:14px;"></span>Tipografia</a>
+      <a href="#cores" data-target="cores"><span class="icon-slot ring" data-icon="palette" style="width:14px;height:14px;"></span>Cores</a>
+      <a href="#logotipo" data-target="logotipo"><span class="icon-slot ring" data-icon="shield" style="width:14px;height:14px;"></span>Logotipo</a>
+      <a href="#iconografia" data-target="iconografia"><span class="icon-slot ring" data-icon="icons" style="width:14px;height:14px;"></span>Iconografia</a>
+    </div>
+    <div class="navgroup">
+      <h5>Prática</h5>
+      <a href="#aplicacao" data-target="aplicacao"><span class="icon-slot ring" data-icon="layout-grid" style="width:14px;height:14px;"></span>Aplicação combinada</a>
+      <a href="#tokens" data-target="tokens"><span class="icon-slot ring" data-icon="code" style="width:14px;height:14px;"></span>Tokens de referência</a>
+      <a href="#download" data-target="download"><span class="icon-slot ring" data-icon="download" style="width:14px;height:14px;"></span>Download da logo</a>
+    </div>
+    <div class="navfoot">v1.3 · julho de 2026<br>Úrsula Souza · Guia vivo, sujeito a evolução</div>
+  </nav>
+
+  <main>
+
+    <!-- ================= HERO ================= -->
+    <section class="hero" id="topo">
+      <div class="hero-watermark">
+        <span class="logo-slot" data-variant="floresta900" style="height:100%;"></span>
+      </div>
+      <div class="hero-badge">
+        <span class="logo-slot" data-variant="white" style="height:42px;"></span>
+      </div>
+      <div class="hero-inner">
+        <div class="hero-eyebrow">Guia de identidade visual</div>
+        <h1>Inova Cumaú</h1>
+        <p class="sub">A copa que inova segue o curso do rio que a atravessa. Um guia para aplicar a identidade da marca com consistência: na tela, no papel, na fala.</p>
+        <p class="hero-note">Use o botão <strong>Claro / Escuro</strong> no menu lateral: a barra lateral, os cartões e o logotipo reagem juntos, para provar que o sistema funciona nos dois modos.</p>
+      </div>
+    </section>
+
+    <!-- ================= OBJETIVO ================= -->
+    <section id="objetivo">
+      <div class="eyebrow"><span class="icon-slot ring" data-icon="target" style="width:16px;height:16px;"></span>Objetivo</div>
+      <h2>Por que este guia existe</h2>
+      <p class="lede">Para que qualquer pessoa (dev, parceira, colaborador novo) consiga aplicar a marca Inova Cumaú corretamente sem precisar reinventar decisões a cada peça nova, e sem depender de perguntar a alguém.</p>
+
+      <div class="pillars">
+        <div class="pillar">
+          <span class="icon-slot ring" data-icon="stack" style="width:26px;height:26px;margin-bottom:14px;"></span>
+          <h4>Consistência</h4>
+          <p>A marca deve parecer a mesma no sistema, no deck para fomento, num post e num documento institucional, mesmo quando pessoas diferentes produzem cada peça.</p>
+        </div>
+        <div class="pillar">
+          <span class="icon-slot ring" data-icon="bolt" style="width:26px;height:26px;margin-bottom:14px;"></span>
+          <h4>Autonomia</h4>
+          <p>Regras claras de tipografia, cor e logotipo eliminam a necessidade de aprovação caso a caso. Menos retrabalho, menos idas e vindas.</p>
+        </div>
+        <div class="pillar">
+          <span class="icon-slot ring" data-icon="accessible" style="width:26px;height:26px;margin-bottom:14px;"></span>
+          <h4>Acessibilidade</h4>
+          <p>Todo par de cor usado como texto neste guia foi checado contra o WCAG 2.1: a marca precisa ser lida por qualquer pessoa, em qualquer modo de exibição.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= INSPIRAÇÃO ================= -->
+    <section id="inspiracao">
+      <div class="eyebrow"><span class="icon-slot ring" data-icon="bulb" style="width:16px;height:16px;"></span>Inspiração</div>
+      <h2>De onde a marca vem</h2>
+      <p class="lede">Cumaú não é um nome inventado. É o nome do Forte Cumaú, a primeira fortificação erguida no atual território do Amapá, no século XVII. Inovação que nasce de um lugar real, não de uma metáfora decorativa.</p>
+
+      <div class="insp-grid">
+        <div>
+          <div class="block" style="margin-bottom:28px;">
+            <h3>Copa e rio, a mesma paisagem</h3>
+            <p><strong style="color:var(--floresta-600)">Floresta</strong> é a copa: crescimento, inovação, futuro. <strong style="color:var(--rio-600)">Rio</strong> é a água que atravessa essa paisagem: movimento, conexão, a mesma cor barrenta do Rio Amazonas. Nenhuma existe sem a outra, por isso as duas cores de marca são tratadas sempre como um par, nunca isoladas.</p>
+          </div>
+          <div class="block" style="margin-bottom:0;">
+            <h3>O que a marca não é</h3>
+            <p>Não é a Amazônia genérica de cartão-postal (sem laranja-manga, sem azul-piscina, sem folhas fluorescentes). É a floresta real e o rio real: tons contidos, próximos do que se vê na paisagem, críveis para um projeto institucional.</p>
+          </div>
+        </div>
+        <div class="insp-swatchcol">
+          <div class="insp-strip" style="background:var(--floresta-700);">floresta: copa, crescimento, futuro</div>
+          <div class="insp-strip" style="background:var(--rio-700);">rio: águas barrentas, movimento, conexão</div>
+          <div class="insp-strip" style="background:var(--neutral-800);">neutro: estrutura, silêncio visual</div>
+        </div>
+      </div>
+
+      <div class="block" style="margin-top:8px;">
+        <h3>A origem do símbolo</h3>
+        <p>O Forte Cumaú foi a primeira fortaleza do Amapá, construída no século XVII na região da atual Ponta da Cascalheira, em Santana, cerca de 15 km ao sul de Macapá. O sítio arqueológico antecede a própria Fortaleza de São José e ainda dá nome a uma localidade da região, a Gleba Cumaú. O símbolo da marca dialoga com essa arquitetura de fortificação real, não com uma forma abstrata qualquer, reforçando de forma literal a ideia de enraizamento que dá nome à marca.</p>
+        <p class="note">Para conhecer mais sobre a história desta fortificação e seu impacto arqueológico e cultural na região: <a href="https://globoplay.globo.com/v/11557262/" target="_blank" rel="noopener">documentário no Globoplay</a>.</p>
+      </div>
+
+      <div class="keywordrow">
+        <span class="keyword">enraizado</span>
+        <span class="keyword">fértil</span>
+        <span class="keyword">resiliente</span>
+        <span class="keyword">institucional, mas vivo</span>
+        <span class="keyword">amazônia real, não decorativa</span>
+        <span class="keyword">crescimento lento e sólido</span>
+        <span class="keyword">águas barrentas do Amazonas</span>
+      </div>
+    </section>
+
+    <!-- ================= TIPOGRAFIA ================= -->
+    <section id="tipografia">
+      <div class="eyebrow"><span class="icon-slot ring" data-icon="typography" style="width:16px;height:16px;"></span>Tipografia</div>
+      <h2>Serifa em cima, sem serifa embaixo</h2>
+      <p class="lede">Títulos usam Lora, uma serifa contemporânea de leitura confortável, para transmitir peso institucional sem soltura. Todo o resto (corpo de texto, interface, rótulos) usa Geist, uma sem serifa neutra e geométrica, feita para telas e produto.</p>
+
+      <div class="type-pairing">
+        <div class="type-card">
+          <div class="label">Títulos e destaques</div>
+          <div class="sample-serif">Inova Cumaú</div>
+          <div class="meta">Lora · peso 500–600 · uso: H1–H3, capas, citações de destaque</div>
+        </div>
+        <div class="type-card">
+          <div class="label">Texto e interface</div>
+          <div class="sample-sans">Inovação com raízes: cada decisão de produto parte da realidade amazônica, não de um modelo importado de outro lugar.</div>
+          <div class="meta">Geist · peso 400–600 · uso: parágrafos, UI, rótulos, botões</div>
+        </div>
+      </div>
+
+      <div class="block">
+        <h3>Por que essa combinação</h3>
+        <p>A serifa da Lora dá gravidade a momentos de destaque (títulos, capas de apresentação, aberturas de seção) sem parecer fria ou puramente corporativa. A Geist garante legibilidade confortável em qualquer tamanho de tela e em textos longos, como documentação técnica ou telas de produto: é a mesma família de raciocínio usada em interfaces técnicas modernas, o que ajuda o produto a parecer atual.</p>
+      </div>
+
+      <div class="block">
+        <h3>Quando usar cada uma</h3>
+        <p><strong>Use serifa (Lora) somente em:</strong> H1, H2, H3, capas e citações de destaque. <strong>Nunca em:</strong> parágrafos corridos, botões, campos de formulário, tabelas ou rótulos pequenos, pois a leitura piora em blocos longos e tamanhos reduzidos.</p>
+        <p style="margin-top:10px;"><strong>Use sem serifa (Geist) em:</strong> tudo o que não for título de destaque: corpo de texto, interface, legendas, dados.</p>
+      </div>
+
+      <div class="block">
+        <h3>Escala tipográfica</h3>
+        <div class="scale-row">
+          <div class="tok">H1</div>
+          <div class="sample" style="font-size:2.6rem; font-weight:500;">Título de capa</div>
+          <div class="specs">48–64px / 600 / -1%</div>
+        </div>
+        <div class="scale-row">
+          <div class="tok">H2</div>
+          <div class="sample" style="font-size:2rem; font-weight:600;">Título de seção</div>
+          <div class="specs">32–40px / 600 / -1%</div>
+        </div>
+        <div class="scale-row">
+          <div class="tok">H3</div>
+          <div class="sample" style="font-size:1.4rem; font-weight:600;">Subtítulo de bloco</div>
+          <div class="specs">22–28px / 600 / 0</div>
+        </div>
+        <div class="scale-row sans">
+          <div class="tok">Body LG</div>
+          <div class="sample" style="font-size:1.15rem;">Texto de introdução ou lide de seção.</div>
+          <div class="specs">18px / 400 / 1.6</div>
+        </div>
+        <div class="scale-row sans">
+          <div class="tok">Body</div>
+          <div class="sample" style="font-size:1rem;">Texto corrido padrão, usado na maior parte do conteúdo.</div>
+          <div class="specs">16px / 400 / 1.6</div>
+        </div>
+        <div class="scale-row sans">
+          <div class="tok">Caption</div>
+          <div class="sample" style="font-size:.82rem;">Legendas, metadados, rótulos auxiliares.</div>
+          <div class="specs">13px / 500 / 1.4</div>
+        </div>
+      </div>
+
+      <div class="block">
+        <h3>Pesos e variantes</h3>
+        <p>Cada tipo tem uma família de pesos e estilos disponível, não só o peso padrão usado nos títulos e no corpo de texto.</p>
+        <div class="weight-grid">
+          <div class="weight-col">
+            <div class="col-label">Geist, sem serifa</div>
+            <div class="weight-row"><span class="w-sample" style="font-family:var(--font-sans); font-weight:400;">Inova Cumaú</span><span class="w-tag">Regular 400</span></div>
+            <div class="weight-row"><span class="w-sample" style="font-family:var(--font-sans); font-weight:500;">Inova Cumaú</span><span class="w-tag">Medium 500</span></div>
+            <div class="weight-row"><span class="w-sample" style="font-family:var(--font-sans); font-weight:600;">Inova Cumaú</span><span class="w-tag">Semibold 600</span></div>
+            <div class="weight-row"><span class="w-sample" style="font-family:var(--font-sans); font-weight:700;">Inova Cumaú</span><span class="w-tag">Bold 700</span></div>
+            <div class="weight-row"><span class="w-sample" style="font-family:var(--font-sans); font-weight:400; font-style:italic;">Inova Cumaú</span><span class="w-tag">Itálico</span></div>
+            <div class="weight-row"><span class="w-sample" style="font-family:var(--font-sans); font-weight:400; text-decoration:underline;">Inova Cumaú</span><span class="w-tag">Sublinhado</span></div>
+          </div>
+          <div class="weight-col">
+            <div class="col-label">Lora, serifa</div>
+            <div class="weight-row"><span class="w-sample" style="font-family:var(--font-serif); font-weight:400;">Inova Cumaú</span><span class="w-tag">Regular 400</span></div>
+            <div class="weight-row"><span class="w-sample" style="font-family:var(--font-serif); font-weight:500;">Inova Cumaú</span><span class="w-tag">Medium 500</span></div>
+            <div class="weight-row"><span class="w-sample" style="font-family:var(--font-serif); font-weight:600;">Inova Cumaú</span><span class="w-tag">Semibold 600</span></div>
+            <div class="weight-row"><span class="w-sample" style="font-family:var(--font-serif); font-weight:700;">Inova Cumaú</span><span class="w-tag">Bold 700</span></div>
+            <div class="weight-row"><span class="w-sample" style="font-family:var(--font-serif); font-weight:500; font-style:italic;">Inova Cumaú</span><span class="w-tag">Itálico</span></div>
+            <div class="weight-row"><span class="w-sample" style="font-family:var(--font-serif); font-weight:500; text-decoration:underline;">Inova Cumaú</span><span class="w-tag">Sublinhado</span></div>
+          </div>
+        </div>
+        <p class="note">Regular e Medium: parágrafos longos e texto de apoio. Semibold e Bold: títulos, botões, ênfase pontual. Itálico: uma citação ou um termo isolado, nunca um parágrafo inteiro. Sublinhado: só em link, nunca como recurso de ênfase no lugar do negrito.</p>
+      </div>
+
+      <div class="block">
+        <h3>Formas de uso</h3>
+        <p>Além do texto corrido, dois recursos de composição aparecem em momentos específicos de destaque.</p>
+
+        <div class="usage-demo">
+          <span style="text-transform:uppercase; letter-spacing:.24em; font-family:var(--font-sans); font-weight:600; font-size:.85rem; color:var(--text-primary);">Premium</span>
+        </div>
+        <p class="note"><strong>Caixa alta com espaçamento largo</strong> (letter-spacing ~0.2 a 0.25em, peso 600): reservado para rótulos curtos como olhos de texto, badges e selos, sempre em uma palavra ou frase bem breve. Nunca em frases longas: o espaçamento largo trava a leitura em blocos de texto.</p>
+
+        <div class="usage-demo stacked">
+          <span style="font-family:var(--font-serif); font-weight:700; font-size:2.5rem; line-height:.86; display:block; color:var(--text-primary);">INOVA</span>
+          <span style="font-family:var(--font-serif); font-weight:700; font-size:2.5rem; line-height:.86; display:block; color:var(--text-primary);">CUMAÚ</span>
+        </div>
+        <p class="note"><strong>Empilhamento denso</strong> (line-height ~0.85 a 0.9, uma palavra por linha, caixa alta, peso 700): usado só em momentos de impacto (capas, banners, aberturas de apresentação), quando o texto tem poucas palavras curtas. Nunca em títulos com frases completas, o aperto entre linhas cansa a leitura de textos mais longos.</p>
+      </div>
+
+      <div class="block" style="margin-bottom:0;">
+        <h3>Do / don't</h3>
+        <div class="dodont triple">
+          <div class="card do">
+            <span class="flag">✓ Fazer</span>
+            <p>Título em serifa, texto de apoio em sem serifa.</p>
+            <div class="ex"><span style="font-family:var(--font-serif); font-weight:600; font-size:1.2rem;">Cuidado que enraíza</span><br><span style="font-family:var(--font-sans); font-size:.82rem; color:var(--text-muted);">Parágrafo em sem serifa, explicando a ideia.</span></div>
+          </div>
+          <div class="card dont">
+            <span class="flag">✕ Evitar</span>
+            <p>Parágrafo inteiro em serifa cansa a leitura e dilui o destaque do título.</p>
+            <div class="ex"><span style="font-family:var(--font-serif); font-size:.88rem;">Um parágrafo inteiro em Lora perde a função de destaque em blocos longos de texto.</span></div>
+          </div>
+          <div class="card dont">
+            <span class="flag">✕ Evitar</span>
+            <p>Título inteiro em caixa alta: a serifa perde as curvas que são a sua característica.</p>
+            <div class="ex"><span style="font-family:var(--font-serif); font-weight:600; font-size:1.05rem; text-transform:uppercase; letter-spacing:.02em;">Cuidado que Enraíza</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= CORES ================= -->
+    <section id="cores">
+      <div class="eyebrow"><span class="icon-slot ring" data-icon="palette" style="width:16px;height:16px;"></span>Cores</div>
+      <h2>Floresta e rio, sempre em par</h2>
+      <p class="lede">Duas cores de marca extraídas da paisagem real da região: o verde-floresta da copa e o tom barrento do Rio Amazonas, mais uma escala neutra para estrutura e quatro cores semânticas reservadas exclusivamente para estados de sistema. Todas as famílias em escala completa, de 50 a 950.</p>
+
+      <div class="block">
+        <h3>Por que / quando usar</h3>
+        <p><strong style="color:var(--floresta-600)">Floresta</strong> é a cor primária: ação principal, links, presença dominante da marca. <strong style="color:var(--rio-600)">Rio</strong> é o acento secundário: ênfase pontual, nunca a maior massa de cor da tela. <strong>Neutros</strong> devem ocupar a maior parte de qualquer composição: fundo, texto, bordas. <strong>Semânticas</strong> são só para feedback do sistema (sucesso, erro, atenção, informação), nunca reaproveitadas como cor de marca.</p>
+      </div>
+
+      <div class="palette-block">
+        <div class="palette-title"><h4 style="color:var(--floresta-600)">Floresta (primária)</h4><span class="usage">ação, marca, destaque dominante</span></div>
+        <div class="swatchrow" data-family="floresta"></div>
+      </div>
+      <div class="palette-block">
+        <div class="palette-title"><h4 style="color:var(--rio-600)">Rio (secundária)</h4><span class="usage">acento, rio, ênfase pontual</span></div>
+        <div class="swatchrow" data-family="rio"></div>
+      </div>
+      <div class="palette-block">
+        <div class="palette-title"><h4>Neutros (estrutura)</h4><span class="usage">fundo, texto, bordas, divisores</span></div>
+        <div class="swatchrow" data-family="neutral"></div>
+      </div>
+
+      <div class="block">
+        <h3>Semânticas <span class="tag">só sistema</span></h3>
+        <p>Usadas exclusivamente em alertas, badges de status e mensagens do produto, nunca em elementos de identidade de marca.</p>
+        <div class="palette-block" style="margin-top:18px;">
+          <div class="palette-title"><h4 style="color:var(--success-700)">Sucesso</h4></div>
+          <div class="swatchrow" data-family="success"></div>
+        </div>
+        <div class="palette-block">
+          <div class="palette-title"><h4 style="color:var(--warning-700)">Atenção</h4></div>
+          <div class="swatchrow" data-family="warning"></div>
+        </div>
+        <div class="palette-block">
+          <div class="palette-title"><h4 style="color:var(--error-700)">Erro</h4></div>
+          <div class="swatchrow" data-family="error"></div>
+        </div>
+        <div class="palette-block">
+          <div class="palette-title"><h4 style="color:var(--info-700)">Informação</h4></div>
+          <div class="swatchrow" data-family="info"></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <h3>Combinações na mesma família <span class="tag">verde com verde, rio com rio</span></h3>
+        <p>Além de par (Floresta + Rio), cada família funciona sozinha, combinando só os seus próprios tons: um card inteiramente em tons de Floresta, ou inteiramente em tons de Rio. Nunca misture uma família com outra dentro do mesmo elemento de texto.</p>
+
+        <div class="samefam-heading"><span class="dot" style="background:var(--floresta-700)"></span><h4>Floresta com floresta</h4></div>
+        <div class="samefam-grid">
+          <div class="samefam-card" style="background:var(--floresta-50); color:var(--floresta-800);">
+            <span class="lbl">Floresta-50 + Floresta-800</span><span class="ratio">8.5:1 · card claro, texto escuro</span>
+          </div>
+          <div class="samefam-card" style="background:var(--floresta-100); color:var(--floresta-700);">
+            <span class="lbl">Floresta-100 + Floresta-700</span><span class="ratio">6.1:1 · tag / badge suave</span>
+          </div>
+          <div class="samefam-card" style="background:var(--floresta-200); color:var(--floresta-900);">
+            <span class="lbl">Floresta-200 + Floresta-900</span><span class="ratio">9.8:1 · fundo de seção suave</span>
+          </div>
+          <div class="samefam-card" style="background:var(--floresta-700); color:#ffffff;">
+            <span class="lbl">Floresta-700 + branco</span><span class="ratio">7.3:1 · botão primário</span>
+          </div>
+          <div class="samefam-card" style="background:var(--floresta-900); color:var(--floresta-100);">
+            <span class="lbl">Floresta-900 + Floresta-100</span><span class="ratio">10.9:1 · card escuro</span>
+          </div>
+          <div class="samefam-card" style="background:var(--floresta-950); color:var(--floresta-200);">
+            <span class="lbl">Floresta-950 + Floresta-200</span><span class="ratio">9.2:1 · hero / capa</span>
+          </div>
+          <div class="samefam-card" style="background:var(--floresta-700); color:var(--floresta-50);">
+            <span class="lbl">Floresta-700 + Floresta-50</span><span class="ratio">6.8:1 · botão sólido (alt)</span>
+          </div>
+          <div class="samefam-card" style="border:2px solid var(--floresta-700); color:var(--floresta-700);">
+            <span class="lbl">Borda Floresta-700 + texto Floresta-700</span><span class="ratio">7.3:1 sobre branco · botão outline</span>
+          </div>
+        </div>
+
+        <div class="samefam-heading"><span class="dot" style="background:var(--rio-700)"></span><h4>Rio com rio</h4></div>
+        <div class="samefam-grid">
+          <div class="samefam-card" style="background:var(--rio-50); color:var(--rio-800);">
+            <span class="lbl">Rio-50 + Rio-800</span><span class="ratio">7.8:1 · card claro, texto escuro</span>
+          </div>
+          <div class="samefam-card" style="background:var(--rio-100); color:var(--rio-700);">
+            <span class="lbl">Rio-100 + Rio-700</span><span class="ratio">4.5:1 · tag / badge suave (só texto grande)</span>
+          </div>
+          <div class="samefam-card" style="background:var(--rio-200); color:var(--rio-900);">
+            <span class="lbl">Rio-200 + Rio-900</span><span class="ratio">8.9:1 · fundo de seção suave</span>
+          </div>
+          <div class="samefam-card" style="background:var(--rio-700); color:#ffffff;">
+            <span class="lbl">Rio-700 + branco</span><span class="ratio">5.3:1 · botão acento</span>
+          </div>
+          <div class="samefam-card" style="background:var(--rio-900); color:var(--rio-100);">
+            <span class="lbl">Rio-900 + Rio-100</span><span class="ratio">10.5:1 · card escuro</span>
+          </div>
+          <div class="samefam-card" style="background:var(--rio-950); color:var(--rio-200);">
+            <span class="lbl">Rio-950 + Rio-200</span><span class="ratio">9.1:1 · seção escura de acento</span>
+          </div>
+          <div class="samefam-card" style="background:var(--rio-50); color:var(--rio-900);">
+            <span class="lbl">Rio-50 + Rio-900</span><span class="ratio">12.4:1 · texto sobre fundo mínimo</span>
+          </div>
+          <div class="samefam-card" style="border:2px solid var(--rio-700); color:var(--rio-700);">
+            <span class="lbl">Borda Rio-700 + texto Rio-700</span><span class="ratio">5.3:1 sobre branco · botão outline</span>
+          </div>
+        </div>
+
+        <div class="samefam-heading"><span class="dot" style="background:var(--neutral-600)"></span><h4>Neutro com neutro</h4></div>
+        <div class="samefam-grid">
+          <div class="samefam-card" style="background:var(--neutral-50); color:var(--neutral-800);">
+            <span class="lbl">Neutral-50 + Neutral-800</span><span class="ratio">10.1:1 · card claro, texto escuro</span>
+          </div>
+          <div class="samefam-card" style="background:var(--neutral-100); color:var(--neutral-700);">
+            <span class="lbl">Neutral-100 + Neutral-700</span><span class="ratio">6.7:1 · fundo de sidebar</span>
+          </div>
+          <div class="samefam-card" style="background:var(--neutral-200); color:var(--neutral-900);">
+            <span class="lbl">Neutral-200 + Neutral-900</span><span class="ratio">11.5:1 · fundo de alternância de linha</span>
+          </div>
+          <div class="samefam-card" style="background:var(--neutral-700); color:#ffffff;">
+            <span class="lbl">Neutral-700 + branco</span><span class="ratio">7.3:1 · botão neutro sólido</span>
+          </div>
+          <div class="samefam-card" style="background:var(--neutral-900); color:var(--neutral-50);">
+            <span class="lbl">Neutral-900 + Neutral-50</span><span class="ratio">14.1:1 · tema escuro base</span>
+          </div>
+          <div class="samefam-card" style="background:var(--neutral-950); color:var(--neutral-200);">
+            <span class="lbl">Neutral-950 + Neutral-200</span><span class="ratio">11.8:1 · nav escuro</span>
+          </div>
+          <div class="samefam-card" style="background:var(--neutral-100); color:var(--neutral-600);">
+            <span class="lbl">Neutral-100 + Neutral-600</span><span class="ratio">5.4:1 · texto muted sobre surface</span>
+          </div>
+          <div class="samefam-card" style="border:2px solid var(--neutral-400); color:var(--neutral-700);">
+            <span class="lbl">Borda Neutral-400 + texto Neutral-700</span><span class="ratio">7.3:1 · input / card outline</span>
+          </div>
+        </div>
+        <p class="note">O mesmo princípio já está em uso nos badges de sistema (seção seguinte): <code>tint-100 + shade-800</code> é sempre a mesma família, nunca cruzada.</p>
+      </div>
+
+      <div class="block">
+        <h3>Contraste e acessibilidade</h3>
+        <p>Razões de contraste calculadas (WCAG 2.1) para as combinações usadas neste guia. Mínimo recomendado: <strong>4.5:1</strong> para texto normal, <strong>3:1</strong> para texto grande (≥18px) ou negrito (≥14px).</p>
+
+        <div class="a11y-caption">Tema claro: texto sobre fundo claro</div>
+        <table class="a11y-table">
+          <thead><tr><th>Combinação</th><th>Exemplo</th><th>Razão</th><th>Situação</th></tr></thead>
+          <tbody>
+            <tr><td>Neutral-900 sobre branco</td><td><span class="demo" style="background:#fff; color:#262626; border:1px solid #d9d9d9">Aa</span></td><td class="ratio pass">15.1:1</td><td class="pass">Corpo de texto padrão ✓</td></tr>
+            <tr><td>Neutral-700 sobre branco</td><td><span class="demo" style="background:#fff; color:#525252; border:1px solid #d9d9d9">Aa</span></td><td class="ratio pass">7.3:1</td><td class="pass">Texto secundário forte ✓</td></tr>
+            <tr><td>Neutral-600 sobre branco</td><td><span class="demo" style="background:#fff; color:#696969; border:1px solid #d9d9d9">Aa</span></td><td class="ratio pass">5.5:1</td><td class="pass">Legendas / texto muted ✓</td></tr>
+            <tr><td>Neutral-500 sobre branco</td><td><span class="demo" style="background:#fff; color:#8a8a8a; border:1px solid #d9d9d9">Aa</span></td><td class="ratio fail">3.5:1</td><td class="fail">Insuficiente p/ texto, usar só em ícones e bordas</td></tr>
+            <tr><td>Neutral-900 sobre Neutral-50</td><td><span class="demo" style="background:#f7f7f7; color:#262626; border:1px solid #d9d9d9">Aa</span></td><td class="ratio pass">14.1:1</td><td class="pass">Texto sobre superfície levemente cinza ✓</td></tr>
+            <tr><td>Neutral-600 sobre Neutral-100</td><td><span class="demo" style="background:#ededed; color:#696969; border:1px solid #d9d9d9">Aa</span></td><td class="ratio pass">5.0:1</td><td class="pass">Texto muted sobre sidebar ✓</td></tr>
+            <tr><td>Branco sobre Neutral-700</td><td><span class="demo" style="background:#525252; color:#fff;">Aa</span></td><td class="ratio pass">7.3:1</td><td class="pass">Botão / badge neutro sólido ✓</td></tr>
+            <tr><td>Branco sobre Floresta-700</td><td><span class="demo" style="background:#495b4f; color:#fff;">Aa</span></td><td class="ratio pass">7.3:1</td><td class="pass">Botão primário ✓</td></tr>
+            <tr><td>Floresta-600 sobre branco</td><td><span class="demo" style="background:#fff; color:#5b7162; border:1px solid #d9d9d9">Aa</span></td><td class="ratio pass">5.3:1</td><td class="pass">Link de marca no tema claro ✓</td></tr>
+            <tr><td>Branco sobre Rio-700</td><td><span class="demo" style="background:#82673b; color:#fff;">Aa</span></td><td class="ratio pass">5.3:1</td><td class="pass">Botão acento sólido ✓</td></tr>
+            <tr><td>Rio-700 sobre Neutral-50</td><td><span class="demo" style="background:#f7f7f7; color:#82673b;">Aa</span></td><td class="ratio pass">5.0:1</td><td class="pass">Link de acento sobre fundo claro ✓</td></tr>
+            <tr><td>Rio-900 sobre branco</td><td><span class="demo" style="background:#fff; color:#41321b; border:1px solid #d9d9d9">Aa</span></td><td class="ratio pass">12.4:1</td><td class="pass">Texto escuro dentro de um card Rio ✓</td></tr>
+            <tr><td>Floresta-700 vs Rio-700 (cross text)</td><td><span class="demo" style="background:#82673b; color:#495b4f;">Aa</span></td><td class="ratio fail">1.4:1</td><td class="fail">Nunca usar uma cor de marca como texto sobre a outra</td></tr>
+            <tr><td>Neutral-500 sobre Neutral-200</td><td><span class="demo" style="background:#d9d9d9; color:#8a8a8a; border:1px solid #bfbfbf">Aa</span></td><td class="ratio fail">2.0:1</td><td class="fail">Muted sobre cinza médio: ilegível, evitar</td></tr>
+          </tbody>
+        </table>
+
+        <div class="a11y-caption">Tema escuro: texto sobre fundo escuro</div>
+        <table class="a11y-table">
+          <thead><tr><th>Combinação</th><th>Exemplo</th><th>Razão</th><th>Situação</th></tr></thead>
+          <tbody>
+            <tr><td>Neutral-50 sobre Neutral-900</td><td><span class="demo" style="background:#262626; color:#f7f7f7;">Aa</span></td><td class="ratio pass">14.1:1</td><td class="pass">Corpo de texto padrão ✓</td></tr>
+            <tr><td>Neutral-50 sobre Neutral-950</td><td><span class="demo" style="background:#141414; color:#f7f7f7;">Aa</span></td><td class="ratio pass">17.3:1</td><td class="pass">Texto sobre fundo mais profundo ✓</td></tr>
+            <tr><td>Neutral-300 sobre Neutral-900</td><td><span class="demo" style="background:#262626; color:#bfbfbf;">Aa</span></td><td class="ratio pass">8.2:1</td><td class="pass">Texto secundário ✓</td></tr>
+            <tr><td>Neutral-400 sobre Neutral-900</td><td><span class="demo" style="background:#262626; color:#a3a3a3;">Aa</span></td><td class="ratio pass">6.0:1</td><td class="pass">Legendas / texto muted ✓</td></tr>
+            <tr><td>Neutral-500 sobre Neutral-900</td><td><span class="demo" style="background:#262626; color:#8a8a8a;">Aa</span></td><td class="ratio warn">3.5:1</td><td class="warn">Insuficiente p/ texto normal, só texto grande</td></tr>
+            <tr><td>Floresta-700 sobre Neutral-900 (texto)</td><td><span class="demo" style="background:#262626; color:#495b4f;">Aa</span></td><td class="ratio fail">2.1:1</td><td class="fail">Tom de marca escuro demais p/ texto em fundo escuro</td></tr>
+            <tr><td>Floresta-200 sobre Neutral-900</td><td><span class="demo" style="background:#262626; color:#d2dbd5;">Aa</span></td><td class="ratio pass">9.2:1</td><td class="pass">Tom claro de floresta: texto ou headline no escuro ✓</td></tr>
+            <tr><td>Floresta-300 sobre Neutral-900</td><td><span class="demo" style="background:#262626; color:#b3c2b8;">Aa</span></td><td class="ratio pass">8.2:1</td><td class="pass">Link de marca no tema escuro ✓</td></tr>
+            <tr><td>Rio-200 sobre Neutral-900</td><td><span class="demo" style="background:#262626; color:#e5dac7;">Aa</span></td><td class="ratio pass">8.9:1</td><td class="pass">Tom claro de rio: texto ou headline no escuro ✓</td></tr>
+            <tr><td>Rio-300 sobre Neutral-900</td><td><span class="demo" style="background:#262626; color:#d4c0a0;">Aa</span></td><td class="ratio pass">8.5:1</td><td class="pass">Acento de link no tema escuro ✓</td></tr>
+            <tr><td>Branco sobre Floresta-700 (botão)</td><td><span class="demo" style="background:#495b4f; color:#fff;">Aa</span></td><td class="ratio pass">7.3:1</td><td class="pass">Botão primário, igual nos dois temas ✓</td></tr>
+            <tr><td>Floresta-300 sobre Neutral-800</td><td><span class="demo" style="background:#3d3d3d; color:#b3c2b8;">Aa</span></td><td class="ratio pass">6.7:1</td><td class="pass">Texto de marca sobre superfície elevada ✓</td></tr>
+            <tr><td>Neutral-200 sobre Neutral-950</td><td><span class="demo" style="background:#141414; color:#d9d9d9;">Aa</span></td><td class="ratio pass">11.8:1</td><td class="pass">Texto sobre fundo nav / sidebar escuro ✓</td></tr>
+          </tbody>
+        </table>
+
+        <div class="a11y-caption">Badges e alertas: o mesmo erro nas duas pontas</div>
+        <table class="a11y-table">
+          <thead><tr><th>Status</th><th>✕ Errado: shade-500 + branco</th><th>Razão</th><th>✓ Certo: tint-100 + shade-800</th><th>Razão</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>Sucesso</td>
+              <td><span class="demo" style="background:#3f8f4f; color:#fff; gap:5px;"><span class="icon-slot" data-icon="check" style="color:#fff;"></span>Aprovado</span></td>
+              <td class="ratio warn">4.0:1 ✕</td>
+              <td><span class="demo" style="background:#d7eed9; color:#23582e; gap:5px;"><span class="icon-slot" data-icon="check" style="color:#23582e;"></span>Aprovado</span></td>
+              <td class="ratio pass">6.8:1 ✓</td>
+            </tr>
+            <tr>
+              <td>Atenção</td>
+              <td><span class="demo" style="background:#c97a1a; color:#fff; gap:5px;"><span class="icon-slot" data-icon="alert-triangle" style="color:#fff;"></span>Alerta</span></td>
+              <td class="ratio fail">3.3:1 ✕</td>
+              <td><span class="demo" style="background:#f8e0bd; color:#794a10; gap:5px;"><span class="icon-slot" data-icon="alert-triangle" style="color:#794a10;"></span>Alerta</span></td>
+              <td class="ratio pass">5.9:1 ✓</td>
+            </tr>
+            <tr>
+              <td>Erro</td>
+              <td><span class="demo" style="background:#c0392b; color:#fff; gap:5px;"><span class="icon-slot" data-icon="x" style="color:#fff;"></span>Pendente</span></td>
+              <td class="ratio warn">5.4:1</td>
+              <td><span class="demo" style="background:#f6cfc9; color:#77231a; gap:5px;"><span class="icon-slot" data-icon="x" style="color:#77231a;"></span>Pendente</span></td>
+              <td class="ratio pass">7.2:1 ✓</td>
+            </tr>
+            <tr>
+              <td>Info</td>
+              <td><span class="demo" style="background:#2e6f8e; color:#fff; gap:5px;"><span class="icon-slot" data-icon="bell" style="color:#fff;"></span>Info</span></td>
+              <td class="ratio warn">5.6:1</td>
+              <td><span class="demo" style="background:#c9e0e9; color:#1c4457; gap:5px;"><span class="icon-slot" data-icon="bell" style="color:#1c4457;"></span>Info</span></td>
+              <td class="ratio pass">7.6:1 ✓</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="note">O shade-500 de Sucesso e Info passam 4.5:1, mas só por pouco. No tema escuro o padrão usa <code>shade-900 + shade-300</code> para manter o mesmo princípio de mesma família.</p>
+
+        <div class="a11y-caption">Os quatro status no tema claro e no tema escuro</div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:18px;">
+          <div style="background:#ffffff; border:1px solid var(--border); border-radius:12px; padding:18px; display:flex; flex-direction:column; gap:8px;">
+            <span style="font-size:.7rem; text-transform:uppercase; letter-spacing:.07em; font-weight:700; color:var(--text-muted); margin-bottom:4px; display:block;">Tema claro</span>
+            <span class="badge" style="background:var(--success-100); color:var(--success-800); align-self:flex-start;"><span class="icon-slot" data-icon="check" style="color:var(--success-800);"></span>Aprovado</span>
+            <span class="badge" style="background:var(--warning-100); color:var(--warning-800); align-self:flex-start;"><span class="icon-slot" data-icon="alert-triangle" style="color:var(--warning-800);"></span>Em revisão</span>
+            <span class="badge" style="background:var(--error-100); color:var(--error-800); align-self:flex-start;"><span class="icon-slot" data-icon="x" style="color:var(--error-800);"></span>Pendente</span>
+            <span class="badge" style="background:var(--info-100); color:var(--info-800); align-self:flex-start;"><span class="icon-slot" data-icon="bell" style="color:var(--info-800);"></span>Informativo</span>
+          </div>
+          <div style="background:#262626; border:1px solid #3d3d3d; border-radius:12px; padding:18px; display:flex; flex-direction:column; gap:8px;">
+            <span style="font-size:.7rem; text-transform:uppercase; letter-spacing:.07em; font-weight:700; color:#696969; margin-bottom:4px; display:block;">Tema escuro</span>
+            <span class="badge" style="background:var(--success-900); color:var(--success-300); align-self:flex-start;"><span class="icon-slot" data-icon="check" style="color:var(--success-300);"></span>Aprovado</span>
+            <span class="badge" style="background:var(--warning-900); color:var(--warning-300); align-self:flex-start;"><span class="icon-slot" data-icon="alert-triangle" style="color:var(--warning-300);"></span>Em revisão</span>
+            <span class="badge" style="background:var(--error-900); color:var(--error-300); align-self:flex-start;"><span class="icon-slot" data-icon="x" style="color:var(--error-300);"></span>Pendente</span>
+            <span class="badge" style="background:var(--info-900); color:var(--info-300); align-self:flex-start;"><span class="icon-slot" data-icon="bell" style="color:var(--info-300);"></span>Informativo</span>
+          </div>
+        </div>
+
+        <div class="badge-pattern-demo grid-4">
+          <div class="side" style="background:var(--success-500);">
+            <span class="lbl" style="color:#fff;">✕ Sucesso-500</span>
+            <span class="badge" style="background:transparent; border:1.5px solid #fff; color:#fff;"><span class="icon-slot" data-icon="check" style="color:#fff;"></span>Aprovado</span>
+          </div>
+          <div class="side" style="background:var(--badge-success-bg);">
+            <span class="lbl" style="color:var(--badge-success-text);">✓ Padrão</span>
+            <span class="badge" style="background:transparent; border:1.5px solid var(--badge-success-text); color:var(--badge-success-text);"><span class="icon-slot" data-icon="check" style="color:var(--badge-success-text);"></span>Aprovado</span>
+          </div>
+          <div class="side" style="background:var(--warning-500);">
+            <span class="lbl" style="color:#fff;">✕ Atenção-500</span>
+            <span class="badge" style="background:transparent; border:1.5px solid #fff; color:#fff;"><span class="icon-slot" data-icon="alert-triangle" style="color:#fff;"></span>Alerta</span>
+          </div>
+          <div class="side" style="background:var(--badge-warning-bg);">
+            <span class="lbl" style="color:var(--badge-warning-text);">✓ Padrão</span>
+            <span class="badge" style="background:transparent; border:1.5px solid var(--badge-warning-text); color:var(--badge-warning-text);"><span class="icon-slot" data-icon="alert-triangle" style="color:var(--badge-warning-text);"></span>Alerta</span>
+          </div>
+          <div class="side" style="background:var(--error-500);">
+            <span class="lbl" style="color:#fff;">✕ Erro-500</span>
+            <span class="badge" style="background:transparent; border:1.5px solid #fff; color:#fff;"><span class="icon-slot" data-icon="x" style="color:#fff;"></span>Erro</span>
+          </div>
+          <div class="side" style="background:var(--badge-error-bg);">
+            <span class="lbl" style="color:var(--badge-error-text);">✓ Padrão</span>
+            <span class="badge" style="background:transparent; border:1.5px solid var(--badge-error-text); color:var(--badge-error-text);"><span class="icon-slot" data-icon="x" style="color:var(--badge-error-text);"></span>Erro</span>
+          </div>
+          <div class="side" style="background:var(--info-500);">
+            <span class="lbl" style="color:#fff;">✕ Info-500</span>
+            <span class="badge" style="background:transparent; border:1.5px solid #fff; color:#fff;"><span class="icon-slot" data-icon="bell" style="color:#fff;"></span>Info</span>
+          </div>
+          <div class="side" style="background:var(--badge-info-bg);">
+            <span class="lbl" style="color:var(--badge-info-text);">✓ Padrão</span>
+            <span class="badge" style="background:transparent; border:1.5px solid var(--badge-info-text); color:var(--badge-info-text);"><span class="icon-slot" data-icon="bell" style="color:var(--badge-info-text);"></span>Info</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="block" style="margin-bottom:0;">
+        <h3>Do / don't</h3>
+        <div class="dodont triple">
+          <div class="card do">
+            <span class="flag">✓ Fazer</span>
+            <p>Floresta como ação primária, Rio como acento suave: cada uma com seu papel.</p>
+            <div class="combo-grid" style="grid-template-columns:1fr 1fr; margin-top:12px;">
+              <div class="combo" style="background:var(--floresta-700); color:#fff;">Ação primária</div>
+              <div class="combo" style="background:var(--rio-100); color:var(--rio-800);">Acento suave</div>
+            </div>
+          </div>
+          <div class="card dont">
+            <span class="flag">✕ Evitar</span>
+            <p>Texto de uma cor de marca sobre a outra: contraste falha (1.5:1) e a leitura desaparece.</p>
+            <div class="combo-grid" style="grid-template-columns:1fr; margin-top:12px;">
+              <div class="combo" style="background:var(--floresta-700); color:var(--rio-600);">Rio sobre Floresta</div>
+            </div>
+          </div>
+          <div class="card dont">
+            <span class="flag">✕ Evitar</span>
+            <p>Rio como cor dominante da tela inverte a hierarquia (deveria ser só acento).</p>
+            <div class="combo-grid" style="grid-template-columns:1fr; margin-top:12px;">
+              <div class="combo" style="background:var(--rio-700); color:#fff;">Rio em excesso</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= LOGOTIPO ================= -->
+    <section id="logotipo">
+      <div class="eyebrow"><span class="icon-slot ring" data-icon="shield" style="width:16px;height:16px;"></span>Logotipo</div>
+      <h2>Uma marca, cinco versões</h2>
+      <p class="lede">A versão colorida é a preferencial. As versões monocromáticas (em branco, em escuro neutro, ou em uma única cor de marca) existem para garantir contraste em fundos onde a colorida falha, nunca por preferência visual. Todas as versões abaixo são vetores reais (SVG), então escalam sem perda em qualquer tamanho.</p>
+
+      <div class="block">
+        <h3>O que o símbolo representa</h3>
+        <p>O nome e o símbolo vêm do Forte Cumaú, a primeira fortificação erguida no atual Amapá, no século XVII, na região da Ponta da Cascalheira, em Santana. Um sítio histórico documentado, não uma referência decorativa qualquer.</p>
+      </div>
+
+      <div class="block">
+        <h3>Quando usar cada versão</h3>
+        <p><strong>Colorida</strong>: padrão, sobre fundos claros e neutros. <strong>Mono floresta / mono rio</strong>: alternativa de uma cor só, sobre fundos neutros claros, quando a peça já usa muita cor e o logotipo precisa entrar mais discreto. <strong>Mono branca</strong>: sobre fundos escuros ou coloridos (Floresta-700+, Rio-700+, Neutral-800+) e sobre fotografia. <strong>Mono escura</strong>: sobre fundos muito claros, para impressão preto e branco ou aplicações de baixo custo.</p>
+      </div>
+
+      <div class="logo-subhead">Sobre fundos claros</div>
+      <div class="logo-grid">
+        <div class="logo-tile" style="background:#ffffff; border:1px solid var(--border);">
+          <span class="logo-slot" data-variant="color" style="height:60px;"></span>
+          <span class="cap">Colorida · sobre branco</span>
+        </div>
+        <div class="logo-tile" style="background:var(--neutral-100); border:1px solid var(--border);">
+          <span class="logo-slot" data-variant="color" style="height:60px;"></span>
+          <span class="cap">Colorida · sobre Neutral-100</span>
+        </div>
+        <div class="logo-tile" style="background:var(--floresta-50); border:1px solid var(--border);">
+          <span class="logo-slot" data-variant="floresta" style="height:60px;"></span>
+          <span class="cap">Mono floresta · sobre Floresta-50</span>
+        </div>
+        <div class="logo-tile" style="background:var(--rio-50); border:1px solid var(--border);">
+          <span class="logo-slot" data-variant="rio" style="height:60px;"></span>
+          <span class="cap">Mono rio · sobre Rio-50</span>
+        </div>
+        <div class="logo-tile" style="background:var(--neutral-50); border:1px solid var(--border);">
+          <span class="logo-slot" data-variant="dark" style="height:60px;"></span>
+          <span class="cap">Mono escura · sobre Neutral-50</span>
+        </div>
+        <div class="logo-tile" style="background:var(--neutral-200);">
+          <span class="logo-slot" data-variant="dark" style="height:60px;"></span>
+          <span class="cap">Mono escura · sobre Neutral-200</span>
+        </div>
+      </div>
+
+      <div class="logo-subhead">Sobre fundos escuros ou coloridos</div>
+      <div class="logo-grid">
+        <div class="logo-tile" style="background:var(--floresta-700);">
+          <span class="logo-slot" data-variant="white" style="height:60px;"></span>
+          <span class="cap" style="color:#fff;">Mono branca · sobre Floresta-700</span>
+        </div>
+        <div class="logo-tile" style="background:var(--rio-700);">
+          <span class="logo-slot" data-variant="white" style="height:60px;"></span>
+          <span class="cap" style="color:#fff;">Mono branca · sobre Rio-700</span>
+        </div>
+        <div class="logo-tile" style="background:var(--neutral-900);">
+          <span class="logo-slot" data-variant="white" style="height:60px;"></span>
+          <span class="cap" style="color:#fff;">Mono branca · sobre Neutral-900</span>
+        </div>
+      </div>
+
+      <div class="block" style="margin-top:36px;">
+        <h3>Do / don't</h3>
+        <div class="dodont triple">
+          <div class="card do">
+            <span class="flag">✓ Fazer</span>
+            <div class="visual" style="background:var(--floresta-700);">
+              <span class="logo-slot" data-variant="white" style="height:44px;"></span>
+            </div>
+            <p style="margin-top:10px;">Mono branca sobre fundo escuro: contraste alto, marca sempre legível.</p>
+          </div>
+          <div class="card dont">
+            <span class="flag">✕ Evitar</span>
+            <div class="visual" style="background:var(--floresta-700);">
+              <span class="logo-slot" data-variant="color" style="height:44px;"></span>
+            </div>
+            <p style="margin-top:10px;">Colorida sobre Floresta-700: a parte verde do símbolo some no fundo.</p>
+          </div>
+          <div class="card dont">
+            <span class="flag">✕ Evitar</span>
+            <div class="visual" style="background:var(--rio-700);">
+              <span class="logo-slot" data-variant="color" style="height:44px;"></span>
+            </div>
+            <p style="margin-top:10px;">Colorida sobre Rio-700: a parte na cor rio do símbolo se funde ao fundo.</p>
+          </div>
+          <div class="card do">
+            <span class="flag">✓ Fazer</span>
+            <div class="visual" style="background:#f2f2f2;">
+              <span class="logo-slot" data-variant="color" style="height:44px;"></span>
+            </div>
+            <p style="margin-top:10px;">Proporção original preservada: largura e altura escaladas juntas.</p>
+          </div>
+          <div class="card dont">
+            <span class="flag">✕ Evitar</span>
+            <div class="visual" style="background:#f2f2f2;">
+              <span class="logo-slot" data-variant="color" style="height:44px; transform:scaleX(1.8);"></span>
+            </div>
+            <p style="margin-top:10px;">Esticada horizontalmente: deforma o símbolo e os anéis internos.</p>
+          </div>
+          <div class="card dont">
+            <span class="flag">✕ Evitar</span>
+            <div class="visual" style="background:#f2f2f2;">
+              <span class="logo-slot" data-variant="color" style="height:44px; transform:rotate(18deg);"></span>
+            </div>
+            <p style="margin-top:10px;">Rotacionada: o símbolo tem uma orientação única, sempre reta.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="block">
+        <h3>Área de proteção</h3>
+        <p>Nenhum elemento (texto, borda, outra logo) pode invadir a área livre ao redor do símbolo. A área mínima é igual à metade da altura do símbolo (x), em todos os lados.</p>
+        <div class="clearspace-demo">
+          <div class="box">
+            <span class="x-label x-top">x/2</span>
+            <span class="x-label x-left">x/2</span>
+            <span class="logo-slot" data-variant="color" style="height:70px;"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="block" style="margin-bottom:0;">
+        <h3>Tamanho mínimo</h3>
+        <p>Abaixo destes tamanhos o símbolo perde legibilidade: os anéis internos se fecham visualmente.</p>
+        <div class="min-size-row">
+          <div class="item"><div class="min-size-box"><span class="logo-slot" data-variant="color" style="height:24px;"></span></div><div class="cap">24px · telas</div></div>
+          <div class="item"><div class="min-size-box"><span class="logo-slot" data-variant="color" style="height:48px;"></span></div><div class="cap">10mm · impressão</div></div>
+        </div>
+        <p class="note">Valores de referência, ajustar após teste de impressão real, se aplicável. As 5 versões acima agora usam os arquivos vetoriais reais enviados (SVG de verdade, com stroke nas cores exatas da marca) e escalam com nitidez total em qualquer tamanho, sem a aproximação por canal alpha usada na primeira versão deste guia.</p>
+      </div>
+    </section>
+
+    <!-- ================= ICONOGRAFIA ================= -->
+    <section id="iconografia">
+      <div class="eyebrow"><span class="icon-slot ring" data-icon="icons" style="width:16px;height:16px;"></span>Iconografia</div>
+      <h2>Tabler Icons, do início ao fim</h2>
+      <p class="lede">Toda a iconografia da marca usa a biblioteca Tabler Icons, aberta, com mais de 5 mil ícones, todos no mesmo traço. Nada de misturar bibliotecas diferentes num mesmo produto.</p>
+
+      <div class="block">
+        <h3>Por que Tabler Icons</h3>
+        <p>Traço geométrico e peso consistente, o mesmo espírito técnico da Geist. Licença aberta (MIT), biblioteca extensa o suficiente para cobrir qualquer tela nova sem precisar sair procurando ícone avulso em outro lugar. Isso mantém o produto coeso à medida que cresce.</p>
+      </div>
+
+      <div class="block">
+        <h3>Estilo, grade e peso do traço</h3>
+        <p>Usar sempre a variante <strong>outline</strong> (contorno), nunca a <strong>filled</strong> (preenchida). Grade de 24x24, traço de 2px, pontas e junções arredondadas. É a mesma grade da biblioteca inteira, então qualquer ícone novo já entra no padrão sem ajuste manual.</p>
+      </div>
+
+      <div class="block">
+        <h3>Tamanhos</h3>
+        <div class="scale-row sans">
+          <div class="tok">16px</div>
+          <div class="sample">Inline com texto corrido, listas densas.</div>
+          <div class="specs">stroke 2</div>
+        </div>
+        <div class="scale-row sans">
+          <div class="tok">20px</div>
+          <div class="sample">Padrão de interface: botões, campos, itens de menu.</div>
+          <div class="specs">stroke 2</div>
+        </div>
+        <div class="scale-row sans">
+          <div class="tok">24px</div>
+          <div class="sample">Autônomo, marcador de seção, cabeçalho de card.</div>
+          <div class="specs">stroke 2</div>
+        </div>
+        <div class="scale-row sans">
+          <div class="tok">32px+</div>
+          <div class="sample">Destaque de funcionalidade, onboarding, estado vazio.</div>
+          <div class="specs">stroke 1.5 a 2</div>
+        </div>
+      </div>
+
+      <div class="block">
+        <h3>Cor</h3>
+        <p>O ícone herda a cor do texto ao redor (<code>currentColor</code>) e segue as mesmas regras já definidas para cor: neutro para ícones estruturais de interface, Floresta ou Rio para ênfase de marca, semânticas apenas para status de sistema (sucesso, erro, atenção, informação). Nunca uma cor fora da paleta.</p>
+      </div>
+
+      <div class="block">
+        <h3>Biblioteca de referência</h3>
+        <div class="icon-grid">
+          <div class="icon-card"><span class="icon-slot" data-icon="home" style="width:26px;height:26px;"></span><span class="name">home</span></div>
+          <div class="icon-card"><span class="icon-slot" data-icon="search" style="width:26px;height:26px;"></span><span class="name">search</span></div>
+          <div class="icon-card"><span class="icon-slot" data-icon="user" style="width:26px;height:26px;"></span><span class="name">user</span></div>
+          <div class="icon-card"><span class="icon-slot" data-icon="settings" style="width:26px;height:26px;"></span><span class="name">settings</span></div>
+          <div class="icon-card"><span class="icon-slot" data-icon="bell" style="width:26px;height:26px;"></span><span class="name">bell</span></div>
+          <div class="icon-card"><span class="icon-slot" data-icon="calendar" style="width:26px;height:26px;"></span><span class="name">calendar</span></div>
+          <div class="icon-card"><span class="icon-slot" data-icon="check" style="width:26px;height:26px;"></span><span class="name">check</span></div>
+          <div class="icon-card"><span class="icon-slot" data-icon="x" style="width:26px;height:26px;"></span><span class="name">x</span></div>
+          <div class="icon-card"><span class="icon-slot" data-icon="alert-triangle" style="width:26px;height:26px;"></span><span class="name">alert-triangle</span></div>
+          <div class="icon-card"><span class="icon-slot" data-icon="heart" style="width:26px;height:26px;"></span><span class="name">heart</span></div>
+          <div class="icon-card"><span class="icon-slot" data-icon="map-pin" style="width:26px;height:26px;"></span><span class="name">map-pin</span></div>
+          <div class="icon-card"><span class="icon-slot" data-icon="chart-bar" style="width:26px;height:26px;"></span><span class="name">chart-bar</span></div>
+          <div class="icon-card"><span class="icon-slot" data-icon="file-text" style="width:26px;height:26px;"></span><span class="name">file-text</span></div>
+          <div class="icon-card"><span class="icon-slot" data-icon="mail" style="width:26px;height:26px;"></span><span class="name">mail</span></div>
+        </div>
+        <p class="note">Amostra de 14 ícones dos mais de 5 mil disponíveis na biblioteca. Todos vetoriais reais, extraídos direto do pacote oficial Tabler Icons (licença MIT).</p>
+      </div>
+
+      <div class="block">
+        <h3>Ícone e texto juntos</h3>
+        <div class="icon-pairing-demo">
+          <span class="icon-slot" data-icon="map-pin" style="width:20px;height:20px;"></span>
+          <span>Macapá, Amapá</span>
+        </div>
+        <p class="note">Ícone de 20px alinhado à altura da linha do texto ao lado, mesmo tamanho de fonte do corpo.</p>
+      </div>
+
+      <div class="block" style="margin-bottom:0;">
+        <h3>Do / don't</h3>
+        <div class="dodont triple">
+          <div class="card do">
+            <span class="flag">✓ Fazer</span>
+            <p>Mesmo peso de traço em todos os ícones de uma mesma tela.</p>
+            <div class="visual" style="background:var(--surface-alt); gap:14px;">
+              <span class="icon-slot" data-icon="bell" style="width:24px;height:24px;color:var(--text-primary);"></span>
+              <span class="icon-slot" data-icon="calendar" style="width:24px;height:24px;color:var(--text-primary);"></span>
+              <span class="icon-slot" data-icon="mail" style="width:24px;height:24px;color:var(--text-primary);"></span>
+            </div>
+          </div>
+          <div class="card dont">
+            <span class="flag">✕ Evitar</span>
+            <p>Misturar pesos de traço diferentes na mesma composição.</p>
+            <div class="visual" style="background:var(--surface-alt); gap:14px;">
+              <span class="icon-slot" data-icon="bell" style="width:24px;height:24px;color:var(--text-primary);stroke-width:1;"></span>
+              <span class="icon-slot" data-icon="calendar" style="width:24px;height:24px;color:var(--text-primary);"></span>
+              <span class="icon-slot" data-icon="mail" style="width:24px;height:24px;color:var(--text-primary);stroke-width:3;"></span>
+            </div>
+          </div>
+          <div class="card dont">
+            <span class="flag">✕ Evitar</span>
+            <p>Recolorir um ícone com uma cor fora da paleta do guia.</p>
+            <div class="visual" style="background:var(--surface-alt); gap:14px;">
+              <span class="icon-slot" data-icon="heart" style="width:24px;height:24px;color:#7c3aed;"></span>
+              <span class="icon-slot" data-icon="check" style="width:24px;height:24px;color:var(--floresta-600);"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= APLICAÇÃO COMBINADA ================= -->
+    <section id="aplicacao">
+      <div class="eyebrow"><span class="icon-slot ring" data-icon="layout-grid" style="width:16px;height:16px;"></span>Aplicação combinada</div>
+      <h2>Tudo junto, em contexto</h2>
+      <p class="lede">Tipografia, cor e logotipo funcionando juntos: o mesmo cabeçalho, montado lado a lado em tema claro e escuro fixos, para comparar diretamente (independente do botão do menu).</p>
+
+      <div class="mock-pair">
+        <div>
+          <div class="mock-label">Tema claro</div>
+          <div class="mock-card light">
+            <div class="mock-header">
+              <div class="lockup"><span class="logo-slot" data-variant="white" style="height:24px;"></span><span>Inova Cumaú</span></div>
+              <nav><span>Início</span><span>Projeto</span><span>Contato</span></nav>
+            </div>
+            <div class="mock-body">
+              <h3>Inovação que nasce da rio amazônica</h3>
+              <p>Cabeçalho de página combinando o par tipográfico, as cores de marca e o logotipo em versão para fundo escuro.</p>
+              <div class="mock-actions">
+                <button class="btn btn-primary">Ver projeto</button>
+                <button class="btn btn-secondary">Saiba mais</button>
+              </div>
+              <div class="badge-row">
+                <span class="badge" style="background:var(--success-100); color:var(--success-800);"><span class="icon-slot" data-icon="check" style="color:var(--success-800);"></span>Aprovado</span>
+                <span class="badge" style="background:var(--warning-100); color:var(--warning-800);"><span class="icon-slot" data-icon="alert-triangle" style="color:var(--warning-800);"></span>Em revisão</span>
+                <span class="badge" style="background:var(--error-100); color:var(--error-800);"><span class="icon-slot" data-icon="x" style="color:var(--error-800);"></span>Pendente</span>
+                <span class="badge" style="background:var(--info-100); color:var(--info-800);"><span class="icon-slot" data-icon="bell" style="color:var(--info-800);"></span>Informativo</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="mock-label">Tema escuro</div>
+          <div class="mock-card dark">
+            <div class="mock-header">
+              <div class="lockup"><span class="logo-slot" data-variant="white" style="height:24px;"></span><span>Inova Cumaú</span></div>
+              <nav><span>Início</span><span>Projeto</span><span>Contato</span></nav>
+            </div>
+            <div class="mock-body">
+              <h3>Inovação que nasce da rio amazônica</h3>
+              <p>O mesmo cabeçalho, agora com superfícies e texto adaptados para o tema escuro: botão primário mais claro para manter o contraste.</p>
+              <div class="mock-actions">
+                <button class="btn btn-primary">Ver projeto</button>
+                <button class="btn btn-secondary">Saiba mais</button>
+              </div>
+              <div class="badge-row">
+                <span class="badge" style="background:var(--success-900); color:var(--success-300);"><span class="icon-slot" data-icon="check" style="color:var(--success-300);"></span>Aprovado</span>
+                <span class="badge" style="background:var(--warning-900); color:var(--warning-300);"><span class="icon-slot" data-icon="alert-triangle" style="color:var(--warning-300);"></span>Em revisão</span>
+                <span class="badge" style="background:var(--error-900); color:var(--error-300);"><span class="icon-slot" data-icon="x" style="color:var(--error-300);"></span>Pendente</span>
+                <span class="badge" style="background:var(--info-900); color:var(--info-300);"><span class="icon-slot" data-icon="bell" style="color:var(--info-300);"></span>Informativo</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TOKENS ================= -->
+    <section id="tokens">
+      <div class="eyebrow"><span class="icon-slot ring" data-icon="code" style="width:16px;height:16px;"></span>Tokens de referência</div>
+      <h2>Para handoff de desenvolvimento</h2>
+      <p class="lede">Clique em qualquer swatch de cor nas seções acima para copiar o hex. Tabela consolidada abaixo, com as escalas completas de 50 a 950.</p>
+      <table class="tok-table" id="tokTable">
+        <thead><tr><th>Token</th><th>Hex</th><th>Uso recomendado</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <!-- ================= DOWNLOAD DA LOGO ================= -->
+    <section id="download">
+      <div class="eyebrow"><span class="icon-slot ring" data-icon="download" style="width:16px;height:16px;"></span>Download da logo</div>
+      <h2>Exportar o símbolo</h2>
+      <p class="lede">Selecione a versão, o tamanho e o formato. Tamanhos seguem a grade de 8 pontos, a partir de 24px. SVG escala sem perda em qualquer tamanho. PNG é fixo no valor selecionado.</p>
+
+      <div class="dl-card">
+        <div class="dl-controls">
+
+          <div class="dl-group">
+            <div class="dl-group-label">Versão</div>
+            <div class="dl-variants" id="dl-variants">
+              <button type="button" class="dl-variant active" data-variant="color">
+                <span class="dl-preview-wrap" style="background:#f2f2f2;">
+                  <span class="logo-slot" data-variant="color" style="height:32px;"></span>
+                </span>
+                <span class="dl-vname">Colorida</span>
+              </button>
+              <button type="button" class="dl-variant" data-variant="floresta">
+                <span class="dl-preview-wrap" style="background:#f2f2f2;">
+                  <span class="logo-slot" data-variant="floresta" style="height:32px;"></span>
+                </span>
+                <span class="dl-vname">Mono floresta</span>
+              </button>
+              <button type="button" class="dl-variant" data-variant="rio">
+                <span class="dl-preview-wrap" style="background:#f2f2f2;">
+                  <span class="logo-slot" data-variant="rio" style="height:32px;"></span>
+                </span>
+                <span class="dl-vname">Mono rio</span>
+              </button>
+              <button type="button" class="dl-variant" data-variant="white">
+                <span class="dl-preview-wrap" style="background:var(--floresta-700);">
+                  <span class="logo-slot" data-variant="white" style="height:32px;"></span>
+                </span>
+                <span class="dl-vname">Mono branca</span>
+              </button>
+              <button type="button" class="dl-variant" data-variant="dark">
+                <span class="dl-preview-wrap" style="background:#f2f2f2;">
+                  <span class="logo-slot" data-variant="dark" style="height:32px;"></span>
+                </span>
+                <span class="dl-vname">Mono escura</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="dl-row-controls">
+            <div class="dl-group">
+              <div class="dl-group-label">Tamanho (8pt grid)</div>
+              <div class="dl-sizes" id="dl-sizes">
+                <button type="button" class="dl-size" data-px="24">24px</button>
+                <button type="button" class="dl-size" data-px="32">32px</button>
+                <button type="button" class="dl-size" data-px="40">40px</button>
+                <button type="button" class="dl-size" data-px="48">48px</button>
+                <button type="button" class="dl-size" data-px="64">64px</button>
+                <button type="button" class="dl-size active" data-px="96">96px</button>
+                <button type="button" class="dl-size" data-px="128">128px</button>
+                <button type="button" class="dl-size" data-px="192">192px</button>
+                <button type="button" class="dl-size" data-px="256">256px</button>
+                <button type="button" class="dl-size" data-px="512">512px</button>
+              </div>
+            </div>
+
+            <div class="dl-group">
+              <div class="dl-group-label">Formato</div>
+              <div class="dl-formats" id="dl-formats">
+                <button type="button" class="dl-fmt active" data-fmt="svg">SVG</button>
+                <button type="button" class="dl-fmt" data-fmt="png">PNG</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="dl-preview-area">
+          <div class="dl-preview-bg" id="dl-preview-bg">
+            <div class="dl-preview-symbol" id="dl-preview-symbol">
+              <span class="logo-slot" data-variant="color" id="dl-preview-logo" style="height:96px; display:block;"></span>
+            </div>
+          </div>
+          <div class="dl-preview-meta" id="dl-preview-meta">96 × 107px · SVG · Colorida</div>
+        </div>
+
+        <div class="dl-action">
+          <button type="button" class="dl-btn" id="dl-download-btn">
+            <span class="icon-slot" data-icon="download" style="width:18px; height:18px;"></span>
+            <span id="dl-btn-label">Baixar SVG</span>
+          </button>
+          <span class="dl-hint" id="dl-hint">SVG: vetorial, escala sem perda em qualquer tamanho.</span>
+        </div>
+      </div>
+    </section>
+
+    <nav class="mobile-nav-bar" id="mobile-nav-bar">
+    <a href="#topo" data-target="topo"><span class="icon-slot" data-icon="home" style="width:22px;height:22px;"></span>Início</a>
+    <a href="#cores" data-target="cores"><span class="icon-slot" data-icon="palette" style="width:22px;height:22px;"></span>Cores</a>
+    <a href="#tipografia" data-target="tipografia"><span class="icon-slot" data-icon="typography" style="width:22px;height:22px;"></span>Tipo</a>
+    <a href="#logotipo" data-target="logotipo"><span class="icon-slot" data-icon="shield" style="width:22px;height:22px;"></span>Logo</a>
+    <a href="#download" data-target="download"><span class="icon-slot" data-icon="download" style="width:22px;height:22px;"></span>Export</a>
+    <button type="button" class="mobile-theme-btn" id="mobile-theme-btn"><svg style="width:22px;height:22px;" id="mobile-theme-icon"><use href="#sun-icon"/></svg><span id="mobile-theme-label">Claro</span></button>
+  </nav>
+
+  <footer>
+      Inova Cumaú · Guia de Identidade Visual · v1.3 · julho de 2026<br>
+      Criado por Úrsula Souza. Guia vivo, sujeito a evolução.
+    </footer>
+
+  </main>
+</div>
+
+<script>
+  const palettes = {
+    floresta: {50:'#f7f8f7',100:'#eaecea',200:'#d2dbd5',300:'#b3c2b8',400:'#93a99b',500:'#779280',600:'#5b7162',700:'#495b4f',800:'#3d4c42',900:'#28342c',950:'#19201b'},
+    rio: {50:'#f9f8f5',100:'#f0ece6',200:'#e5dac7',300:'#d4c0a0',400:'#c2a77a',500:'#b28f57',600:'#8c6f40',700:'#82673b',800:'#5f4b2b',900:'#41321b',950:'#281f10'},
+    neutral: {50:'#f7f7f7',100:'#ededed',200:'#d9d9d9',300:'#bfbfbf',400:'#a3a3a3',500:'#8a8a8a',600:'#696969',700:'#525252',800:'#3d3d3d',900:'#262626',950:'#141414'},
+    success: {50:'#eef8ee',100:'#d7eed9',200:'#c0e4c5',300:'#a9d9b1',400:'#74b480',500:'#3f8f4f',600:'#367d44',700:'#2c6b3a',800:'#23582e',900:'#1a4423',950:'#122e18'},
+    warning: {50:'#fdf3e5',100:'#f8e0bd',200:'#f3ce9c',300:'#eebd7a',400:'#dc9c4a',500:'#c97a1a',600:'#b06b16',700:'#965c13',800:'#794a10',900:'#5c380c',950:'#3f2608'},
+    error: {50:'#fceceb',100:'#f6cfc9',200:'#eeb6ae',300:'#e59d92',400:'#d26b5e',500:'#c0392b',600:'#a93226',700:'#922b20',800:'#77231a',900:'#5c1b14',950:'#3f120e'},
+    info: {50:'#eaf3f7',100:'#c9e0e9',200:'#acd1e0',300:'#8fc2d6',400:'#5e98b2',500:'#2e6f8e',600:'#28617c',700:'#22536a',800:'#1c4457',900:'#163544',950:'#0f242e'},
+  };
+  const usage = {
+    floresta: 'Cor primária de marca: ação, links, presença dominante',
+    rio: 'Cor secundária de marca: acento, cor do rio, ênfase pontual',
+    neutral: 'Estrutura: fundo, texto, bordas, divisores',
+    success: 'Feedback de sucesso no sistema',
+    warning: 'Feedback de atenção no sistema',
+    error: 'Feedback de erro no sistema',
+    info: 'Feedback informativo no sistema',
+  };
+
+  document.querySelectorAll('.swatchrow').forEach(row => {
+    const fam = row.dataset.family;
+    const stops = palettes[fam];
+    Object.entries(stops).forEach(([stop, hex]) => {
+      const el = document.createElement('div');
+      el.className = 'swatch';
+      el.innerHTML = `<div class="fill" style="background:${hex}"></div>
+        <div class="info"><span class="name">${stop}</span><span class="hex">${hex}</span></div>`;
+      el.addEventListener('click', () => {
+        navigator.clipboard?.writeText(hex).catch(()=>{});
+        el.classList.add('copied');
+        setTimeout(()=>el.classList.remove('copied'), 1400);
+      });
+      row.appendChild(el);
+    });
+  });
+
+  const tokBody = document.querySelector('#tokTable tbody');
+  Object.entries(palettes).forEach(([fam, stops]) => {
+    Object.entries(stops).forEach(([stop, hex]) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td><span class="swatchdot" style="background:${hex}"></span><code>--color-${fam}-${stop}</code></td>
+        <td class="mono">${hex}</td><td>${usage[fam]}</td>`;
+      tokBody.appendChild(tr);
+    });
+  });
+
+  // ---- logos reais (SVG vetorial) ----
+  const LOGOS = {
+    color: `<svg  viewBox="0 0 371 413" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="151.398" y="181.098" width="69" height="69" stroke="#82673b" stroke-width="4"/>
+<rect x="171.398" y="201.098" width="29" height="29" stroke="#82673b" stroke-width="4"/>
+<line x1="173.398" y1="232.098" x2="173.398" y2="238.098" stroke="#82673b" stroke-width="4"/>
+<line x1="169.398" y1="228.098" x2="163.398" y2="228.098" stroke="#82673b" stroke-width="4"/>
+<line x1="169.398" y1="222.098" x2="163.398" y2="222.098" stroke="#82673b" stroke-width="4"/>
+<line x1="169.398" y1="216.098" x2="163.398" y2="216.098" stroke="#82673b" stroke-width="4"/>
+<line x1="169.398" y1="210.098" x2="163.398" y2="210.098" stroke="#82673b" stroke-width="4"/>
+<line x1="169.398" y1="203.098" x2="163.398" y2="203.098" stroke="#82673b" stroke-width="4"/>
+<line x1="173.398" y1="199.098" x2="173.398" y2="193.098" stroke="#82673b" stroke-width="4"/>
+<line x1="161.398" y1="179.098" x2="161.398" y2="170.098" stroke="#82673b" stroke-width="6"/>
+<line x1="222.398" y1="191.098" x2="231.398" y2="191.098" stroke="#82673b" stroke-width="6"/>
+<line x1="209.398" y1="252.098" x2="209.398" y2="261.098" stroke="#82673b" stroke-width="6"/>
+<line x1="149.398" y1="239.098" x2="140.398" y2="239.098" stroke="#82673b" stroke-width="6"/>
+<line x1="169.398" y1="179.098" x2="169.398" y2="170.098" stroke="#82673b" stroke-width="6"/>
+<line x1="222.398" y1="199.098" x2="231.398" y2="199.098" stroke="#82673b" stroke-width="6"/>
+<line x1="201.398" y1="252.098" x2="201.398" y2="261.098" stroke="#82673b" stroke-width="6"/>
+<line x1="149.398" y1="231.098" x2="140.398" y2="231.098" stroke="#82673b" stroke-width="6"/>
+<line x1="177.398" y1="179.098" x2="177.398" y2="170.098" stroke="#82673b" stroke-width="6"/>
+<line x1="222.398" y1="207.098" x2="231.398" y2="207.098" stroke="#82673b" stroke-width="6"/>
+<line x1="193.398" y1="252.098" x2="193.398" y2="261.098" stroke="#82673b" stroke-width="6"/>
+<line x1="149.398" y1="223.098" x2="140.398" y2="223.098" stroke="#82673b" stroke-width="6"/>
+<line x1="185.398" y1="179.098" x2="185.398" y2="170.098" stroke="#82673b" stroke-width="6"/>
+<line x1="222.398" y1="215.098" x2="231.398" y2="215.098" stroke="#82673b" stroke-width="6"/>
+<line x1="185.398" y1="252.098" x2="185.398" y2="261.098" stroke="#82673b" stroke-width="6"/>
+<line x1="149.398" y1="215.098" x2="140.398" y2="215.098" stroke="#82673b" stroke-width="6"/>
+<line x1="193.398" y1="179.098" x2="193.398" y2="170.098" stroke="#82673b" stroke-width="6"/>
+<line x1="222.398" y1="223.098" x2="231.398" y2="223.098" stroke="#82673b" stroke-width="6"/>
+<line x1="177.398" y1="252.098" x2="177.398" y2="261.098" stroke="#82673b" stroke-width="6"/>
+<line x1="149.398" y1="207.098" x2="140.398" y2="207.098" stroke="#82673b" stroke-width="6"/>
+<line x1="201.398" y1="179.098" x2="201.398" y2="170.098" stroke="#82673b" stroke-width="6"/>
+<line x1="222.398" y1="231.098" x2="231.398" y2="231.098" stroke="#82673b" stroke-width="6"/>
+<line x1="169.398" y1="252.098" x2="169.398" y2="261.098" stroke="#82673b" stroke-width="6"/>
+<line x1="149.398" y1="199.098" x2="140.398" y2="199.098" stroke="#82673b" stroke-width="6"/>
+<line x1="209.398" y1="179.098" x2="209.398" y2="170.098" stroke="#82673b" stroke-width="6"/>
+<line x1="222.398" y1="239.098" x2="231.398" y2="239.098" stroke="#82673b" stroke-width="6"/>
+<line x1="161.398" y1="252.098" x2="161.398" y2="261.098" stroke="#82673b" stroke-width="6"/>
+<line x1="149.398" y1="191.098" x2="140.398" y2="191.098" stroke="#82673b" stroke-width="6"/>
+<line x1="180.398" y1="199.098" x2="180.398" y2="193.098" stroke="#82673b" stroke-width="4"/>
+<line x1="186.398" y1="199.098" x2="186.398" y2="193.098" stroke="#82673b" stroke-width="4"/>
+<line x1="192.398" y1="199.098" x2="192.398" y2="193.098" stroke="#82673b" stroke-width="4"/>
+<line x1="198.398" y1="199.098" x2="198.398" y2="193.098" stroke="#82673b" stroke-width="4"/>
+<line x1="202.398" y1="203.098" x2="208.398" y2="203.098" stroke="#82673b" stroke-width="4"/>
+<line x1="202.398" y1="209.098" x2="208.398" y2="209.098" stroke="#82673b" stroke-width="4"/>
+<line x1="202.398" y1="215.098" x2="208.398" y2="215.098" stroke="#82673b" stroke-width="4"/>
+<line x1="202.398" y1="221.098" x2="208.398" y2="221.098" stroke="#82673b" stroke-width="4"/>
+<line x1="202.398" y1="228.098" x2="208.398" y2="228.098" stroke="#82673b" stroke-width="4"/>
+<line x1="179.398" y1="232.098" x2="179.398" y2="238.098" stroke="#82673b" stroke-width="4"/>
+<line x1="185.398" y1="232.098" x2="185.398" y2="238.098" stroke="#82673b" stroke-width="4"/>
+<line x1="191.398" y1="232.098" x2="191.398" y2="238.098" stroke="#82673b" stroke-width="4"/>
+<line x1="198.398" y1="232.098" x2="198.398" y2="238.098" stroke="#82673b" stroke-width="4"/>
+<line x1="231.398" y1="215.098" x2="270.398" y2="215.098" stroke="#82673b" stroke-width="4"/>
+<path d="M230.403 223.095L255.898 223.098L264.898 236.098L273.898 236.098" stroke="#495b4f" stroke-width="4"/>
+<path d="M141.847 223.095L116.352 223.098L107.352 236.098L98.3984 236.098" stroke="#495b4f" stroke-width="4"/>
+<path d="M229.565 207.1L255.06 207.097L264.061 194.098L272.398 194.098" stroke="#495b4f" stroke-width="4"/>
+<path d="M142.685 207.1L117.19 207.097L108.189 194.098L99.3984 194.098" stroke="#495b4f" stroke-width="4"/>
+<line x1="185.398" y1="170.098" x2="185.398" y2="75.0977" stroke="#495b4f" stroke-width="4"/>
+<line x1="185.398" y1="260.819" x2="185.398" y2="365.819" stroke="#495b4f" stroke-width="4"/>
+<path d="M164.898 82.5977L164.898 123.098L177.398 137.841L177.398 170.098" stroke="#495b4f" stroke-width="4"/>
+<path d="M164.898 376.604L164.898 307.825L177.398 293.082L177.398 260.825" stroke="#495b4f" stroke-width="4"/>
+<path d="M205.898 83.0977L205.898 123.598L193.398 138.341L193.398 170.598" stroke="#495b4f" stroke-width="4"/>
+<path d="M205.898 378.542L205.898 307.325L193.398 292.582L193.398 260.325" stroke="#495b4f" stroke-width="4"/>
+<path d="M155.901 81.0985L156.398 126.098L169.371 141.098L169.371 170.397" stroke="#495b4f" stroke-width="4"/>
+<path d="M155.901 349.824L156.398 304.825L169.371 289.825L169.371 260.526" stroke="#495b4f" stroke-width="4"/>
+<path d="M214.896 81.5985L214.398 126.598L201.425 141.598L201.425 170.897" stroke="#495b4f" stroke-width="4"/>
+<path d="M214.896 349.324L214.398 304.325L201.425 289.325L201.425 260.026" stroke="#495b4f" stroke-width="4"/>
+<path d="M146.398 77.5977L146.398 129.098L161.398 145.323L161.398 170.098" stroke="#495b4f" stroke-width="4"/>
+<path d="M146.398 353.325L146.398 301.825L161.398 285.6L161.398 260.825" stroke="#495b4f" stroke-width="4"/>
+<path d="M224.398 78.0977L224.398 129.598L209.398 145.823L209.398 170.598" stroke="#495b4f" stroke-width="4"/>
+<path d="M224.398 352.825L224.398 301.325L209.398 285.1L209.398 260.325" stroke="#495b4f" stroke-width="4"/>
+<path d="M231.398 215.098H272.398" stroke="#495b4f" stroke-width="4"/>
+<path d="M140.852 215.098H97.8984" stroke="#495b4f" stroke-width="4"/>
+<path d="M231.398 231.098H249.398L258.398 245.098H271.898" stroke="#495b4f" stroke-width="4"/>
+<path d="M140.852 231.098H122.852L113.852 245.098H97.8984" stroke="#495b4f" stroke-width="4"/>
+<path d="M230.561 199.098H248.561L257.561 185.098H272.398" stroke="#495b4f" stroke-width="4"/>
+<path d="M141.689 199.098H123.689L114.689 185.098H99.8984" stroke="#495b4f" stroke-width="4"/>
+<path d="M272.393 176.098L251.893 176.098L242.893 191.098L231.393 191.098" stroke="#495b4f" stroke-width="4"/>
+<path d="M99.8965 176.098L120.35 176.098L129.35 191.098L140.85 191.098" stroke="#495b4f" stroke-width="4"/>
+<path d="M273.893 254.098L251.893 254.098L242.893 239.098L231.393 239.098" stroke="#495b4f" stroke-width="4"/>
+<path d="M98.8965 254.098L120.35 254.098L129.35 239.098L140.85 239.098" stroke="#495b4f" stroke-width="4"/>
+<path d="M181.399 80.5992L327.926 45.0935L307.209 133.097L281.167 170.598L281.167 368.598L205.713 356.04" stroke="#82673b" stroke-width="20"/>
+<path d="M187.587 80.1045L43.56 45.0995L64.2772 133.103L90.3191 170.604L90.3191 368.604L165.086 356.104" stroke="#82673b" stroke-width="20"/>
+<path d="M185.713 49.04L96.6692 27.8487L5.89497 6.09831L36.7129 150.099L64.7129 189.599L54.9442 393.099L72.7129 396.04L80.9442 407.599L160.895 392.598L166.898 378.6L186.901 368.1" stroke="#82673b" stroke-width="9"/>
+<path d="M183.713 49.04L273.845 27.7901L364.619 6.03972L333.801 150.04L305.801 189.54L315.57 393.041L298.713 395.54L289.57 407.541L209.619 392.539L203.615 378.541L183.612 368.041" stroke="#82673b" stroke-width="9"/>
+<path d="M10.7131 116.04L66.7123 103.039" stroke="#82673b" stroke-width="10"/>
+<line x1="100.565" y1="54.8113" x2="112.565" y2="9.8113" stroke="#82673b" stroke-width="10"/>
+<line y1="-5" x2="46.5725" y2="-5" transform="matrix(-0.257663 -0.966235 -0.966235 0.257663 269.393 56.0996)" stroke="#82673b" stroke-width="10"/>
+<path d="M360.213 116.54L310.491 104.04" stroke="#82673b" stroke-width="10"/>
+</svg>`,
+    white: `<svg  viewBox="0 0 371 413" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="151.398" y="181.098" width="69" height="69" stroke="white" stroke-width="4"/>
+<rect x="171.398" y="201.098" width="29" height="29" stroke="white" stroke-width="4"/>
+<line x1="173.398" y1="232.098" x2="173.398" y2="238.098" stroke="white" stroke-width="4"/>
+<line x1="169.398" y1="228.098" x2="163.398" y2="228.098" stroke="white" stroke-width="4"/>
+<line x1="169.398" y1="222.098" x2="163.398" y2="222.098" stroke="white" stroke-width="4"/>
+<line x1="169.398" y1="216.098" x2="163.398" y2="216.098" stroke="white" stroke-width="4"/>
+<line x1="169.398" y1="210.098" x2="163.398" y2="210.098" stroke="white" stroke-width="4"/>
+<line x1="169.398" y1="203.098" x2="163.398" y2="203.098" stroke="white" stroke-width="4"/>
+<line x1="173.398" y1="199.098" x2="173.398" y2="193.098" stroke="white" stroke-width="4"/>
+<line x1="161.398" y1="179.098" x2="161.398" y2="170.098" stroke="white" stroke-width="6"/>
+<line x1="222.398" y1="191.098" x2="231.398" y2="191.098" stroke="white" stroke-width="6"/>
+<line x1="209.398" y1="252.098" x2="209.398" y2="261.098" stroke="white" stroke-width="6"/>
+<line x1="149.398" y1="239.098" x2="140.398" y2="239.098" stroke="white" stroke-width="6"/>
+<line x1="169.398" y1="179.098" x2="169.398" y2="170.098" stroke="white" stroke-width="6"/>
+<line x1="222.398" y1="199.098" x2="231.398" y2="199.098" stroke="white" stroke-width="6"/>
+<line x1="201.398" y1="252.098" x2="201.398" y2="261.098" stroke="white" stroke-width="6"/>
+<line x1="149.398" y1="231.098" x2="140.398" y2="231.098" stroke="white" stroke-width="6"/>
+<line x1="177.398" y1="179.098" x2="177.398" y2="170.098" stroke="white" stroke-width="6"/>
+<line x1="222.398" y1="207.098" x2="231.398" y2="207.098" stroke="white" stroke-width="6"/>
+<line x1="193.398" y1="252.098" x2="193.398" y2="261.098" stroke="white" stroke-width="6"/>
+<line x1="149.398" y1="223.098" x2="140.398" y2="223.098" stroke="white" stroke-width="6"/>
+<line x1="185.398" y1="179.098" x2="185.398" y2="170.098" stroke="white" stroke-width="6"/>
+<line x1="222.398" y1="215.098" x2="231.398" y2="215.098" stroke="white" stroke-width="6"/>
+<line x1="185.398" y1="252.098" x2="185.398" y2="261.098" stroke="white" stroke-width="6"/>
+<line x1="149.398" y1="215.098" x2="140.398" y2="215.098" stroke="white" stroke-width="6"/>
+<line x1="193.398" y1="179.098" x2="193.398" y2="170.098" stroke="white" stroke-width="6"/>
+<line x1="222.398" y1="223.098" x2="231.398" y2="223.098" stroke="white" stroke-width="6"/>
+<line x1="177.398" y1="252.098" x2="177.398" y2="261.098" stroke="white" stroke-width="6"/>
+<line x1="149.398" y1="207.098" x2="140.398" y2="207.098" stroke="white" stroke-width="6"/>
+<line x1="201.398" y1="179.098" x2="201.398" y2="170.098" stroke="white" stroke-width="6"/>
+<line x1="222.398" y1="231.098" x2="231.398" y2="231.098" stroke="white" stroke-width="6"/>
+<line x1="169.398" y1="252.098" x2="169.398" y2="261.098" stroke="white" stroke-width="6"/>
+<line x1="149.398" y1="199.098" x2="140.398" y2="199.098" stroke="white" stroke-width="6"/>
+<line x1="209.398" y1="179.098" x2="209.398" y2="170.098" stroke="white" stroke-width="6"/>
+<line x1="222.398" y1="239.098" x2="231.398" y2="239.098" stroke="white" stroke-width="6"/>
+<line x1="161.398" y1="252.098" x2="161.398" y2="261.098" stroke="white" stroke-width="6"/>
+<line x1="149.398" y1="191.098" x2="140.398" y2="191.098" stroke="white" stroke-width="6"/>
+<line x1="180.398" y1="199.098" x2="180.398" y2="193.098" stroke="white" stroke-width="4"/>
+<line x1="186.398" y1="199.098" x2="186.398" y2="193.098" stroke="white" stroke-width="4"/>
+<line x1="192.398" y1="199.098" x2="192.398" y2="193.098" stroke="white" stroke-width="4"/>
+<line x1="198.398" y1="199.098" x2="198.398" y2="193.098" stroke="white" stroke-width="4"/>
+<line x1="202.398" y1="203.098" x2="208.398" y2="203.098" stroke="white" stroke-width="4"/>
+<line x1="202.398" y1="209.098" x2="208.398" y2="209.098" stroke="white" stroke-width="4"/>
+<line x1="202.398" y1="215.098" x2="208.398" y2="215.098" stroke="white" stroke-width="4"/>
+<line x1="202.398" y1="221.098" x2="208.398" y2="221.098" stroke="white" stroke-width="4"/>
+<line x1="202.398" y1="228.098" x2="208.398" y2="228.098" stroke="white" stroke-width="4"/>
+<line x1="179.398" y1="232.098" x2="179.398" y2="238.098" stroke="white" stroke-width="4"/>
+<line x1="185.398" y1="232.098" x2="185.398" y2="238.098" stroke="white" stroke-width="4"/>
+<line x1="191.398" y1="232.098" x2="191.398" y2="238.098" stroke="white" stroke-width="4"/>
+<line x1="198.398" y1="232.098" x2="198.398" y2="238.098" stroke="white" stroke-width="4"/>
+<line x1="231.398" y1="215.098" x2="270.398" y2="215.098" stroke="white" stroke-width="4"/>
+<path d="M230.403 223.095L255.898 223.098L264.898 236.098L273.898 236.098" stroke="white" stroke-width="4"/>
+<path d="M141.847 223.095L116.352 223.098L107.352 236.098L98.3984 236.098" stroke="white" stroke-width="4"/>
+<path d="M229.565 207.1L255.06 207.097L264.061 194.098L272.398 194.098" stroke="white" stroke-width="4"/>
+<path d="M142.685 207.1L117.19 207.097L108.189 194.098L99.3984 194.098" stroke="white" stroke-width="4"/>
+<line x1="185.398" y1="170.098" x2="185.398" y2="75.0977" stroke="white" stroke-width="4"/>
+<line x1="185.398" y1="260.819" x2="185.398" y2="365.819" stroke="white" stroke-width="4"/>
+<path d="M164.898 82.5977L164.898 123.098L177.398 137.841L177.398 170.098" stroke="white" stroke-width="4"/>
+<path d="M164.898 376.604L164.898 307.825L177.398 293.082L177.398 260.825" stroke="white" stroke-width="4"/>
+<path d="M205.898 83.0977L205.898 123.598L193.398 138.341L193.398 170.598" stroke="white" stroke-width="4"/>
+<path d="M205.898 378.542L205.898 307.325L193.398 292.582L193.398 260.325" stroke="white" stroke-width="4"/>
+<path d="M155.901 81.0985L156.398 126.098L169.371 141.098L169.371 170.397" stroke="white" stroke-width="4"/>
+<path d="M155.901 349.824L156.398 304.825L169.371 289.825L169.371 260.526" stroke="white" stroke-width="4"/>
+<path d="M214.896 81.5985L214.398 126.598L201.425 141.598L201.425 170.897" stroke="white" stroke-width="4"/>
+<path d="M214.896 349.324L214.398 304.325L201.425 289.325L201.425 260.026" stroke="white" stroke-width="4"/>
+<path d="M146.398 77.5977L146.398 129.098L161.398 145.323L161.398 170.098" stroke="white" stroke-width="4"/>
+<path d="M146.398 353.325L146.398 301.825L161.398 285.6L161.398 260.825" stroke="white" stroke-width="4"/>
+<path d="M224.398 78.0977L224.398 129.598L209.398 145.823L209.398 170.598" stroke="white" stroke-width="4"/>
+<path d="M224.398 352.825L224.398 301.325L209.398 285.1L209.398 260.325" stroke="white" stroke-width="4"/>
+<path d="M231.398 215.098H272.398" stroke="white" stroke-width="4"/>
+<path d="M140.852 215.098H97.8984" stroke="white" stroke-width="4"/>
+<path d="M231.398 231.098H249.398L258.398 245.098H271.898" stroke="white" stroke-width="4"/>
+<path d="M140.852 231.098H122.852L113.852 245.098H97.8984" stroke="white" stroke-width="4"/>
+<path d="M230.561 199.098H248.561L257.561 185.098H272.398" stroke="white" stroke-width="4"/>
+<path d="M141.689 199.098H123.689L114.689 185.098H99.8984" stroke="white" stroke-width="4"/>
+<path d="M272.393 176.098L251.893 176.098L242.893 191.098L231.393 191.098" stroke="white" stroke-width="4"/>
+<path d="M99.8945 176.098L120.348 176.098L129.348 191.098L140.848 191.098" stroke="white" stroke-width="4"/>
+<path d="M273.893 254.098L251.893 254.098L242.893 239.098L231.393 239.098" stroke="white" stroke-width="4"/>
+<path d="M98.8945 254.098L120.348 254.098L129.348 239.098L140.848 239.098" stroke="white" stroke-width="4"/>
+<path d="M181.399 80.5992L327.926 45.0935L307.209 133.097L281.167 170.598L281.167 368.598L205.713 356.04" stroke="white" stroke-width="20"/>
+<path d="M187.587 80.1045L43.56 45.0995L64.2772 133.103L90.3191 170.604L90.3191 368.604L165.086 356.104" stroke="white" stroke-width="20"/>
+<path d="M185.713 49.0391L96.6692 27.8477L5.89497 6.09733L36.7129 150.098L64.7129 189.598L54.9442 393.099L72.7129 396.039L80.9442 407.599L160.895 392.597L166.898 378.599L186.901 368.099" stroke="white" stroke-width="9"/>
+<path d="M183.713 49.04L273.845 27.7901L364.619 6.03972L333.801 150.04L305.801 189.54L315.57 393.041L298.713 395.54L289.57 407.541L209.619 392.539L203.615 378.541L183.612 368.041" stroke="white" stroke-width="9"/>
+<path d="M10.7131 116.04L66.7123 103.039" stroke="white" stroke-width="10"/>
+<line x1="100.563" y1="54.8113" x2="112.563" y2="9.8113" stroke="white" stroke-width="10"/>
+<line y1="-5" x2="46.5725" y2="-5" transform="matrix(-0.257663 -0.966235 -0.966235 0.257663 269.393 56.0996)" stroke="white" stroke-width="10"/>
+<path d="M360.211 116.54L310.489 104.04" stroke="white" stroke-width="10"/>
+</svg>`,
+    dark: `<svg  viewBox="0 0 371 413" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="151.398" y="181.098" width="69" height="69" stroke="#231f15" stroke-width="4"/>
+<rect x="171.398" y="201.098" width="29" height="29" stroke="#231f15" stroke-width="4"/>
+<line x1="173.398" y1="232.098" x2="173.398" y2="238.098" stroke="#231f15" stroke-width="4"/>
+<line x1="169.398" y1="228.098" x2="163.398" y2="228.098" stroke="#231f15" stroke-width="4"/>
+<line x1="169.398" y1="222.098" x2="163.398" y2="222.098" stroke="#231f15" stroke-width="4"/>
+<line x1="169.398" y1="216.098" x2="163.398" y2="216.098" stroke="#231f15" stroke-width="4"/>
+<line x1="169.398" y1="210.098" x2="163.398" y2="210.098" stroke="#231f15" stroke-width="4"/>
+<line x1="169.398" y1="203.098" x2="163.398" y2="203.098" stroke="#231f15" stroke-width="4"/>
+<line x1="173.398" y1="199.098" x2="173.398" y2="193.098" stroke="#231f15" stroke-width="4"/>
+<line x1="161.398" y1="179.098" x2="161.398" y2="170.098" stroke="#231f15" stroke-width="6"/>
+<line x1="222.398" y1="191.098" x2="231.398" y2="191.098" stroke="#231f15" stroke-width="6"/>
+<line x1="209.398" y1="252.098" x2="209.398" y2="261.098" stroke="#231f15" stroke-width="6"/>
+<line x1="149.398" y1="239.098" x2="140.398" y2="239.098" stroke="#231f15" stroke-width="6"/>
+<line x1="169.398" y1="179.098" x2="169.398" y2="170.098" stroke="#231f15" stroke-width="6"/>
+<line x1="222.398" y1="199.098" x2="231.398" y2="199.098" stroke="#231f15" stroke-width="6"/>
+<line x1="201.398" y1="252.098" x2="201.398" y2="261.098" stroke="#231f15" stroke-width="6"/>
+<line x1="149.398" y1="231.098" x2="140.398" y2="231.098" stroke="#231f15" stroke-width="6"/>
+<line x1="177.398" y1="179.098" x2="177.398" y2="170.098" stroke="#231f15" stroke-width="6"/>
+<line x1="222.398" y1="207.098" x2="231.398" y2="207.098" stroke="#231f15" stroke-width="6"/>
+<line x1="193.398" y1="252.098" x2="193.398" y2="261.098" stroke="#231f15" stroke-width="6"/>
+<line x1="149.398" y1="223.098" x2="140.398" y2="223.098" stroke="#231f15" stroke-width="6"/>
+<line x1="185.398" y1="179.098" x2="185.398" y2="170.098" stroke="#231f15" stroke-width="6"/>
+<line x1="222.398" y1="215.098" x2="231.398" y2="215.098" stroke="#231f15" stroke-width="6"/>
+<line x1="185.398" y1="252.098" x2="185.398" y2="261.098" stroke="#231f15" stroke-width="6"/>
+<line x1="149.398" y1="215.098" x2="140.398" y2="215.098" stroke="#231f15" stroke-width="6"/>
+<line x1="193.398" y1="179.098" x2="193.398" y2="170.098" stroke="#231f15" stroke-width="6"/>
+<line x1="222.398" y1="223.098" x2="231.398" y2="223.098" stroke="#231f15" stroke-width="6"/>
+<line x1="177.398" y1="252.098" x2="177.398" y2="261.098" stroke="#231f15" stroke-width="6"/>
+<line x1="149.398" y1="207.098" x2="140.398" y2="207.098" stroke="#231f15" stroke-width="6"/>
+<line x1="201.398" y1="179.098" x2="201.398" y2="170.098" stroke="#231f15" stroke-width="6"/>
+<line x1="222.398" y1="231.098" x2="231.398" y2="231.098" stroke="#231f15" stroke-width="6"/>
+<line x1="169.398" y1="252.098" x2="169.398" y2="261.098" stroke="#231f15" stroke-width="6"/>
+<line x1="149.398" y1="199.098" x2="140.398" y2="199.098" stroke="#231f15" stroke-width="6"/>
+<line x1="209.398" y1="179.098" x2="209.398" y2="170.098" stroke="#231f15" stroke-width="6"/>
+<line x1="222.398" y1="239.098" x2="231.398" y2="239.098" stroke="#231f15" stroke-width="6"/>
+<line x1="161.398" y1="252.098" x2="161.398" y2="261.098" stroke="#231f15" stroke-width="6"/>
+<line x1="149.398" y1="191.098" x2="140.398" y2="191.098" stroke="#231f15" stroke-width="6"/>
+<line x1="180.398" y1="199.098" x2="180.398" y2="193.098" stroke="#231f15" stroke-width="4"/>
+<line x1="186.398" y1="199.098" x2="186.398" y2="193.098" stroke="#231f15" stroke-width="4"/>
+<line x1="192.398" y1="199.098" x2="192.398" y2="193.098" stroke="#231f15" stroke-width="4"/>
+<line x1="198.398" y1="199.098" x2="198.398" y2="193.098" stroke="#231f15" stroke-width="4"/>
+<line x1="202.398" y1="203.098" x2="208.398" y2="203.098" stroke="#231f15" stroke-width="4"/>
+<line x1="202.398" y1="209.098" x2="208.398" y2="209.098" stroke="#231f15" stroke-width="4"/>
+<line x1="202.398" y1="215.098" x2="208.398" y2="215.098" stroke="#231f15" stroke-width="4"/>
+<line x1="202.398" y1="221.098" x2="208.398" y2="221.098" stroke="#231f15" stroke-width="4"/>
+<line x1="202.398" y1="228.098" x2="208.398" y2="228.098" stroke="#231f15" stroke-width="4"/>
+<line x1="179.398" y1="232.098" x2="179.398" y2="238.098" stroke="#231f15" stroke-width="4"/>
+<line x1="185.398" y1="232.098" x2="185.398" y2="238.098" stroke="#231f15" stroke-width="4"/>
+<line x1="191.398" y1="232.098" x2="191.398" y2="238.098" stroke="#231f15" stroke-width="4"/>
+<line x1="198.398" y1="232.098" x2="198.398" y2="238.098" stroke="#231f15" stroke-width="4"/>
+<line x1="231.398" y1="215.098" x2="270.398" y2="215.098" stroke="#231f15" stroke-width="4"/>
+<path d="M230.403 223.095L255.898 223.098L264.898 236.098L273.898 236.098" stroke="#231f15" stroke-width="4"/>
+<path d="M141.847 223.095L116.352 223.098L107.352 236.098L98.3984 236.098" stroke="#231f15" stroke-width="4"/>
+<path d="M229.565 207.1L255.06 207.097L264.061 194.098L272.398 194.098" stroke="#231f15" stroke-width="4"/>
+<path d="M142.685 207.1L117.19 207.097L108.189 194.098L99.3984 194.098" stroke="#231f15" stroke-width="4"/>
+<line x1="185.398" y1="170.098" x2="185.398" y2="75.0977" stroke="#231f15" stroke-width="4"/>
+<line x1="185.398" y1="260.819" x2="185.398" y2="365.819" stroke="#231f15" stroke-width="4"/>
+<path d="M164.898 82.5977L164.898 123.098L177.398 137.841L177.398 170.098" stroke="#231f15" stroke-width="4"/>
+<path d="M164.898 376.604L164.898 307.825L177.398 293.082L177.398 260.825" stroke="#231f15" stroke-width="4"/>
+<path d="M205.898 83.0977L205.898 123.598L193.398 138.341L193.398 170.598" stroke="#231f15" stroke-width="4"/>
+<path d="M205.898 378.542L205.898 307.325L193.398 292.582L193.398 260.325" stroke="#231f15" stroke-width="4"/>
+<path d="M155.901 81.0985L156.398 126.098L169.371 141.098L169.371 170.397" stroke="#231f15" stroke-width="4"/>
+<path d="M155.901 349.824L156.398 304.825L169.371 289.825L169.371 260.526" stroke="#231f15" stroke-width="4"/>
+<path d="M214.896 81.5985L214.398 126.598L201.425 141.598L201.425 170.897" stroke="#231f15" stroke-width="4"/>
+<path d="M214.896 349.324L214.398 304.325L201.425 289.325L201.425 260.026" stroke="#231f15" stroke-width="4"/>
+<path d="M146.398 77.5977L146.398 129.098L161.398 145.323L161.398 170.098" stroke="#231f15" stroke-width="4"/>
+<path d="M146.398 353.325L146.398 301.825L161.398 285.6L161.398 260.825" stroke="#231f15" stroke-width="4"/>
+<path d="M224.398 78.0977L224.398 129.598L209.398 145.823L209.398 170.598" stroke="#231f15" stroke-width="4"/>
+<path d="M224.398 352.825L224.398 301.325L209.398 285.1L209.398 260.325" stroke="#231f15" stroke-width="4"/>
+<path d="M231.398 215.098H272.398" stroke="#231f15" stroke-width="4"/>
+<path d="M140.852 215.098H97.8984" stroke="#231f15" stroke-width="4"/>
+<path d="M231.398 231.098H249.398L258.398 245.098H271.898" stroke="#231f15" stroke-width="4"/>
+<path d="M140.852 231.098H122.852L113.852 245.098H97.8984" stroke="#231f15" stroke-width="4"/>
+<path d="M230.561 199.098H248.561L257.561 185.098H272.398" stroke="#231f15" stroke-width="4"/>
+<path d="M141.689 199.098H123.689L114.689 185.098H99.8984" stroke="#231f15" stroke-width="4"/>
+<path d="M272.393 176.098L251.893 176.098L242.893 191.098L231.393 191.098" stroke="#231f15" stroke-width="4"/>
+<path d="M99.8945 176.098L120.348 176.098L129.348 191.098L140.848 191.098" stroke="#231f15" stroke-width="4"/>
+<path d="M273.893 254.098L251.893 254.098L242.893 239.098L231.393 239.098" stroke="#231f15" stroke-width="4"/>
+<path d="M98.8945 254.098L120.348 254.098L129.348 239.098L140.848 239.098" stroke="#231f15" stroke-width="4"/>
+<path d="M181.399 80.5992L327.926 45.0935L307.209 133.097L281.167 170.598L281.167 368.598L205.713 356.04" stroke="#231f15" stroke-width="20"/>
+<path d="M187.587 80.1045L43.56 45.0995L64.2772 133.103L90.3191 170.604L90.3191 368.604L165.086 356.104" stroke="#231f15" stroke-width="20"/>
+<path d="M185.713 49.04L96.6692 27.8487L5.89497 6.09831L36.7129 150.099L64.7129 189.599L54.9442 393.099L72.7129 396.04L80.9442 407.599L160.895 392.598L166.898 378.6L186.901 368.1" stroke="#231f15" stroke-width="9"/>
+<path d="M183.713 49.04L273.845 27.7901L364.619 6.03972L333.801 150.04L305.801 189.54L315.57 393.041L298.713 395.54L289.57 407.541L209.619 392.539L203.615 378.541L183.612 368.041" stroke="#231f15" stroke-width="9"/>
+<path d="M10.7131 116.04L66.7123 103.039" stroke="#231f15" stroke-width="10"/>
+<line x1="100.563" y1="54.8113" x2="112.563" y2="9.8113" stroke="#231f15" stroke-width="10"/>
+<line y1="-5" x2="46.5725" y2="-5" transform="matrix(-0.257663 -0.966235 -0.966235 0.257663 269.393 56.0996)" stroke="#231f15" stroke-width="10"/>
+<path d="M360.211 116.54L310.489 104.04" stroke="#231f15" stroke-width="10"/>
+</svg>`,
+    floresta: `<svg  viewBox="0 0 371 413" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="151.398" y="181.099" width="69" height="69" stroke="#495b4f" stroke-width="4"/>
+<rect x="171.398" y="201.099" width="29" height="29" stroke="#495b4f" stroke-width="4"/>
+<line x1="173.398" y1="232.099" x2="173.398" y2="238.099" stroke="#495b4f" stroke-width="4"/>
+<line x1="169.398" y1="228.099" x2="163.398" y2="228.099" stroke="#495b4f" stroke-width="4"/>
+<line x1="169.398" y1="222.099" x2="163.398" y2="222.099" stroke="#495b4f" stroke-width="4"/>
+<line x1="169.398" y1="216.099" x2="163.398" y2="216.099" stroke="#495b4f" stroke-width="4"/>
+<line x1="169.398" y1="210.099" x2="163.398" y2="210.099" stroke="#495b4f" stroke-width="4"/>
+<line x1="169.398" y1="203.099" x2="163.398" y2="203.099" stroke="#495b4f" stroke-width="4"/>
+<line x1="173.398" y1="199.099" x2="173.398" y2="193.099" stroke="#495b4f" stroke-width="4"/>
+<line x1="161.398" y1="179.099" x2="161.398" y2="170.099" stroke="#495b4f" stroke-width="6"/>
+<line x1="222.398" y1="191.099" x2="231.398" y2="191.099" stroke="#495b4f" stroke-width="6"/>
+<line x1="209.398" y1="252.099" x2="209.398" y2="261.099" stroke="#495b4f" stroke-width="6"/>
+<line x1="149.398" y1="239.099" x2="140.398" y2="239.099" stroke="#495b4f" stroke-width="6"/>
+<line x1="169.398" y1="179.099" x2="169.398" y2="170.099" stroke="#495b4f" stroke-width="6"/>
+<line x1="222.398" y1="199.099" x2="231.398" y2="199.099" stroke="#495b4f" stroke-width="6"/>
+<line x1="201.398" y1="252.099" x2="201.398" y2="261.099" stroke="#495b4f" stroke-width="6"/>
+<line x1="149.398" y1="231.099" x2="140.398" y2="231.099" stroke="#495b4f" stroke-width="6"/>
+<line x1="177.398" y1="179.099" x2="177.398" y2="170.099" stroke="#495b4f" stroke-width="6"/>
+<line x1="222.398" y1="207.099" x2="231.398" y2="207.099" stroke="#495b4f" stroke-width="6"/>
+<line x1="193.398" y1="252.099" x2="193.398" y2="261.099" stroke="#495b4f" stroke-width="6"/>
+<line x1="149.398" y1="223.099" x2="140.398" y2="223.099" stroke="#495b4f" stroke-width="6"/>
+<line x1="185.398" y1="179.099" x2="185.398" y2="170.099" stroke="#495b4f" stroke-width="6"/>
+<line x1="222.398" y1="215.099" x2="231.398" y2="215.099" stroke="#495b4f" stroke-width="6"/>
+<line x1="185.398" y1="252.099" x2="185.398" y2="261.099" stroke="#495b4f" stroke-width="6"/>
+<line x1="149.398" y1="215.099" x2="140.398" y2="215.099" stroke="#495b4f" stroke-width="6"/>
+<line x1="193.398" y1="179.099" x2="193.398" y2="170.099" stroke="#495b4f" stroke-width="6"/>
+<line x1="222.398" y1="223.099" x2="231.398" y2="223.099" stroke="#495b4f" stroke-width="6"/>
+<line x1="177.398" y1="252.099" x2="177.398" y2="261.099" stroke="#495b4f" stroke-width="6"/>
+<line x1="149.398" y1="207.099" x2="140.398" y2="207.099" stroke="#495b4f" stroke-width="6"/>
+<line x1="201.398" y1="179.099" x2="201.398" y2="170.099" stroke="#495b4f" stroke-width="6"/>
+<line x1="222.398" y1="231.099" x2="231.398" y2="231.099" stroke="#495b4f" stroke-width="6"/>
+<line x1="169.398" y1="252.099" x2="169.398" y2="261.099" stroke="#495b4f" stroke-width="6"/>
+<line x1="149.398" y1="199.099" x2="140.398" y2="199.099" stroke="#495b4f" stroke-width="6"/>
+<line x1="209.398" y1="179.099" x2="209.398" y2="170.099" stroke="#495b4f" stroke-width="6"/>
+<line x1="222.398" y1="239.099" x2="231.398" y2="239.099" stroke="#495b4f" stroke-width="6"/>
+<line x1="161.398" y1="252.099" x2="161.398" y2="261.099" stroke="#495b4f" stroke-width="6"/>
+<line x1="149.398" y1="191.099" x2="140.398" y2="191.099" stroke="#495b4f" stroke-width="6"/>
+<line x1="180.398" y1="199.099" x2="180.398" y2="193.099" stroke="#495b4f" stroke-width="4"/>
+<line x1="186.398" y1="199.099" x2="186.398" y2="193.099" stroke="#495b4f" stroke-width="4"/>
+<line x1="192.398" y1="199.099" x2="192.398" y2="193.099" stroke="#495b4f" stroke-width="4"/>
+<line x1="198.398" y1="199.099" x2="198.398" y2="193.099" stroke="#495b4f" stroke-width="4"/>
+<line x1="202.398" y1="203.099" x2="208.398" y2="203.099" stroke="#495b4f" stroke-width="4"/>
+<line x1="202.398" y1="209.099" x2="208.398" y2="209.099" stroke="#495b4f" stroke-width="4"/>
+<line x1="202.398" y1="215.099" x2="208.398" y2="215.099" stroke="#495b4f" stroke-width="4"/>
+<line x1="202.398" y1="221.099" x2="208.398" y2="221.099" stroke="#495b4f" stroke-width="4"/>
+<line x1="202.398" y1="228.099" x2="208.398" y2="228.099" stroke="#495b4f" stroke-width="4"/>
+<line x1="179.398" y1="232.099" x2="179.398" y2="238.099" stroke="#495b4f" stroke-width="4"/>
+<line x1="185.398" y1="232.099" x2="185.398" y2="238.099" stroke="#495b4f" stroke-width="4"/>
+<line x1="191.398" y1="232.099" x2="191.398" y2="238.099" stroke="#495b4f" stroke-width="4"/>
+<line x1="198.398" y1="232.099" x2="198.398" y2="238.099" stroke="#495b4f" stroke-width="4"/>
+<line x1="231.398" y1="215.099" x2="270.398" y2="215.099" stroke="#495b4f" stroke-width="4"/>
+<path d="M230.403 223.096L255.898 223.099L264.898 236.099L273.898 236.099" stroke="#495b4f" stroke-width="4"/>
+<path d="M141.847 223.096L116.352 223.099L107.352 236.099L98.3984 236.099" stroke="#495b4f" stroke-width="4"/>
+<path d="M229.565 207.101L255.06 207.098L264.061 194.099L272.398 194.099" stroke="#495b4f" stroke-width="4"/>
+<path d="M142.685 207.101L117.19 207.098L108.189 194.099L99.3984 194.099" stroke="#495b4f" stroke-width="4"/>
+<line x1="185.398" y1="170.099" x2="185.398" y2="75.0986" stroke="#495b4f" stroke-width="4"/>
+<line x1="185.398" y1="260.82" x2="185.398" y2="365.82" stroke="#495b4f" stroke-width="4"/>
+<path d="M164.898 82.5986L164.898 123.099L177.398 137.842L177.398 170.099" stroke="#495b4f" stroke-width="4"/>
+<path d="M164.898 376.604L164.898 307.826L177.398 293.083L177.398 260.826" stroke="#495b4f" stroke-width="4"/>
+<path d="M205.898 83.0986L205.898 123.599L193.398 138.342L193.398 170.599" stroke="#495b4f" stroke-width="4"/>
+<path d="M205.898 378.543L205.898 307.326L193.398 292.583L193.398 260.326" stroke="#495b4f" stroke-width="4"/>
+<path d="M155.901 81.0995L156.398 126.099L169.371 141.099L169.371 170.398" stroke="#495b4f" stroke-width="4"/>
+<path d="M155.901 349.825L156.398 304.826L169.371 289.826L169.371 260.527" stroke="#495b4f" stroke-width="4"/>
+<path d="M214.896 81.5995L214.398 126.599L201.425 141.599L201.425 170.898" stroke="#495b4f" stroke-width="4"/>
+<path d="M214.896 349.325L214.398 304.326L201.425 289.326L201.425 260.027" stroke="#495b4f" stroke-width="4"/>
+<path d="M146.398 77.5986L146.398 129.099L161.398 145.324L161.398 170.099" stroke="#495b4f" stroke-width="4"/>
+<path d="M146.398 353.326L146.398 301.826L161.398 285.601L161.398 260.826" stroke="#495b4f" stroke-width="4"/>
+<path d="M224.398 78.0986L224.398 129.599L209.398 145.824L209.398 170.599" stroke="#495b4f" stroke-width="4"/>
+<path d="M224.398 352.826L224.398 301.326L209.398 285.101L209.398 260.326" stroke="#495b4f" stroke-width="4"/>
+<path d="M231.398 215.099H272.398" stroke="#495b4f" stroke-width="4"/>
+<path d="M140.852 215.099H97.8984" stroke="#495b4f" stroke-width="4"/>
+<path d="M231.398 231.099H249.398L258.398 245.099H271.898" stroke="#495b4f" stroke-width="4"/>
+<path d="M140.852 231.099H122.852L113.852 245.099H97.8984" stroke="#495b4f" stroke-width="4"/>
+<path d="M230.561 199.099H248.561L257.561 185.099H272.398" stroke="#495b4f" stroke-width="4"/>
+<path d="M141.689 199.099H123.689L114.689 185.099H99.8984" stroke="#495b4f" stroke-width="4"/>
+<path d="M272.393 176.099L251.893 176.099L242.893 191.099L231.393 191.099" stroke="#495b4f" stroke-width="4"/>
+<path d="M99.8965 176.099L120.35 176.099L129.35 191.099L140.85 191.099" stroke="#495b4f" stroke-width="4"/>
+<path d="M273.893 254.099L251.893 254.099L242.893 239.099L231.393 239.099" stroke="#495b4f" stroke-width="4"/>
+<path d="M98.8965 254.099L120.35 254.099L129.35 239.099L140.85 239.099" stroke="#495b4f" stroke-width="4"/>
+<path d="M181.399 80.5992L327.926 45.0935L307.209 133.097L281.167 170.598L281.167 368.598L205.713 356.04" stroke="#495b4f" stroke-width="20"/>
+<path d="M187.587 80.1045L43.56 45.0995L64.2772 133.103L90.3191 170.604L90.3191 368.604L165.086 356.104" stroke="#495b4f" stroke-width="20"/>
+<path d="M185.713 49.04L96.6692 27.8487L5.89497 6.09831L36.7129 150.099L64.7129 189.599L54.9442 393.099L72.7129 396.04L80.9442 407.599L160.895 392.598L166.898 378.6L186.901 368.1" stroke="#495b4f" stroke-width="9"/>
+<path d="M183.713 49.04L273.845 27.7901L364.619 6.03972L333.801 150.04L305.801 189.54L315.57 393.041L298.713 395.54L289.57 407.541L209.619 392.539L203.615 378.541L183.612 368.041" stroke="#495b4f" stroke-width="9"/>
+<path d="M10.7131 116.04L66.7123 103.039" stroke="#495b4f" stroke-width="10"/>
+<line x1="100.565" y1="54.8113" x2="112.565" y2="9.8113" stroke="#495b4f" stroke-width="10"/>
+<line y1="-5" x2="46.5725" y2="-5" transform="matrix(-0.257663 -0.966235 -0.966235 0.257663 269.393 56.0996)" stroke="#495b4f" stroke-width="10"/>
+<path d="M360.211 116.54L310.489 104.04" stroke="#495b4f" stroke-width="10"/>
+</svg>`,
+    rio: `<svg  viewBox="0 0 371 413" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="151.398" y="181.099" width="69" height="69" stroke="#82673b" stroke-width="4"/>
+<rect x="171.398" y="201.099" width="29" height="29" stroke="#82673b" stroke-width="4"/>
+<line x1="173.398" y1="232.099" x2="173.398" y2="238.099" stroke="#82673b" stroke-width="4"/>
+<line x1="169.398" y1="228.099" x2="163.398" y2="228.099" stroke="#82673b" stroke-width="4"/>
+<line x1="169.398" y1="222.099" x2="163.398" y2="222.099" stroke="#82673b" stroke-width="4"/>
+<line x1="169.398" y1="216.099" x2="163.398" y2="216.099" stroke="#82673b" stroke-width="4"/>
+<line x1="169.398" y1="210.099" x2="163.398" y2="210.099" stroke="#82673b" stroke-width="4"/>
+<line x1="169.398" y1="203.099" x2="163.398" y2="203.099" stroke="#82673b" stroke-width="4"/>
+<line x1="173.398" y1="199.099" x2="173.398" y2="193.099" stroke="#82673b" stroke-width="4"/>
+<line x1="161.398" y1="179.099" x2="161.398" y2="170.099" stroke="#82673b" stroke-width="6"/>
+<line x1="222.398" y1="191.099" x2="231.398" y2="191.099" stroke="#82673b" stroke-width="6"/>
+<line x1="209.398" y1="252.099" x2="209.398" y2="261.099" stroke="#82673b" stroke-width="6"/>
+<line x1="149.398" y1="239.099" x2="140.398" y2="239.099" stroke="#82673b" stroke-width="6"/>
+<line x1="169.398" y1="179.099" x2="169.398" y2="170.099" stroke="#82673b" stroke-width="6"/>
+<line x1="222.398" y1="199.099" x2="231.398" y2="199.099" stroke="#82673b" stroke-width="6"/>
+<line x1="201.398" y1="252.099" x2="201.398" y2="261.099" stroke="#82673b" stroke-width="6"/>
+<line x1="149.398" y1="231.099" x2="140.398" y2="231.099" stroke="#82673b" stroke-width="6"/>
+<line x1="177.398" y1="179.099" x2="177.398" y2="170.099" stroke="#82673b" stroke-width="6"/>
+<line x1="222.398" y1="207.099" x2="231.398" y2="207.099" stroke="#82673b" stroke-width="6"/>
+<line x1="193.398" y1="252.099" x2="193.398" y2="261.099" stroke="#82673b" stroke-width="6"/>
+<line x1="149.398" y1="223.099" x2="140.398" y2="223.099" stroke="#82673b" stroke-width="6"/>
+<line x1="185.398" y1="179.099" x2="185.398" y2="170.099" stroke="#82673b" stroke-width="6"/>
+<line x1="222.398" y1="215.099" x2="231.398" y2="215.099" stroke="#82673b" stroke-width="6"/>
+<line x1="185.398" y1="252.099" x2="185.398" y2="261.099" stroke="#82673b" stroke-width="6"/>
+<line x1="149.398" y1="215.099" x2="140.398" y2="215.099" stroke="#82673b" stroke-width="6"/>
+<line x1="193.398" y1="179.099" x2="193.398" y2="170.099" stroke="#82673b" stroke-width="6"/>
+<line x1="222.398" y1="223.099" x2="231.398" y2="223.099" stroke="#82673b" stroke-width="6"/>
+<line x1="177.398" y1="252.099" x2="177.398" y2="261.099" stroke="#82673b" stroke-width="6"/>
+<line x1="149.398" y1="207.099" x2="140.398" y2="207.099" stroke="#82673b" stroke-width="6"/>
+<line x1="201.398" y1="179.099" x2="201.398" y2="170.099" stroke="#82673b" stroke-width="6"/>
+<line x1="222.398" y1="231.099" x2="231.398" y2="231.099" stroke="#82673b" stroke-width="6"/>
+<line x1="169.398" y1="252.099" x2="169.398" y2="261.099" stroke="#82673b" stroke-width="6"/>
+<line x1="149.398" y1="199.099" x2="140.398" y2="199.099" stroke="#82673b" stroke-width="6"/>
+<line x1="209.398" y1="179.099" x2="209.398" y2="170.099" stroke="#82673b" stroke-width="6"/>
+<line x1="222.398" y1="239.099" x2="231.398" y2="239.099" stroke="#82673b" stroke-width="6"/>
+<line x1="161.398" y1="252.099" x2="161.398" y2="261.099" stroke="#82673b" stroke-width="6"/>
+<line x1="149.398" y1="191.099" x2="140.398" y2="191.099" stroke="#82673b" stroke-width="6"/>
+<line x1="180.398" y1="199.099" x2="180.398" y2="193.099" stroke="#82673b" stroke-width="4"/>
+<line x1="186.398" y1="199.099" x2="186.398" y2="193.099" stroke="#82673b" stroke-width="4"/>
+<line x1="192.398" y1="199.099" x2="192.398" y2="193.099" stroke="#82673b" stroke-width="4"/>
+<line x1="198.398" y1="199.099" x2="198.398" y2="193.099" stroke="#82673b" stroke-width="4"/>
+<line x1="202.398" y1="203.099" x2="208.398" y2="203.099" stroke="#82673b" stroke-width="4"/>
+<line x1="202.398" y1="209.099" x2="208.398" y2="209.099" stroke="#82673b" stroke-width="4"/>
+<line x1="202.398" y1="215.099" x2="208.398" y2="215.099" stroke="#82673b" stroke-width="4"/>
+<line x1="202.398" y1="221.099" x2="208.398" y2="221.099" stroke="#82673b" stroke-width="4"/>
+<line x1="202.398" y1="228.099" x2="208.398" y2="228.099" stroke="#82673b" stroke-width="4"/>
+<line x1="179.398" y1="232.099" x2="179.398" y2="238.099" stroke="#82673b" stroke-width="4"/>
+<line x1="185.398" y1="232.099" x2="185.398" y2="238.099" stroke="#82673b" stroke-width="4"/>
+<line x1="191.398" y1="232.099" x2="191.398" y2="238.099" stroke="#82673b" stroke-width="4"/>
+<line x1="198.398" y1="232.099" x2="198.398" y2="238.099" stroke="#82673b" stroke-width="4"/>
+<line x1="231.398" y1="215.099" x2="270.398" y2="215.099" stroke="#82673b" stroke-width="4"/>
+<path d="M230.403 223.096L255.898 223.099L264.898 236.099L273.898 236.099" stroke="#82673b" stroke-width="4"/>
+<path d="M141.847 223.096L116.352 223.099L107.352 236.099L98.3984 236.099" stroke="#82673b" stroke-width="4"/>
+<path d="M229.565 207.101L255.06 207.098L264.061 194.099L272.398 194.099" stroke="#82673b" stroke-width="4"/>
+<path d="M142.685 207.101L117.19 207.098L108.189 194.099L99.3984 194.099" stroke="#82673b" stroke-width="4"/>
+<line x1="185.398" y1="170.099" x2="185.398" y2="75.0986" stroke="#82673b" stroke-width="4"/>
+<line x1="185.398" y1="260.82" x2="185.398" y2="365.82" stroke="#82673b" stroke-width="4"/>
+<path d="M164.898 82.5986L164.898 123.099L177.398 137.842L177.398 170.099" stroke="#82673b" stroke-width="4"/>
+<path d="M164.898 376.604L164.898 307.826L177.398 293.083L177.398 260.826" stroke="#82673b" stroke-width="4"/>
+<path d="M205.898 83.0986L205.898 123.599L193.398 138.342L193.398 170.599" stroke="#82673b" stroke-width="4"/>
+<path d="M205.898 378.543L205.898 307.326L193.398 292.583L193.398 260.326" stroke="#82673b" stroke-width="4"/>
+<path d="M155.901 81.0995L156.398 126.099L169.371 141.099L169.371 170.398" stroke="#82673b" stroke-width="4"/>
+<path d="M155.901 349.825L156.398 304.826L169.371 289.826L169.371 260.527" stroke="#82673b" stroke-width="4"/>
+<path d="M214.896 81.5995L214.398 126.599L201.425 141.599L201.425 170.898" stroke="#82673b" stroke-width="4"/>
+<path d="M214.896 349.325L214.398 304.326L201.425 289.326L201.425 260.027" stroke="#82673b" stroke-width="4"/>
+<path d="M146.398 77.5986L146.398 129.099L161.398 145.324L161.398 170.099" stroke="#82673b" stroke-width="4"/>
+<path d="M146.398 353.326L146.398 301.826L161.398 285.601L161.398 260.826" stroke="#82673b" stroke-width="4"/>
+<path d="M224.398 78.0986L224.398 129.599L209.398 145.824L209.398 170.599" stroke="#82673b" stroke-width="4"/>
+<path d="M224.398 352.826L224.398 301.326L209.398 285.101L209.398 260.326" stroke="#82673b" stroke-width="4"/>
+<path d="M231.398 215.099H272.398" stroke="#82673b" stroke-width="4"/>
+<path d="M140.852 215.099H97.8984" stroke="#82673b" stroke-width="4"/>
+<path d="M231.398 231.099H249.398L258.398 245.099H271.898" stroke="#82673b" stroke-width="4"/>
+<path d="M140.852 231.099H122.852L113.852 245.099H97.8984" stroke="#82673b" stroke-width="4"/>
+<path d="M230.561 199.099H248.561L257.561 185.099H272.398" stroke="#82673b" stroke-width="4"/>
+<path d="M141.689 199.099H123.689L114.689 185.099H99.8984" stroke="#82673b" stroke-width="4"/>
+<path d="M272.393 176.099L251.893 176.099L242.893 191.099L231.393 191.099" stroke="#82673b" stroke-width="4"/>
+<path d="M99.8945 176.099L120.348 176.099L129.348 191.099L140.848 191.099" stroke="#82673b" stroke-width="4"/>
+<path d="M273.893 254.099L251.893 254.099L242.893 239.099L231.393 239.099" stroke="#82673b" stroke-width="4"/>
+<path d="M98.8945 254.099L120.348 254.099L129.348 239.099L140.848 239.099" stroke="#82673b" stroke-width="4"/>
+<path d="M181.399 80.5992L327.926 45.0935L307.209 133.097L281.167 170.598L281.167 368.598L205.713 356.04" stroke="#82673b" stroke-width="20"/>
+<path d="M187.587 80.1045L43.56 45.0995L64.2772 133.103L90.3191 170.604L90.3191 368.604L165.086 356.104" stroke="#82673b" stroke-width="20"/>
+<path d="M185.713 49.04L96.6692 27.8487L5.89497 6.09831L36.7129 150.099L64.7129 189.599L54.9442 393.099L72.7129 396.04L80.9442 407.599L160.895 392.598L166.898 378.6L186.901 368.1" stroke="#82673b" stroke-width="9"/>
+<path d="M183.713 49.04L273.845 27.7901L364.619 6.03972L333.801 150.04L305.801 189.54L315.57 393.041L298.713 395.54L289.57 407.541L209.619 392.539L203.615 378.541L183.612 368.041" stroke="#82673b" stroke-width="9"/>
+<path d="M10.7111 116.04L66.7103 103.039" stroke="#82673b" stroke-width="10"/>
+<line x1="100.563" y1="54.8113" x2="112.563" y2="9.8113" stroke="#82673b" stroke-width="10"/>
+<line y1="-5" x2="46.5725" y2="-5" transform="matrix(-0.257663 -0.966235 -0.966235 0.257663 269.393 56.0996)" stroke="#82673b" stroke-width="10"/>
+<path d="M360.211 116.54L310.489 104.04" stroke="#82673b" stroke-width="10"/>
+</svg>`,
+    floresta900: `<svg  viewBox="0 0 371 413" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="151.398" y="181.099" width="69" height="69" stroke="#28342c" stroke-width="4"/>
+<rect x="171.398" y="201.099" width="29" height="29" stroke="#28342c" stroke-width="4"/>
+<line x1="173.398" y1="232.099" x2="173.398" y2="238.099" stroke="#28342c" stroke-width="4"/>
+<line x1="169.398" y1="228.099" x2="163.398" y2="228.099" stroke="#28342c" stroke-width="4"/>
+<line x1="169.398" y1="222.099" x2="163.398" y2="222.099" stroke="#28342c" stroke-width="4"/>
+<line x1="169.398" y1="216.099" x2="163.398" y2="216.099" stroke="#28342c" stroke-width="4"/>
+<line x1="169.398" y1="210.099" x2="163.398" y2="210.099" stroke="#28342c" stroke-width="4"/>
+<line x1="169.398" y1="203.099" x2="163.398" y2="203.099" stroke="#28342c" stroke-width="4"/>
+<line x1="173.398" y1="199.099" x2="173.398" y2="193.099" stroke="#28342c" stroke-width="4"/>
+<line x1="161.398" y1="179.099" x2="161.398" y2="170.099" stroke="#28342c" stroke-width="6"/>
+<line x1="222.398" y1="191.099" x2="231.398" y2="191.099" stroke="#28342c" stroke-width="6"/>
+<line x1="209.398" y1="252.099" x2="209.398" y2="261.099" stroke="#28342c" stroke-width="6"/>
+<line x1="149.398" y1="239.099" x2="140.398" y2="239.099" stroke="#28342c" stroke-width="6"/>
+<line x1="169.398" y1="179.099" x2="169.398" y2="170.099" stroke="#28342c" stroke-width="6"/>
+<line x1="222.398" y1="199.099" x2="231.398" y2="199.099" stroke="#28342c" stroke-width="6"/>
+<line x1="201.398" y1="252.099" x2="201.398" y2="261.099" stroke="#28342c" stroke-width="6"/>
+<line x1="149.398" y1="231.099" x2="140.398" y2="231.099" stroke="#28342c" stroke-width="6"/>
+<line x1="177.398" y1="179.099" x2="177.398" y2="170.099" stroke="#28342c" stroke-width="6"/>
+<line x1="222.398" y1="207.099" x2="231.398" y2="207.099" stroke="#28342c" stroke-width="6"/>
+<line x1="193.398" y1="252.099" x2="193.398" y2="261.099" stroke="#28342c" stroke-width="6"/>
+<line x1="149.398" y1="223.099" x2="140.398" y2="223.099" stroke="#28342c" stroke-width="6"/>
+<line x1="185.398" y1="179.099" x2="185.398" y2="170.099" stroke="#28342c" stroke-width="6"/>
+<line x1="222.398" y1="215.099" x2="231.398" y2="215.099" stroke="#28342c" stroke-width="6"/>
+<line x1="185.398" y1="252.099" x2="185.398" y2="261.099" stroke="#28342c" stroke-width="6"/>
+<line x1="149.398" y1="215.099" x2="140.398" y2="215.099" stroke="#28342c" stroke-width="6"/>
+<line x1="193.398" y1="179.099" x2="193.398" y2="170.099" stroke="#28342c" stroke-width="6"/>
+<line x1="222.398" y1="223.099" x2="231.398" y2="223.099" stroke="#28342c" stroke-width="6"/>
+<line x1="177.398" y1="252.099" x2="177.398" y2="261.099" stroke="#28342c" stroke-width="6"/>
+<line x1="149.398" y1="207.099" x2="140.398" y2="207.099" stroke="#28342c" stroke-width="6"/>
+<line x1="201.398" y1="179.099" x2="201.398" y2="170.099" stroke="#28342c" stroke-width="6"/>
+<line x1="222.398" y1="231.099" x2="231.398" y2="231.099" stroke="#28342c" stroke-width="6"/>
+<line x1="169.398" y1="252.099" x2="169.398" y2="261.099" stroke="#28342c" stroke-width="6"/>
+<line x1="149.398" y1="199.099" x2="140.398" y2="199.099" stroke="#28342c" stroke-width="6"/>
+<line x1="209.398" y1="179.099" x2="209.398" y2="170.099" stroke="#28342c" stroke-width="6"/>
+<line x1="222.398" y1="239.099" x2="231.398" y2="239.099" stroke="#28342c" stroke-width="6"/>
+<line x1="161.398" y1="252.099" x2="161.398" y2="261.099" stroke="#28342c" stroke-width="6"/>
+<line x1="149.398" y1="191.099" x2="140.398" y2="191.099" stroke="#28342c" stroke-width="6"/>
+<line x1="180.398" y1="199.099" x2="180.398" y2="193.099" stroke="#28342c" stroke-width="4"/>
+<line x1="186.398" y1="199.099" x2="186.398" y2="193.099" stroke="#28342c" stroke-width="4"/>
+<line x1="192.398" y1="199.099" x2="192.398" y2="193.099" stroke="#28342c" stroke-width="4"/>
+<line x1="198.398" y1="199.099" x2="198.398" y2="193.099" stroke="#28342c" stroke-width="4"/>
+<line x1="202.398" y1="203.099" x2="208.398" y2="203.099" stroke="#28342c" stroke-width="4"/>
+<line x1="202.398" y1="209.099" x2="208.398" y2="209.099" stroke="#28342c" stroke-width="4"/>
+<line x1="202.398" y1="215.099" x2="208.398" y2="215.099" stroke="#28342c" stroke-width="4"/>
+<line x1="202.398" y1="221.099" x2="208.398" y2="221.099" stroke="#28342c" stroke-width="4"/>
+<line x1="202.398" y1="228.099" x2="208.398" y2="228.099" stroke="#28342c" stroke-width="4"/>
+<line x1="179.398" y1="232.099" x2="179.398" y2="238.099" stroke="#28342c" stroke-width="4"/>
+<line x1="185.398" y1="232.099" x2="185.398" y2="238.099" stroke="#28342c" stroke-width="4"/>
+<line x1="191.398" y1="232.099" x2="191.398" y2="238.099" stroke="#28342c" stroke-width="4"/>
+<line x1="198.398" y1="232.099" x2="198.398" y2="238.099" stroke="#28342c" stroke-width="4"/>
+<line x1="231.398" y1="215.099" x2="270.398" y2="215.099" stroke="#28342c" stroke-width="4"/>
+<path d="M230.403 223.096L255.898 223.099L264.898 236.099L273.898 236.099" stroke="#28342c" stroke-width="4"/>
+<path d="M141.847 223.096L116.352 223.099L107.352 236.099L98.3984 236.099" stroke="#28342c" stroke-width="4"/>
+<path d="M229.565 207.101L255.06 207.098L264.061 194.099L272.398 194.099" stroke="#28342c" stroke-width="4"/>
+<path d="M142.685 207.101L117.19 207.098L108.189 194.099L99.3984 194.099" stroke="#28342c" stroke-width="4"/>
+<line x1="185.398" y1="170.099" x2="185.398" y2="75.0986" stroke="#28342c" stroke-width="4"/>
+<line x1="185.398" y1="260.82" x2="185.398" y2="365.82" stroke="#28342c" stroke-width="4"/>
+<path d="M164.898 82.5986L164.898 123.099L177.398 137.842L177.398 170.099" stroke="#28342c" stroke-width="4"/>
+<path d="M164.898 376.604L164.898 307.826L177.398 293.083L177.398 260.826" stroke="#28342c" stroke-width="4"/>
+<path d="M205.898 83.0986L205.898 123.599L193.398 138.342L193.398 170.599" stroke="#28342c" stroke-width="4"/>
+<path d="M205.898 378.543L205.898 307.326L193.398 292.583L193.398 260.326" stroke="#28342c" stroke-width="4"/>
+<path d="M155.901 81.0995L156.398 126.099L169.371 141.099L169.371 170.398" stroke="#28342c" stroke-width="4"/>
+<path d="M155.901 349.825L156.398 304.826L169.371 289.826L169.371 260.527" stroke="#28342c" stroke-width="4"/>
+<path d="M214.896 81.5995L214.398 126.599L201.425 141.599L201.425 170.898" stroke="#28342c" stroke-width="4"/>
+<path d="M214.896 349.325L214.398 304.326L201.425 289.326L201.425 260.027" stroke="#28342c" stroke-width="4"/>
+<path d="M146.398 77.5986L146.398 129.099L161.398 145.324L161.398 170.099" stroke="#28342c" stroke-width="4"/>
+<path d="M146.398 353.326L146.398 301.826L161.398 285.601L161.398 260.826" stroke="#28342c" stroke-width="4"/>
+<path d="M224.398 78.0986L224.398 129.599L209.398 145.824L209.398 170.599" stroke="#28342c" stroke-width="4"/>
+<path d="M224.398 352.826L224.398 301.326L209.398 285.101L209.398 260.326" stroke="#28342c" stroke-width="4"/>
+<path d="M231.398 215.099H272.398" stroke="#28342c" stroke-width="4"/>
+<path d="M140.852 215.099H97.8984" stroke="#28342c" stroke-width="4"/>
+<path d="M231.398 231.099H249.398L258.398 245.099H271.898" stroke="#28342c" stroke-width="4"/>
+<path d="M140.852 231.099H122.852L113.852 245.099H97.8984" stroke="#28342c" stroke-width="4"/>
+<path d="M230.561 199.099H248.561L257.561 185.099H272.398" stroke="#28342c" stroke-width="4"/>
+<path d="M141.689 199.099H123.689L114.689 185.099H99.8984" stroke="#28342c" stroke-width="4"/>
+<path d="M272.393 176.099L251.893 176.099L242.893 191.099L231.393 191.099" stroke="#28342c" stroke-width="4"/>
+<path d="M99.8965 176.099L120.35 176.099L129.35 191.099L140.85 191.099" stroke="#28342c" stroke-width="4"/>
+<path d="M273.893 254.099L251.893 254.099L242.893 239.099L231.393 239.099" stroke="#28342c" stroke-width="4"/>
+<path d="M98.8965 254.099L120.35 254.099L129.35 239.099L140.85 239.099" stroke="#28342c" stroke-width="4"/>
+<path d="M181.399 80.5992L327.926 45.0935L307.209 133.097L281.167 170.598L281.167 368.598L205.713 356.04" stroke="#28342c" stroke-width="20"/>
+<path d="M187.587 80.1045L43.56 45.0995L64.2772 133.103L90.3191 170.604L90.3191 368.604L165.086 356.104" stroke="#28342c" stroke-width="20"/>
+<path d="M185.713 49.04L96.6692 27.8487L5.89497 6.09831L36.7129 150.099L64.7129 189.599L54.9442 393.099L72.7129 396.04L80.9442 407.599L160.895 392.598L166.898 378.6L186.901 368.1" stroke="#28342c" stroke-width="9"/>
+<path d="M183.713 49.04L273.845 27.7901L364.619 6.03972L333.801 150.04L305.801 189.54L315.57 393.041L298.713 395.54L289.57 407.541L209.619 392.539L203.615 378.541L183.612 368.041" stroke="#28342c" stroke-width="9"/>
+<path d="M10.7131 116.04L66.7123 103.039" stroke="#28342c" stroke-width="10"/>
+<line x1="100.565" y1="54.8113" x2="112.565" y2="9.8113" stroke="#28342c" stroke-width="10"/>
+<line y1="-5" x2="46.5725" y2="-5" transform="matrix(-0.257663 -0.966235 -0.966235 0.257663 269.393 56.0996)" stroke="#28342c" stroke-width="10"/>
+<path d="M360.211 116.54L310.489 104.04" stroke="#28342c" stroke-width="10"/>
+</svg>`,
+  };
+  function paintLogos(){
+    const theme = document.documentElement.getAttribute('data-theme');
+    document.querySelectorAll('.logo-slot').forEach(el => {
+      let variant = el.dataset.variant;
+      if(!variant){
+        variant = theme === 'dark' ? el.dataset.variantDark : el.dataset.variantLight;
+      }
+      if(LOGOS[variant]) el.innerHTML = LOGOS[variant];
+    });
+  }
+
+  // ---- ícones reais (Tabler Icons, outline, MIT) ----
+  const ICONS = {
+    home: `<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M5 12l-2 0l9 -9l9 9l-2 0" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>`,
+    search: `<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
+  <path d="M21 21l-6 -6" />
+</svg>`,
+    user: `<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>`,
+    settings: `<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065" />
+  <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
+</svg>`,
+    bell: `<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6" />
+  <path d="M9 17v1a3 3 0 0 0 6 0v-1" />
+</svg>`,
+    calendar: `<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12" />
+  <path d="M16 3v4" />
+  <path d="M8 3v4" />
+  <path d="M4 11h16" />
+  <path d="M11 15h1" />
+  <path d="M12 15v3" />
+</svg>`,
+    check: `<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M5 12l5 5l10 -10" />
+</svg>`,
+    x: `<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M18 6l-12 12" />
+  <path d="M6 6l12 12" />
+</svg>`,
+    "alert-triangle": `<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M12 9v4" />
+  <path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0" />
+  <path d="M12 16h.01" />
+</svg>`,
+    heart: `<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" />
+</svg>`,
+    "map-pin": `<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
+  <path d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0" />
+</svg>`,
+    "chart-bar": `<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -6" />
+  <path d="M15 9a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -10" />
+  <path d="M9 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -14" />
+  <path d="M4 20h14" />
+</svg>`,
+    "file-text": `<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+  <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2" />
+  <path d="M9 9l1 0" />
+  <path d="M9 13l6 0" />
+  <path d="M9 17l6 0" />
+</svg>`,
+    mail: `<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10" />
+  <path d="M3 7l9 6l9 -6" />
+</svg>`,
+    target: `<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M11 12a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+  <path d="M7 12a5 5 0 1 0 10 0a5 5 0 1 0 -10 0" />
+  <path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+</svg>`,
+    bulb: `<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 12h1m8 -9v1m8 8h1m-15.4 -6.4l.7 .7m12.1 -.7l-.7 .7" />
+  <path d="M9 16a5 5 0 1 1 6 0a3.5 3.5 0 0 0 -1 3a2 2 0 0 1 -4 0a3.5 3.5 0 0 0 -1 -3" />
+  <path d="M9.7 17l4.6 0" />
+</svg>`,
+    typography: `<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M4 20l3 0" />
+  <path d="M14 20l7 0" />
+  <path d="M6.9 15l6.9 0" />
+  <path d="M10.2 6.3l5.8 13.7" />
+  <path d="M5 20l6 -16l2 0l7 16" />
+</svg>`,
+    palette: `<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M12 21a9 9 0 0 1 0 -18c4.97 0 9 3.582 9 8c0 1.06 -.474 2.078 -1.318 2.828c-.844 .75 -1.989 1.172 -3.182 1.172h-2.5a2 2 0 0 0 -1 3.75a1.3 1.3 0 0 1 -1 2.25" />
+  <path d="M7.5 10.5a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+  <path d="M11.5 7.5a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+  <path d="M15.5 10.5a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+</svg>`,
+    shield: `<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M12 3a12 12 0 0 0 8.5 3a12 12 0 0 1 -8.5 15a12 12 0 0 1 -8.5 -15a12 12 0 0 0 8.5 -3" />
+</svg>`,
+    icons: `<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 6.5a3.5 3.5 0 1 0 7 0a3.5 3.5 0 1 0 -7 0" />
+  <path d="M2.5 21h8l-4 -7l-4 7" />
+  <path d="M14 3l7 7" />
+  <path d="M14 10l7 -7" />
+  <path d="M14 14h7v7h-7l0 -7" />
+</svg>`,
+    "layout-grid": `<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M4 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -4" />
+  <path d="M14 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -4" />
+  <path d="M4 15a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -4" />
+  <path d="M14 15a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -4" />
+</svg>`,
+    code: `<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M7 8l-4 4l4 4" />
+  <path d="M17 8l4 4l-4 4" />
+  <path d="M14 4l-4 16" />
+</svg>`,
+    stack: `<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M12 6l-8 4l8 4l8 -4l-8 -4" />
+  <path d="M4 14l8 4l8 -4" />
+</svg>`,
+    bolt: `<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M13 3l0 7l6 0l-8 11l0 -7l-6 0l8 -11" />
+</svg>`,
+    accessible: `<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+  <path d="M10 16.5l2 -3l2 3m-2 -3v-2l3 -1m-6 0l3 1" />
+  <path d="M11.5 7.5a.5 .5 0 1 0 1 0a.5 .5 0 1 0 -1 0" fill="currentColor" />
+</svg>`,
+  };
+  function paintIcons(){
+    document.querySelectorAll('.icon-slot').forEach(el => {
+      const name = el.dataset.icon;
+      if(ICONS[name]) el.innerHTML = ICONS[name];
+    });
+  }
+  paintIcons();
+
+  // theme toggle
+  const btnLight = document.getElementById('btn-light');
+  const btnDark = document.getElementById('btn-dark');
+  function setTheme(mode){
+    document.documentElement.setAttribute('data-theme', mode);
+    btnLight.classList.toggle('active', mode === 'light');
+    btnDark.classList.toggle('active', mode === 'dark');
+    btnLight.setAttribute('aria-pressed', mode === 'light');
+    btnDark.setAttribute('aria-pressed', mode === 'dark');
+    paintLogos();
+  }
+  btnLight.addEventListener('click', () => setTheme('light'));
+  btnDark.addEventListener('click', () => setTheme('dark'));
+
+  paintLogos();
+
+  // ---- ícones novos ----
+  const ICONS_EXTRA = {
+    download: `<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
+  <path d="M7 11l5 5l5 -5" />
+  <path d="M12 4l0 12" />
+</svg>`,
+    copy: `<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="M7 9.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667l0 -8.666" />
+  <path d="M4.012 16.737a2.005 2.005 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1" />
+</svg>`,
+  };
+  Object.assign(ICONS, ICONS_EXTRA);
+
+  // ---- seção de download ----
+;
+  const DL_BG = {
+    color:'#f2f2f2', floresta:'#f2f2f2', rio:'#f2f2f2', dark:'#f2f2f2', white:'#495b4f'
+  };
+  const DL_NAMES = {
+    color:'Colorida', floresta:'Mono floresta', rio:'Mono rio', white:'Mono branca', dark:'Mono escura'
+  };
+  const DL_ASPECT = 413/371; // h/w ratio do viewBox original
+
+  let dlState = { variant:'color', px:96, fmt:'svg' };
+
+  function dlUpdatePreview(){
+    const {variant, px, fmt} = dlState;
+    const bg = document.getElementById('dl-preview-bg');
+    const logo = document.getElementById('dl-preview-logo');
+    const meta = document.getElementById('dl-preview-meta');
+    const hint = document.getElementById('dl-hint');
+    const btnLabel = document.getElementById('dl-btn-label');
+    const h = Math.round(px * DL_ASPECT);
+    bg.style.background = DL_BG[variant];
+    logo.style.height = px + 'px';
+    logo.dataset.variant = variant;
+    paintIcons();
+    // repaint logo slot
+    if(LOGOS[variant]) logo.innerHTML = LOGOS[variant];
+    meta.textContent = `${px} × ${h}px · ${fmt.toUpperCase()} · ${DL_NAMES[variant]}`;
+    btnLabel.textContent = `Baixar ${fmt.toUpperCase()}`;
+    hint.textContent = fmt === 'svg'
+      ? 'SVG: vetorial, escala sem perda em qualquer tamanho.'
+      : `PNG: ${px} × ${h}px, canal alpha transparente.`;
+  }
+
+  function dlExport(){
+    const {variant, px, fmt} = dlState;
+    const svgSource = LOGOS[variant];
+    const h = Math.round(px * DL_ASPECT);
+    const name = `inova-cumau-logo-${variant}-${px}px.${fmt}`;
+    if(fmt === 'svg'){
+      const blob = new Blob([svgSource], {type:'image/svg+xml'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = name; a.click();
+      URL.revokeObjectURL(url);
+    } else {
+      // PNG via canvas
+      const img = new Image();
+      const svgBlob = new Blob([svgSource], {type:'image/svg+xml'});
+      const url = URL.createObjectURL(svgBlob);
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = px; canvas.height = h;
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0,0,px,h);
+        ctx.drawImage(img, 0, 0, px, h);
+        URL.revokeObjectURL(url);
+        canvas.toBlob(blob => {
+          const a2 = document.createElement('a');
+          a2.href = URL.createObjectURL(blob);
+          a2.download = name; a2.click();
+        }, 'image/png');
+      };
+      img.src = url;
+    }
+  }
+
+  // variant buttons
+  document.querySelectorAll('.dl-variant').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.dl-variant').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      dlState.variant = btn.dataset.variant;
+      dlUpdatePreview();
+    });
+  });
+  // size buttons
+  document.querySelectorAll('.dl-size').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.dl-size').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      dlState.px = parseInt(btn.dataset.px);
+      dlUpdatePreview();
+    });
+  });
+  // format buttons
+  document.querySelectorAll('.dl-fmt').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.dl-fmt').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      dlState.fmt = btn.dataset.fmt;
+      dlUpdatePreview();
+    });
+  });
+  // download button
+  document.getElementById('dl-download-btn')?.addEventListener('click', dlExport);
+
+  // init preview after logos are painted
+  setTimeout(() => {
+    paintLogos();
+    paintIcons();
+    dlUpdatePreview();
+  }, 0);
+
+  // ---- mobile nav bar ----
+  const mobileThemeBtn = document.getElementById('mobile-theme-btn');
+  const mobileThemeIcon = document.getElementById('mobile-theme-icon');
+  const mobileThemeLabel = document.getElementById('mobile-theme-label');
+
+  function updateMobileThemeBtn(mode){
+    mobileThemeIcon.innerHTML = `<use href="#${mode === 'dark' ? 'sun-icon' : 'moon-icon'}"/>`;
+    mobileThemeLabel.textContent = mode === 'dark' ? 'Claro' : 'Escuro';
+  }
+  mobileThemeBtn?.addEventListener('click', () => {
+    const current = document.documentElement.getAttribute('data-theme');
+    setTheme(current === 'dark' ? 'light' : 'dark');
+    updateMobileThemeBtn(current === 'dark' ? 'light' : 'dark');
+  });
+
+  // mobile scrollspy
+  // mobile nav bar visibility
+  function updateMobileNav(){
+    const isMobile = window.innerWidth <= 768;
+    const bar = document.getElementById('mobile-nav-bar');
+    if(bar) bar.style.display = isMobile ? 'flex' : 'none';
+    const sidebar = document.querySelector('nav.side');
+    if(sidebar) sidebar.style.display = isMobile ? 'none' : '';
+  }
+  updateMobileNav();
+  window.addEventListener('resize', updateMobileNav);
+
+  // scrollspy — desktop e mobile
+  const links = document.querySelectorAll('nav.side a[data-target]');
+  const targets = Array.from(links).map(a => document.getElementById(a.dataset.target)).filter(Boolean);
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        links.forEach(a => a.classList.remove('active'));
+        const active = document.querySelector(`nav.side a[data-target="${entry.target.id}"]`);
+        if(active) active.classList.add('active');
+      }
+    });
+  }, {rootMargin:'-40% 0px -50% 0px'});
+  targets.forEach(t => io.observe(t));
+
+  const mobileLinks = document.querySelectorAll('.mobile-nav-bar a[data-target]');
+  const mobileIO = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        mobileLinks.forEach(a => a.classList.remove('active'));
+        const active = document.querySelector(`.mobile-nav-bar a[data-target="${entry.target.id}"]`);
+        if(active) active.classList.add('active');
+      }
+    });
+  }, {rootMargin:'-40% 0px -50% 0px'});
+  targets.forEach(t => mobileIO.observe(t));
+</script>
+
+</body>
+</html>
