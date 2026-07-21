@@ -1,0 +1,329 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+  Tokens espelham docs/brand/inova-cumau-guia-de-marca-v1.3.html 1:1 (mesmos nomes/valores).
+  O guia usa [data-theme="dark"]; aqui usamos .dark para casar com a convenção shadcn/next-themes.
+*/
+@theme inline {
+  --color-floresta-50: var(--floresta-50);
+  --color-floresta-100: var(--floresta-100);
+  --color-floresta-200: var(--floresta-200);
+  --color-floresta-300: var(--floresta-300);
+  --color-floresta-400: var(--floresta-400);
+  --color-floresta-500: var(--floresta-500);
+  --color-floresta-600: var(--floresta-600);
+  --color-floresta-700: var(--floresta-700);
+  --color-floresta-800: var(--floresta-800);
+  --color-floresta-900: var(--floresta-900);
+  --color-floresta-950: var(--floresta-950);
+
+  --color-rio-50: var(--rio-50);
+  --color-rio-100: var(--rio-100);
+  --color-rio-200: var(--rio-200);
+  --color-rio-300: var(--rio-300);
+  --color-rio-400: var(--rio-400);
+  --color-rio-500: var(--rio-500);
+  --color-rio-600: var(--rio-600);
+  --color-rio-700: var(--rio-700);
+  --color-rio-800: var(--rio-800);
+  --color-rio-900: var(--rio-900);
+  --color-rio-950: var(--rio-950);
+
+  --color-neutral-50: var(--neutral-50);
+  --color-neutral-100: var(--neutral-100);
+  --color-neutral-200: var(--neutral-200);
+  --color-neutral-300: var(--neutral-300);
+  --color-neutral-400: var(--neutral-400);
+  --color-neutral-500: var(--neutral-500);
+  --color-neutral-600: var(--neutral-600);
+  --color-neutral-700: var(--neutral-700);
+  --color-neutral-800: var(--neutral-800);
+  --color-neutral-900: var(--neutral-900);
+  --color-neutral-950: var(--neutral-950);
+
+  --color-success-50: var(--success-50);
+  --color-success-100: var(--success-100);
+  --color-success-200: var(--success-200);
+  --color-success-300: var(--success-300);
+  --color-success-400: var(--success-400);
+  --color-success-500: var(--success-500);
+  --color-success-600: var(--success-600);
+  --color-success-700: var(--success-700);
+  --color-success-800: var(--success-800);
+  --color-success-900: var(--success-900);
+  --color-success-950: var(--success-950);
+
+  --color-warning-50: var(--warning-50);
+  --color-warning-100: var(--warning-100);
+  --color-warning-200: var(--warning-200);
+  --color-warning-300: var(--warning-300);
+  --color-warning-400: var(--warning-400);
+  --color-warning-500: var(--warning-500);
+  --color-warning-600: var(--warning-600);
+  --color-warning-700: var(--warning-700);
+  --color-warning-800: var(--warning-800);
+  --color-warning-900: var(--warning-900);
+  --color-warning-950: var(--warning-950);
+
+  --color-error-50: var(--error-50);
+  --color-error-100: var(--error-100);
+  --color-error-200: var(--error-200);
+  --color-error-300: var(--error-300);
+  --color-error-400: var(--error-400);
+  --color-error-500: var(--error-500);
+  --color-error-600: var(--error-600);
+  --color-error-700: var(--error-700);
+  --color-error-800: var(--error-800);
+  --color-error-900: var(--error-900);
+  --color-error-950: var(--error-950);
+
+  --color-info-50: var(--info-50);
+  --color-info-100: var(--info-100);
+  --color-info-200: var(--info-200);
+  --color-info-300: var(--info-300);
+  --color-info-400: var(--info-400);
+  --color-info-500: var(--info-500);
+  --color-info-600: var(--info-600);
+  --color-info-700: var(--info-700);
+  --color-info-800: var(--info-800);
+  --color-info-900: var(--info-900);
+  --color-info-950: var(--info-950);
+
+  --color-background: var(--bg);
+  --color-foreground: var(--text-primary);
+  --font-sans: var(--font-sans);
+  --font-serif: var(--font-serif);
+  --font-mono: var(--font-mono);
+  --font-heading: var(--font-serif);
+
+  --color-card: var(--surface);
+  --color-card-foreground: var(--text-primary);
+  --color-popover: var(--surface);
+  --color-popover-foreground: var(--text-primary);
+  --color-primary: var(--brand-primary-bg);
+  --color-primary-foreground: var(--brand-primary-text);
+  --color-secondary: var(--brand-secondary-bg);
+  --color-secondary-foreground: var(--brand-secondary-text);
+  --color-muted: var(--surface-alt);
+  --color-muted-foreground: var(--text-muted);
+  --color-accent: var(--surface-alt);
+  --color-accent-foreground: var(--text-primary);
+  --color-destructive: var(--brand-destructive);
+  --color-border: var(--border);
+  --color-input: var(--border);
+  --color-ring: var(--brand-link);
+
+  --color-chart-1: var(--floresta-500);
+  --color-chart-2: var(--rio-500);
+  --color-chart-3: var(--success-500);
+  --color-chart-4: var(--warning-500);
+  --color-chart-5: var(--info-500);
+
+  --color-sidebar: var(--nav-bg);
+  --color-sidebar-foreground: var(--text-primary);
+  --color-sidebar-primary: var(--nav-active-bg);
+  --color-sidebar-primary-foreground: var(--nav-active-text);
+  --color-sidebar-accent: var(--nav-hover-bg);
+  --color-sidebar-accent-foreground: var(--text-primary);
+  --color-sidebar-border: var(--border);
+  --color-sidebar-ring: var(--brand-link);
+
+  --color-white-exception: var(--white-exception);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+  --floresta-50: #f7f8f7;
+  --floresta-100: #eaecea;
+  --floresta-200: #d2dbd5;
+  --floresta-300: #b3c2b8;
+  --floresta-400: #93a99b;
+  --floresta-500: #779280;
+  --floresta-600: #5b7162;
+  --floresta-700: #495b4f;
+  --floresta-800: #3d4c42;
+  --floresta-900: #28342c;
+  --floresta-950: #19201b;
+
+  --rio-50: #f9f8f5;
+  --rio-100: #f0ece6;
+  --rio-200: #e5dac7;
+  --rio-300: #d4c0a0;
+  --rio-400: #c2a77a;
+  --rio-500: #b28f57;
+  --rio-600: #8c6f40;
+  --rio-700: #82673b;
+  --rio-800: #5f4b2b;
+  --rio-900: #41321b;
+  --rio-950: #281f10;
+
+  --neutral-50: #f7f7f7;
+  --neutral-100: #ededed;
+  --neutral-200: #d9d9d9;
+  --neutral-300: #bfbfbf;
+  --neutral-400: #a3a3a3;
+  --neutral-500: #8a8a8a;
+  --neutral-600: #696969;
+  --neutral-700: #525252;
+  --neutral-800: #3d3d3d;
+  --neutral-900: #262626;
+  --neutral-950: #141414;
+
+  --success-50: #eef8ee;
+  --success-100: #d7eed9;
+  --success-200: #c0e4c5;
+  --success-300: #a9d9b1;
+  --success-400: #74b480;
+  --success-500: #3f8f4f;
+  --success-600: #367d44;
+  --success-700: #2c6b3a;
+  --success-800: #23582e;
+  --success-900: #1a4423;
+  --success-950: #122e18;
+
+  --warning-50: #fdf3e5;
+  --warning-100: #f8e0bd;
+  --warning-200: #f3ce9c;
+  --warning-300: #eebd7a;
+  --warning-400: #dc9c4a;
+  --warning-500: #c97a1a;
+  --warning-600: #b06b16;
+  --warning-700: #965c13;
+  --warning-800: #794a10;
+  --warning-900: #5c380c;
+  --warning-950: #3f2608;
+
+  --error-50: #fceceb;
+  --error-100: #f6cfc9;
+  --error-200: #eeb6ae;
+  --error-300: #e59d92;
+  --error-400: #d26b5e;
+  --error-500: #c0392b;
+  --error-600: #a93226;
+  --error-700: #922b20;
+  --error-800: #77231a;
+  --error-900: #5c1b14;
+  --error-950: #3f120e;
+
+  --info-50: #eaf3f7;
+  --info-100: #c9e0e9;
+  --info-200: #acd1e0;
+  --info-300: #8fc2d6;
+  --info-400: #5e98b2;
+  --info-500: #2e6f8e;
+  --info-600: #28617c;
+  --info-700: #22536a;
+  --info-800: #1c4457;
+  --info-900: #163544;
+  --info-950: #0f242e;
+
+  --bg: var(--neutral-50);
+  --surface: #ffffff;
+  --surface-alt: var(--neutral-100);
+  --text-primary: var(--neutral-900);
+  --text-secondary: var(--neutral-700);
+  --text-muted: var(--neutral-600);
+  --border: var(--neutral-200);
+  --border-strong: var(--neutral-300);
+  --brand-link: var(--floresta-700);
+  --brand-accent: var(--rio-700);
+  --brand-primary-bg: var(--floresta-700);
+  --brand-primary-text: #ffffff;
+  --brand-secondary-bg: var(--rio-100);
+  --brand-secondary-border: var(--rio-700);
+  --brand-secondary-text: var(--rio-700);
+  --brand-destructive: var(--error-600);
+  --card-shadow: 0 20px 40px -20px rgba(20, 17, 13, 0.15);
+
+  --badge-success-bg: var(--success-100);
+  --badge-success-text: var(--success-800);
+  --badge-warning-bg: var(--warning-100);
+  --badge-warning-text: var(--warning-800);
+  --badge-error-bg: var(--error-100);
+  --badge-error-text: var(--error-800);
+  --badge-info-bg: var(--info-100);
+  --badge-info-text: var(--info-800);
+
+  --nav-bg: var(--neutral-100);
+  --nav-hover-bg: var(--neutral-200);
+  --nav-active-bg: var(--floresta-700);
+  --nav-active-text: #ffffff;
+
+  /* Exceção fora da escala de tokens — uso pontual (ex.: bg do Hero). */
+  --white-exception: #ffffff;
+
+  --radius: 0.625rem;
+}
+
+.dark {
+  --bg: var(--neutral-950);
+  --surface: var(--neutral-900);
+  --surface-alt: var(--neutral-800);
+  --text-primary: var(--neutral-50);
+  --text-secondary: var(--neutral-300);
+  --text-muted: var(--neutral-400);
+  --border: var(--neutral-800);
+  --border-strong: var(--neutral-700);
+  --brand-link: var(--floresta-300);
+  --brand-accent: var(--rio-300);
+  --brand-primary-bg: var(--floresta-500);
+  --brand-primary-text: #ffffff;
+  --brand-secondary-bg: var(--rio-900);
+  --brand-secondary-border: var(--rio-300);
+  --brand-secondary-text: var(--rio-300);
+  --brand-destructive: var(--error-400);
+  --card-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.6);
+
+  --badge-success-bg: var(--success-900);
+  --badge-success-text: var(--success-300);
+  --badge-warning-bg: var(--warning-900);
+  --badge-warning-text: var(--warning-300);
+  --badge-error-bg: var(--error-900);
+  --badge-error-text: var(--error-300);
+  --badge-info-bg: var(--info-900);
+  --badge-info-text: var(--info-300);
+
+  --nav-bg: var(--neutral-900);
+  --nav-hover-bg: var(--neutral-800);
+  --nav-active-bg: var(--floresta-500);
+  --nav-active-text: #ffffff;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@layer utilities {
+  .animate-marquee {
+    display: inline-flex;
+    animation: marquee 18s linear infinite;
+  }
+}
