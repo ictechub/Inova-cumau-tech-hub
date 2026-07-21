@@ -17,8 +17,9 @@ futura, para a área logada (associados/admin/marketplace).
   (`--font-sans`, corpo/UI), Space Mono (`--font-mono`, labels/metadados).
 - **Backend**: Supabase (projeto `ekkbqazhdaabdkncwlwa`), acessado via MCP para
   schema/migrations/types — nunca credenciais manuais.
-- **Deploy**: Vercel. **NUNCA rodar `vercel` / `vercel deploy` nesta fase** — apenas
-  preparar configuração local.
+- **Deploy**: Vercel, via a integração MCP (`deploy_to_vercel`). Env vars do
+  Supabase (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`)
+  precisam estar configuradas no projeto Vercel.
 
 ## Comandos
 
@@ -120,4 +121,3 @@ depois).
   `@inova-cumau/supabase`.
 - Nenhum dado real inventado (estatísticas, depoimentos, parceiros) — usar
   placeholder explícito e listar como pendência.
-- **Nunca rodar `vercel deploy`** nesta fase do projeto.
