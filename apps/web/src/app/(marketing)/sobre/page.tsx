@@ -13,19 +13,19 @@ const LINKS = [
     href: "/sobre/quem-somos",
     icon: IconUserCircle,
     title: "Quem somos",
-    description: "A origem do nome Cumaú e a missão da associação.",
+    description: "Origem e missão.",
   },
   {
     href: "/sobre/equipe",
     icon: IconUsers,
     title: "Equipe",
-    description: "Quem está à frente da Inova Cumaú.",
+    description: "Quem está à frente.",
   },
   {
     href: "/sobre/ecossistema",
     icon: IconNetwork,
     title: "Ecossistema",
-    description: "Territórios de atuação e públicos do hub.",
+    description: "Território e públicos.",
   },
 ];
 
