@@ -145,12 +145,6 @@ const NAV_ITEMS: NavEntry[] = [
         description: "Comunicados oficiais.",
         icon: IconBell,
       },
-      {
-        href: "/noticias/artigos",
-        label: "Artigos",
-        description: "Artigos sobre inovação.",
-        icon: IconNews,
-      },
     ],
   },
   {
@@ -176,6 +170,12 @@ const NAV_ITEMS: NavEntry[] = [
             label: "Podcast",
             description: "Conversas sobre inovação.",
             icon: IconMicrophone,
+          },
+          {
+            href: "/noticias/artigos",
+            label: "Artigos",
+            description: "Artigos sobre inovação.",
+            icon: IconNews,
           },
         ],
       },
