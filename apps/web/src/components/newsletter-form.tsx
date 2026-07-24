@@ -4,8 +4,12 @@ import { useActionState } from "react";
 import { IconLoader2, IconSend } from "@tabler/icons-react";
 
 import { submitNewsletter } from "@/app/actions";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+} from "@/components/ui/input-group";
 import { initialFormState } from "@/lib/form-state";
 
 export function NewsletterForm() {
@@ -15,37 +19,45 @@ export function NewsletterForm() {
   );
 
   return (
-    <form action={formAction} className="flex flex-col gap-3 sm:flex-row sm:items-start">
-      <div className="flex-1">
-        <label htmlFor="newsletter-email" className="sr-only">
-          E-mail
-        </label>
-        <Input
+    <form action={formAction} className="w-full max-w-sm">
+      <label htmlFor="newsletter-email" className="sr-only">
+        E-mail
+      </label>
+      <InputGroup className="h-11">
+        <InputGroupInput
           id="newsletter-email"
           name="email"
           type="email"
           placeholder="seu@email.com"
           required
           autoComplete="email"
+          className="h-11 px-3 text-base"
         />
-        {state.status !== "idle" && (
-          <p
-            role="status"
-            className={
-              state.status === "success"
-                ? "mt-2 text-sm text-success-300"
-                : "mt-2 text-sm text-error-300"
-            }
+        <InputGroupAddon align="inline-end">
+          <InputGroupButton
+            type="submit"
+            size="sm"
+            disabled={pending}
+            variant="default"
+            className="gap-1.5 px-4"
           >
-            {state.message}
-          </p>
-        )}
-      </div>
-
-      <Button type="submit" disabled={pending} className="gap-2 sm:shrink-0">
-        {pending ? <IconLoader2 className="animate-spin" /> : <IconSend />}
-        Inscrever
-      </Button>
+            {pending ? <IconLoader2 className="animate-spin" /> : <IconSend />}
+            Inscrever
+          </InputGroupButton>
+        </InputGroupAddon>
+      </InputGroup>
+      {state.status !== "idle" && (
+        <p
+          role="status"
+          className={
+            state.status === "success"
+              ? "mt-2 text-sm text-success-700"
+              : "mt-2 text-sm text-destructive"
+          }
+        >
+          {state.message}
+        </p>
+      )}
     </form>
   );
 }

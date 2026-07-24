@@ -19,7 +19,7 @@ const BENEFITS = [
     icon: IconAccessPoint,
     title: "Visibilidade na mídia própria",
     description:
-      "Presença no site, redes sociais, WhatsApp, rádio web e Revista do Investidor da Inova Cumaú.",
+      "Presença no site, redes sociais, WhatsApp e Revista do Investidor da Inova Cumaú.",
   },
   {
     icon: IconShoppingBag,

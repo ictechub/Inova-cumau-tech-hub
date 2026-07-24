@@ -309,21 +309,43 @@
   }
   html {
     @apply font-sans;
+    scrollbar-gutter: stable;
+  }
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus {
+    -webkit-text-fill-color: var(--color-foreground);
+    caret-color: var(--color-foreground);
+    transition:
+      background-color 600000s ease-in-out 0s,
+      color 600000s ease-in-out 0s;
+  }
+  input::-ms-clear {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+  input::-ms-reveal {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+  button:not(:disabled),
+  [role="button"]:not(:disabled),
+  [type="button"]:not(:disabled),
+  [type="submit"]:not(:disabled),
+  [type="reset"]:not(:disabled),
+  [type="checkbox"]:not(:disabled),
+  [type="radio"]:not(:disabled),
+  select:not(:disabled),
+  summary,
+  label[for],
+  a {
+    cursor: pointer;
+  }
+  :disabled,
+  [aria-disabled="true"] {
+    cursor: not-allowed;
   }
 }
 
-@keyframes marquee {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
-}
-
-@layer utilities {
-  .animate-marquee {
-    display: inline-flex;
-    animation: marquee 18s linear infinite;
-  }
-}

@@ -2,8 +2,8 @@
 
 Hub de comunicação da Inova Cumaú (associação de startups de tecnologia e
 bioeconomia de Santana/AP). O site é a porta de entrada para o ecossistema
-(Instagram, WhatsApp, YouTube, rádio web, Revista do Investidor) e, numa fase
-futura, para a área logada (associados/admin/marketplace).
+(Instagram, WhatsApp, YouTube, Revista do Investidor) e, numa fase futura, para
+a área logada (associados/admin/marketplace).
 
 ## Stack (travada — não trocar sem pedido explícito)
 
@@ -84,16 +84,8 @@ direto, usando `createServerClient` de `packages/supabase/server.ts`.
 
 **Feito**: monorepo, Next.js + shadcn/ui + tokens de marca, fontes, schema Supabase +
 clients + types, extração dos 6 logos SVG (`color`, `white`, `dark`, `floresta`,
-`rio`, `floresta900`), site multi-página com mega-menu, badge de rádio no header
-(`SiteHeaderRadioBadge`, `apps/web/src/components/site-header-radio-badge.tsx`,
-visível a partir do breakpoint `lg`, posicionada entre o menu e os botões de CTA)
-com play/pause, título "tocando agora" com efeito marquee e mutar/desmutar. O
-estado do player (play/pause, volume, mute, analyser) fica num contexto
-compartilhado (`RadioPlayerProvider`, `apps/web/src/components/radio-player-provider.tsx`,
-montado em `apps/web/src/app/(marketing)/layout.tsx`), hoje consumido só pela
-`SiteHeaderRadioBadge` (a barra sticky `SiteRadioBar` que ficava acima do header,
-junto com o `LiveWaveform` que ela usava, foi removida a pedido — a badge no
-header assumiu essa função). Home (`/`) expandida com seções institucionais:
+`rio`, `floresta900`), site multi-página com mega-menu. Home (`/`) expandida com
+seções institucionais:
 `Hero` → `About` (`components/sections/about.tsx`, teaser "quem somos") → `Offers`
 (`components/sections/offers.tsx`, benefícios de associar-se) → seção "Portal"
 (grid de hubs Sobre/Notícias/Mídia/Parceiros, inline em `page.tsx`) → `Movements`
@@ -105,12 +97,7 @@ formulários).
 
 **Dados reais ausentes** (usar placeholder explícito até serem fornecidos — nunca
 inventar): número de associados, depoimentos, logos de parceiros, estatísticas de
-impacto, **URL do stream de áudio da rádio web** (placeholder em
-`RADIO_STREAM_URL` dentro de `radio-player-provider.tsx`) e **título/descrição
-"tocando agora"** (virá de uma API/endpoint ou embed ainda não definido — hoje são
-textos estáticos `NOW_PLAYING_TITLE`/`NOW_PLAYING_DESCRIPTION` em
-`radio-player-provider.tsx`, front-end já preparado para receber dados reais
-depois).
+impacto.
 
 ## Convenções
 

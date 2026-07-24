@@ -29,7 +29,7 @@ export function Hero() {
             render={<Link href="/associe-se" />}
             nativeButton={false}
             size="lg"
-            className="gap-2"
+            className="h-11 gap-2 px-6"
           >
             Associe-se
             <IconArrowRight className="transition-transform duration-200 group-hover/button:translate-x-1" />
@@ -39,7 +39,7 @@ export function Hero() {
             nativeButton={false}
             variant="outline"
             size="lg"
-            className="border-[1.5px] border-rio-700 bg-transparent text-rio-700 hover:bg-rio-700/10 hover:text-rio-700"
+            className="h-11 border-[1.5px] border-rio-700 bg-transparent px-6 text-rio-700 hover:bg-rio-700/10 hover:text-rio-700"
           >
             Conheça o ecossistema
           </Button>

@@ -8,6 +8,7 @@ import {
 } from "@tabler/icons-react";
 
 import { LinkCard } from "@/components/link-card";
+import { Button } from "@/components/ui/button";
 
 const MOVEMENTS = [
   {
@@ -48,13 +49,15 @@ export function Movements() {
             Os movimentos da associação
           </h2>
         </div>
-        <Link
-          href="/noticias"
-          className="group/button flex items-center gap-1 text-sm font-medium text-primary hover:underline"
+        <Button
+          render={<Link href="/noticias" />}
+          nativeButton={false}
+          variant="ghost"
+          className="gap-2 text-rio-700 hover:bg-rio-700/10 hover:text-rio-700"
         >
           Ver todas as notícias
-          <IconArrowRight className="size-4 transition-transform duration-200 group-hover/button:translate-x-1" />
-        </Link>
+          <IconArrowRight className="transition-transform duration-200 group-hover/button:translate-x-1" />
+        </Button>
       </div>
       <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {MOVEMENTS.map((item) => (

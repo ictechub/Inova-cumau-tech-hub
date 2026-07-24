@@ -27,7 +27,7 @@ export default function QuemSomosPage() {
             A Inova Cumaú existe para organizar o ecossistema de inovação do Amapá,
             conectando startups associadas a clientes, parceiros, investidores, poder
             público e imprensa através de uma rede de comunicação própria (site, redes
-            sociais, WhatsApp, rádio web e a Revista do Investidor).
+            sociais, WhatsApp e a Revista do Investidor).
           </p>
           <p>
             Estamos sediados em <strong className="text-foreground">Santana</strong>,

@@ -17,7 +17,7 @@ const OFFERS = [
     icon: IconAccessPoint,
     title: "Visibilidade na mídia",
     description:
-      "Presença no site, redes sociais, WhatsApp, rádio web e Revista do Investidor.",
+      "Presença no site, redes sociais, WhatsApp e Revista do Investidor.",
   },
   {
     icon: IconShoppingBag,
@@ -67,7 +67,7 @@ export function Offers() {
             render={<Link href="/associe-se" />}
             nativeButton={false}
             variant="ghost"
-            className="hidden gap-2 sm:inline-flex"
+            className="hidden gap-2 text-rio-700 hover:bg-rio-700/10 hover:text-rio-700 sm:inline-flex"
           >
             Ver todos os benefícios
             <IconArrowRight className="transition-transform duration-200 group-hover/button:translate-x-1" />
@@ -92,7 +92,7 @@ export function Offers() {
           render={<Link href="/associe-se" />}
           nativeButton={false}
           variant="ghost"
-          className="mt-8 flex w-full gap-2 sm:hidden"
+          className="mt-8 flex w-full gap-2 text-rio-700 hover:bg-rio-700/10 hover:text-rio-700 sm:hidden"
         >
           Ver todos os benefícios
           <IconArrowRight className="transition-transform duration-200 group-hover/button:translate-x-1" />

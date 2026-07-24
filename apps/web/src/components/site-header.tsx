@@ -21,13 +21,11 @@ import {
   IconMenu2,
   IconMicrophone,
   IconNews,
-  IconAccessPoint,
   IconSpeakerphone,
   IconUsers,
 } from "@tabler/icons-react";
 
 import { Logo } from "@/components/logo";
-import { SiteHeaderRadioBadge } from "@/components/site-header-radio-badge";
 import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
@@ -91,7 +89,7 @@ const NAV_ITEMS: NavEntry[] = [
           {
             href: "/sobre/juridico",
             label: "Jurídico",
-            description: "Estatuto e documentos legais.",
+            description: "Estatuto e documentos.",
             icon: IconGavel,
           },
         ],
@@ -102,7 +100,7 @@ const NAV_ITEMS: NavEntry[] = [
           {
             href: "/associe-se",
             label: "Benefícios",
-            description: "O que você ganha ao se associar.",
+            description: "Vantagens de se associar.",
             icon: IconGift,
           },
         ],
@@ -113,7 +111,7 @@ const NAV_ITEMS: NavEntry[] = [
           {
             href: "/parceiros",
             label: "Parceiros",
-            description: "Quem apoia o ecossistema Inova Cumaú.",
+            description: "Quem apoia o ecossistema.",
             icon: IconHeartHandshake,
           },
         ],
@@ -174,12 +172,6 @@ const NAV_ITEMS: NavEntry[] = [
             icon: IconBook,
           },
           {
-            href: "/midia/radio-web",
-            label: "Rádio Web",
-            description: "Inovação amazônica 24h",
-            icon: IconAccessPoint,
-          },
-          {
             href: "/midia/podcast",
             label: "Podcast",
             description: "Conversas sobre inovação.",
@@ -205,7 +197,7 @@ const NAV_ITEMS: NavEntry[] = [
           {
             href: "/midia/canal-youtube",
             label: "Youtube",
-            description: "Vídeos, eventos e entrevistas.",
+            description: "Vídeos e entrevistas.",
             icon: IconBrandYoutube,
           },
         ],
@@ -216,7 +208,7 @@ const NAV_ITEMS: NavEntry[] = [
           {
             href: "/midia/press-kit",
             label: "Press kit",
-            description: "Logos, imagens e materiais oficiais.",
+            description: "Kit de logos e materiais.",
             icon: IconFolderDown,
           },
           {
@@ -305,8 +297,31 @@ function MegaMenuFooter() {
   );
 }
 
+function LogoWordmark() {
+  return (
+    <span className="flex flex-col font-serif uppercase">
+      <span className="text-sm leading-none font-semibold text-floresta-700">
+        Inova
+      </span>
+      <span className="text-sm leading-none font-semibold text-rio-700">
+        Cumaú
+      </span>
+    </span>
+  );
+}
+
 export function SiteHeader() {
   const headerRef = React.useRef<HTMLElement>(null);
+  const [menuOpen, setMenuOpen] = React.useState(false);
+
+  React.useEffect(() => {
+    if (!menuOpen) return;
+    const original = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = original;
+    };
+  }, [menuOpen]);
 
   return (
     <header
@@ -316,12 +331,14 @@ export function SiteHeader() {
       <div className="mx-auto flex h-16 max-w-6xl items-center gap-4 px-4 sm:px-6">
         <Link href="/" className="flex items-center gap-2" aria-label="Inova Cumaú">
           <Logo />
+          <LogoWordmark />
         </Link>
 
         <NavigationMenu
           className="hidden md:flex md:ml-8"
           anchor={headerRef}
           footer={<MegaMenuFooter />}
+          onValueChange={(value) => setMenuOpen(value != null)}
         >
           <NavigationMenuList>
             {NAV_ITEMS.map((item) =>
@@ -331,16 +348,18 @@ export function SiteHeader() {
                   <NavigationMenuContent>
                     <div className="mx-auto flex h-[302px] w-full max-w-6xl flex-col px-4 py-6 sm:px-6">
                       <div className="flex flex-1 gap-12">
-                        {item.groups.map((group) => (
-                          <div key={group.label} className="flex w-60 shrink-0 flex-col gap-1">
-                            <p className="mb-1 text-xs font-bold tracking-widest text-rio-700 uppercase">
-                              {group.label}
-                            </p>
-                            {group.items.map((sub) => (
-                              <MegaMenuLink key={sub.href} {...sub} />
-                            ))}
-                          </div>
-                        ))}
+                        <div className="flex flex-1 gap-12 transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] translate-x-[var(--mm-slide-x)]">
+                          {item.groups.map((group) => (
+                            <div key={group.label} className="flex w-60 shrink-0 flex-col gap-1">
+                              <p className="mb-1 text-xs font-bold tracking-widest text-rio-700 uppercase">
+                                {group.label}
+                              </p>
+                              {group.items.map((sub) => (
+                                <MegaMenuLink key={sub.href} {...sub} />
+                              ))}
+                            </div>
+                          ))}
+                        </div>
                         {item.promo && <MegaMenuPromo {...item.promo} />}
                       </div>
                     </div>
@@ -354,7 +373,7 @@ export function SiteHeader() {
                       <p className="mb-2 text-xs font-bold tracking-widest text-rio-700 uppercase">
                         {item.label}
                       </p>
-                      <div className="grid flex-1 grid-cols-4 grid-flow-col grid-rows-4 items-start gap-x-8">
+                      <div className="grid flex-1 grid-cols-4 grid-flow-col grid-rows-4 items-start gap-x-8 transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] translate-x-[var(--mm-slide-x)]">
                         {item.items.map((sub) => (
                           <MegaMenuLink key={sub.href} {...sub} />
                         ))}
@@ -377,9 +396,6 @@ export function SiteHeader() {
         </NavigationMenu>
 
         <div className="ml-auto flex items-center gap-1.5 sm:gap-2">
-          <div className="hidden lg:mr-6 lg:flex">
-            <SiteHeaderRadioBadge />
-          </div>
           <Button
             render={<Link href="/entrar" />}
             nativeButton={false}
@@ -406,6 +422,7 @@ export function SiteHeader() {
                 <SheetTitle>
                   <Link href="/" className="flex items-center gap-2" aria-label="Inova Cumaú">
                     <Logo />
+                    <LogoWordmark />
                   </Link>
                 </SheetTitle>
               </SheetHeader>
