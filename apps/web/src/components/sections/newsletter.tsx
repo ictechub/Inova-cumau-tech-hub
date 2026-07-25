@@ -4,7 +4,7 @@ import { NewsletterForm } from "@/components/newsletter-form";
 
 export function Newsletter() {
   return (
-    <section id="newsletter" className="px-4 py-20 sm:px-6">
+    <section id="newsletter" className="bg-white-exception px-4 py-20 sm:px-6">
       <div className="mx-auto grid max-w-6xl items-start gap-12 lg:grid-cols-2">
         <div className="relative order-2 aspect-[16/10] overflow-hidden rounded-2xl lg:order-1">
           <Image

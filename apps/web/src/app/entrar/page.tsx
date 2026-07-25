@@ -1,8 +1,6 @@
-import Link from "next/link";
 import type { Metadata } from "next";
 
-import { Logo } from "@/components/logo";
-import { Button } from "@/components/ui/button";
+import { LoginForm } from "@/components/login-form";
 
 export const metadata: Metadata = {
   title: "Entrar | Inova Cumaú",
@@ -10,20 +8,10 @@ export const metadata: Metadata = {
 
 export default function EntrarPage() {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center gap-6 px-4 text-center">
-      <Logo />
-      <div>
-        <h1 className="font-serif text-2xl font-medium sm:text-3xl">
-          Área do associado
-        </h1>
-        <p className="mt-2 max-w-sm text-muted-foreground">
-          Nossa plataforma de login, gestão e marketplace para associados está em
-          construção.
-        </p>
+    <div className="flex min-h-svh flex-col items-center justify-center bg-muted p-6 md:p-10">
+      <div className="w-full max-w-sm md:max-w-4xl">
+        <LoginForm />
       </div>
-      <Button render={<Link href="/associe-se" />} nativeButton={false}>
-        Quero me associar
-      </Button>
     </div>
   );
 }

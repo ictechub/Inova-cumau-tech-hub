@@ -95,10 +95,10 @@ export function SiteFooter() {
               <Image
                 src="/louro.svg"
                 alt=""
-                width={131}
-                height={80}
+                width={196}
+                height={120}
                 aria-hidden
-                className="h-20 w-auto shrink-0"
+                className="h-28 w-auto shrink-0"
               />
             </div>
           </div>
