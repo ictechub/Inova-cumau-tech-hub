@@ -25,7 +25,7 @@ import {
   IconUsers,
 } from "@tabler/icons-react";
 
-import { Logo } from "@/components/logo";
+import { Logo, LogoWordmark } from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
@@ -294,19 +294,6 @@ function MegaMenuFooter() {
         </div>
       </div>
     </div>
-  );
-}
-
-function LogoWordmark() {
-  return (
-    <span className="flex flex-col font-serif uppercase">
-      <span className="text-sm leading-none font-semibold text-floresta-700">
-        Inova
-      </span>
-      <span className="text-sm leading-none font-semibold text-rio-700">
-        Cumaú
-      </span>
-    </span>
   );
 }
 

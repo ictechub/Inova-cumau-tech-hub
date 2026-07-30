@@ -1,10 +1,18 @@
 "use client"
 
-import { useState } from "react"
+import { useActionState, useEffect, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { IconEye, IconEyeOff, IconLock, IconMail } from "@tabler/icons-react"
+import {
+  IconEye,
+  IconEyeOff,
+  IconLoader2,
+  IconLock,
+  IconMail,
+} from "@tabler/icons-react"
 
+import { signIn } from "@/app/entrar/actions"
+import { initialLoginFormState } from "@/app/entrar/form-state"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -15,18 +23,29 @@ import {
   FieldLabel,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
+import { toast } from "@/components/ui/toast"
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
   const [showPassword, setShowPassword] = useState(false)
+  const [state, formAction, pending] = useActionState(
+    signIn,
+    initialLoginFormState,
+  )
+
+  useEffect(() => {
+    if (state.status === "error") {
+      toast.add({ type: "error", description: state.message })
+    }
+  }, [state])
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="overflow-hidden p-0">
         <CardContent className="grid p-0 md:grid-cols-2">
-          <form className="p-6 md:p-8">
+          <form action={formAction} className="p-6 md:p-8">
             <FieldGroup>
               <div className="flex flex-col items-center gap-2 text-center">
                 <h1 className="text-2xl font-bold">Área do associado</h1>
@@ -40,6 +59,7 @@ export function LoginForm({
                   <IconMail className="pointer-events-none absolute top-1/2 left-2.5 size-4 -translate-y-1/2 text-muted-foreground" />
                   <Input
                     id="email"
+                    name="email"
                     type="email"
                     placeholder="voce@exemplo.com"
                     required
@@ -61,6 +81,7 @@ export function LoginForm({
                   <IconLock className="pointer-events-none absolute top-1/2 left-2.5 size-4 -translate-y-1/2 text-muted-foreground" />
                   <Input
                     id="password"
+                    name="password"
                     type={showPassword ? "text" : "password"}
                     required
                     className="h-10 px-8"
@@ -80,8 +101,12 @@ export function LoginForm({
                 </div>
               </Field>
               <Field className="mt-4">
-                <Button type="submit" className="h-10">
-                  Entrar
+                <Button type="submit" className="h-10" disabled={pending}>
+                  {pending ? (
+                    <IconLoader2 className="size-4 animate-spin" />
+                  ) : (
+                    "Entrar"
+                  )}
                 </Button>
               </Field>
               <FieldDescription className="text-center">

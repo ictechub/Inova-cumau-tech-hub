@@ -28,3 +28,16 @@ export function Logo({
     />
   );
 }
+
+export function LogoWordmark() {
+  return (
+    <span className="flex flex-col font-serif uppercase">
+      <span className="text-sm leading-none font-semibold text-floresta-700">
+        Inova
+      </span>
+      <span className="text-sm leading-none font-semibold text-rio-700">
+        Cumaú
+      </span>
+    </span>
+  );
+}

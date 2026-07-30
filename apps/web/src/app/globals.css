@@ -110,6 +110,7 @@
   --color-secondary-foreground: var(--brand-secondary-text);
   --color-muted: var(--surface-alt);
   --color-muted-foreground: var(--text-muted);
+  --color-placeholder-foreground: var(--text-placeholder);
   --color-accent: var(--surface-alt);
   --color-accent-foreground: var(--text-primary);
   --color-destructive: var(--brand-destructive);
@@ -234,6 +235,7 @@
   --text-primary: var(--neutral-900);
   --text-secondary: var(--neutral-700);
   --text-muted: var(--neutral-600);
+  --text-placeholder: var(--neutral-500);
   --border: var(--neutral-200);
   --border-strong: var(--neutral-300);
   --brand-link: var(--floresta-700);
@@ -248,12 +250,16 @@
 
   --badge-success-bg: var(--success-100);
   --badge-success-text: var(--success-800);
+  --badge-success-border: var(--success-300);
   --badge-warning-bg: var(--warning-100);
   --badge-warning-text: var(--warning-800);
+  --badge-warning-border: var(--warning-300);
   --badge-error-bg: var(--error-100);
   --badge-error-text: var(--error-800);
+  --badge-error-border: var(--error-300);
   --badge-info-bg: var(--info-100);
   --badge-info-text: var(--info-800);
+  --badge-info-border: var(--info-300);
 
   --nav-bg: var(--neutral-100);
   --nav-hover-bg: var(--neutral-200);
@@ -273,6 +279,7 @@
   --text-primary: var(--neutral-50);
   --text-secondary: var(--neutral-300);
   --text-muted: var(--neutral-400);
+  --text-placeholder: var(--neutral-500);
   --border: var(--neutral-800);
   --border-strong: var(--neutral-700);
   --brand-link: var(--floresta-300);
@@ -287,12 +294,16 @@
 
   --badge-success-bg: var(--success-900);
   --badge-success-text: var(--success-300);
+  --badge-success-border: var(--success-700);
   --badge-warning-bg: var(--warning-900);
   --badge-warning-text: var(--warning-300);
+  --badge-warning-border: var(--warning-700);
   --badge-error-bg: var(--error-900);
   --badge-error-text: var(--error-300);
+  --badge-error-border: var(--error-700);
   --badge-info-bg: var(--info-900);
   --badge-info-text: var(--info-300);
+  --badge-info-border: var(--info-700);
 
   --nav-bg: var(--neutral-900);
   --nav-hover-bg: var(--neutral-800);

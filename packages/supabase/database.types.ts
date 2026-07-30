@@ -59,6 +59,111 @@ export type Database = {
         }
         Relationships: []
       }
+      startup_registrations: {
+        Row: {
+          contato_cidade: string
+          contato_email: string | null
+          contato_endereco: string | null
+          contato_facebook: string | null
+          contato_instagram: string | null
+          contato_linkedin: string | null
+          contato_telefone: string | null
+          contato_whatsapp: string | null
+          created_at: string
+          fase_negocio: string
+          id: string
+          objetivo_filiacao: string[]
+          objetivo_filiacao_outro: string | null
+          responsavel_cargo: string
+          responsavel_email: string
+          responsavel_nome: string
+          responsavel_telefone: string
+          responsavel_whatsapp: string | null
+          segmentacao_outros_detalhes: string | null
+          segmento_outro: string | null
+          segmentos: string[]
+          startup_cnpj: string | null
+          startup_cnpj_ausente: boolean
+          startup_descricao: string
+          startup_nome: string
+          startup_site: string | null
+          status: string
+          termos_aceitos: boolean
+          termos_aceitos_em: string | null
+          termos_versao: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          contato_cidade: string
+          contato_email?: string | null
+          contato_endereco?: string | null
+          contato_facebook?: string | null
+          contato_instagram?: string | null
+          contato_linkedin?: string | null
+          contato_telefone?: string | null
+          contato_whatsapp?: string | null
+          created_at?: string
+          fase_negocio: string
+          id?: string
+          objetivo_filiacao?: string[]
+          objetivo_filiacao_outro?: string | null
+          responsavel_cargo: string
+          responsavel_email: string
+          responsavel_nome: string
+          responsavel_telefone: string
+          responsavel_whatsapp?: string | null
+          segmentacao_outros_detalhes?: string | null
+          segmento_outro?: string | null
+          segmentos?: string[]
+          startup_cnpj?: string | null
+          startup_cnpj_ausente?: boolean
+          startup_descricao: string
+          startup_nome: string
+          startup_site?: string | null
+          status?: string
+          termos_aceitos?: boolean
+          termos_aceitos_em?: string | null
+          termos_versao?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          contato_cidade?: string
+          contato_email?: string | null
+          contato_endereco?: string | null
+          contato_facebook?: string | null
+          contato_instagram?: string | null
+          contato_linkedin?: string | null
+          contato_telefone?: string | null
+          contato_whatsapp?: string | null
+          created_at?: string
+          fase_negocio?: string
+          id?: string
+          objetivo_filiacao?: string[]
+          objetivo_filiacao_outro?: string | null
+          responsavel_cargo?: string
+          responsavel_email?: string
+          responsavel_nome?: string
+          responsavel_telefone?: string
+          responsavel_whatsapp?: string | null
+          segmentacao_outros_detalhes?: string | null
+          segmento_outro?: string | null
+          segmentos?: string[]
+          startup_cnpj?: string | null
+          startup_cnpj_ausente?: boolean
+          startup_descricao?: string
+          startup_nome?: string
+          startup_site?: string | null
+          status?: string
+          termos_aceitos?: boolean
+          termos_aceitos_em?: string | null
+          termos_versao?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
