@@ -6,7 +6,34 @@ import { Select as SelectPrimitive } from "@base-ui/react/select"
 import { cn } from "@/lib/utils"
 import { ChevronDownIcon, CheckIcon, ChevronUpIcon } from "lucide-react"
 
-const Select = SelectPrimitive.Root
+function Select<Value, Multiple extends boolean | undefined = false>({
+  onOpenChange,
+  ...props
+}: SelectPrimitive.Root.Props<Value, Multiple>) {
+  const handleOpenChange = React.useCallback<
+    NonNullable<SelectPrimitive.Root.Props<Value, Multiple>["onOpenChange"]>
+  >(
+    (open, eventDetails) => {
+      if (open) {
+        const scrollX = window.scrollX
+        const scrollY = window.scrollY
+
+        const restore = () => {
+          window.scrollTo(scrollX, scrollY)
+        }
+
+        window.addEventListener("scroll", restore, { capture: true })
+        window.setTimeout(() => {
+          window.removeEventListener("scroll", restore, { capture: true })
+        }, 300)
+      }
+      onOpenChange?.(open, eventDetails)
+    },
+    [onOpenChange]
+  )
+
+  return <SelectPrimitive.Root onOpenChange={handleOpenChange} {...props} />
+}
 
 function SelectGroup({ className, ...props }: SelectPrimitive.Group.Props) {
   return (

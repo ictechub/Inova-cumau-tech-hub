@@ -5,8 +5,36 @@ import { Popover as PopoverPrimitive } from "@base-ui/react/popover"
 
 import { cn } from "@/lib/utils"
 
-function Popover({ ...props }: PopoverPrimitive.Root.Props) {
-  return <PopoverPrimitive.Root data-slot="popover" {...props} />
+function Popover({ onOpenChange, ...props }: PopoverPrimitive.Root.Props) {
+  const handleOpenChange = React.useCallback<
+    NonNullable<PopoverPrimitive.Root.Props["onOpenChange"]>
+  >(
+    (open, eventDetails) => {
+      if (open) {
+        const scrollX = window.scrollX
+        const scrollY = window.scrollY
+
+        const restore = () => {
+          window.scrollTo(scrollX, scrollY)
+        }
+
+        window.addEventListener("scroll", restore, { capture: true })
+        window.setTimeout(() => {
+          window.removeEventListener("scroll", restore, { capture: true })
+        }, 300)
+      }
+      onOpenChange?.(open, eventDetails)
+    },
+    [onOpenChange]
+  )
+
+  return (
+    <PopoverPrimitive.Root
+      data-slot="popover"
+      onOpenChange={handleOpenChange}
+      {...props}
+    />
+  )
 }
 
 function PopoverTrigger({ ...props }: PopoverPrimitive.Trigger.Props) {

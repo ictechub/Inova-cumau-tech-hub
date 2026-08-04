@@ -61,6 +61,7 @@ export type Database = {
       }
       startup_registrations: {
         Row: {
+          avatar_url: string | null
           contato_cidade: string
           contato_email: string | null
           contato_endereco: string | null
@@ -72,8 +73,11 @@ export type Database = {
           created_at: string
           fase_negocio: string
           id: string
+          notify_email_editais: boolean
+          notify_email_novidades: boolean
           objetivo_filiacao: string[]
           objetivo_filiacao_outro: string | null
+          perfil_visivel_publico: boolean
           responsavel_cargo: string
           responsavel_email: string
           responsavel_nome: string
@@ -95,6 +99,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          avatar_url?: string | null
           contato_cidade: string
           contato_email?: string | null
           contato_endereco?: string | null
@@ -106,8 +111,11 @@ export type Database = {
           created_at?: string
           fase_negocio: string
           id?: string
+          notify_email_editais?: boolean
+          notify_email_novidades?: boolean
           objetivo_filiacao?: string[]
           objetivo_filiacao_outro?: string | null
+          perfil_visivel_publico?: boolean
           responsavel_cargo: string
           responsavel_email: string
           responsavel_nome: string
@@ -129,6 +137,7 @@ export type Database = {
           user_id: string
         }
         Update: {
+          avatar_url?: string | null
           contato_cidade?: string
           contato_email?: string | null
           contato_endereco?: string | null
@@ -140,8 +149,11 @@ export type Database = {
           created_at?: string
           fase_negocio?: string
           id?: string
+          notify_email_editais?: boolean
+          notify_email_novidades?: boolean
           objetivo_filiacao?: string[]
           objetivo_filiacao_outro?: string | null
+          perfil_visivel_publico?: boolean
           responsavel_cargo?: string
           responsavel_email?: string
           responsavel_nome?: string
@@ -160,6 +172,24 @@ export type Database = {
           termos_aceitos_em?: string | null
           termos_versao?: string
           updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          role: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          role?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          role?: string
           user_id?: string
         }
         Relationships: []

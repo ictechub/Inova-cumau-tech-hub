@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Lora, Space_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toast";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 const geistSans = Geist({
   variable: "--font-sans",
@@ -36,7 +37,7 @@ export default function RootLayout({
       className={`${geistSans.variable} ${lora.variable} ${spaceMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        {children}
+        <TooltipProvider>{children}</TooltipProvider>
         <Toaster />
       </body>
     </html>

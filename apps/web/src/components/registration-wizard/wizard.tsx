@@ -43,6 +43,13 @@ export function RegistrationWizard() {
     <div className="flex min-h-screen flex-col lg:h-screen lg:flex-row lg:overflow-hidden">
       <aside className="flex w-full shrink-0 flex-col justify-between bg-neutral-50 px-6 py-10 sm:px-10 lg:w-[420px] lg:px-12 lg:py-12">
         <div>
+          <Link
+            href="/"
+            className="mb-6 inline-block text-sm text-muted-foreground underline-offset-2 hover:text-foreground hover:underline"
+          >
+            Voltar para o início
+          </Link>
+
           <Link href="/" className="flex items-center gap-2" aria-label="Inova Cumaú">
             <Logo />
             <LogoWordmark />

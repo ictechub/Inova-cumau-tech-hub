@@ -31,8 +31,15 @@ neste projeto.
   (`--font-sans`, corpo/UI), Space Mono (`--font-mono`, labels/metadados).
 - **Backend**: Supabase (projeto `ekkbqazhdaabdkncwlwa`), acessado via MCP para
   schema/migrations/types — nunca credenciais manuais.
-- **Deploy**: Vercel, via a integração MCP (`deploy_to_vercel`). Env vars do
-  Supabase (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`)
+- **Deploy**: Vercel, via a integração GitHub — todo `git push` para `main`
+  dispara automaticamente um novo deployment de produção (confirmado
+  cruzando `list_deployments`/`get_project` do MCP Vercel com o histórico do
+  `git log`: cada deployment carrega `meta.githubCommitSha` apontando para um
+  commit já existente localmente). A ferramenta MCP `deploy_to_vercel` **não**
+  é o mecanismo usado por este projeto — ela existe para deploy direto de
+  árvore de arquivos sem git, cenário que não se aplica aqui; nunca invocar
+  para deploys de rotina, só `git push`. Env vars do Supabase
+  (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`)
   precisam estar configuradas no projeto Vercel.
 
 ## Comandos
@@ -54,12 +61,18 @@ inova-cumau/
 ├── apps/
 │   └── web/                     # Next.js App Router
 │       ├── src/app/              # rotas, layout, globals.css
-│       │   ├── (marketing)/       # páginas institucionais (home, sobre, midia, noticias, parceiros...)
+│       │   ├── (marketing)/       # páginas institucionais (home, sobre, midia, noticias,
+│       │   │                      #   parceiros...) + area-do-associado/ — layout com
+│       │   │                      #   header/footer sempre presentes (ver "Estado atual")
 │       │   ├── associe-se/        # wizard de cadastro de startups (page.tsx + actions.ts + form-state.ts)
-│       │   ├── area-do-associado/ # placeholder da área logada (destino do CTA pós-cadastro)
-│       │   └── entrar/            # tela de login (bloco login-04 do shadcn)
+│       │   ├── admin/             # área administrativa — sidebar-07 do shadcn, stock (destino do CTA pós-cadastro)
+│       │   └── entrar/            # tela de login (bloco login-04 do shadcn), fora do grupo (marketing)
 │       ├── src/components/
 │       │   ├── registration-wizard/  # steps + schema Zod do wizard de associe-se
+│       │   ├── header-user-menu.tsx  # avatar/dropdown no SiteHeader p/ associado logado
+│       │   ├── nav-associado.tsx     # nav (Perfil/Atividades/Carteira/Sair) da área do associado,
+│       │   │                         #   markup simples, sem o primitivo Sidebar (ver "Estado atual")
+│       │   ├── app-sidebar.tsx, nav-*.tsx, team-switcher.tsx  # peças do sidebar-07 (admin), stock
 │       │   └── ui/                   # componentes shadcn (base-nova)
 │       ├── public/logo/          # variantes do logo (SVG estático servido pelo Next)
 │       ├── .env.example          # placeholders — nunca commitar .env.local
@@ -558,10 +571,10 @@ ainda não foi feito no painel).
 
 `/entrar` (`components/login-form.tsx` + `app/entrar/actions.ts`,
 `signIn`) usa `supabase.auth.signInWithPassword({ email, password })` e
-redireciona para `/` em caso de sucesso; em qualquer erro (credenciais
-erradas ou e-mail não confirmado), mostra a mesma mensagem genérica
-"E-mail ou senha incorretos.", sem crash e sem distinguir os dois casos
-(não revela se a conta existe). Essa mensagem é exibida via toast
+redireciona para `/area-do-associado` em caso de sucesso; em qualquer erro
+(credenciais erradas ou e-mail não confirmado), mostra a mesma mensagem
+genérica "E-mail ou senha incorretos.", sem crash e sem distinguir os dois
+casos (não revela se a conta existe). Essa mensagem é exibida via toast
 (`type: "error"`, disparado por um `useEffect` observando `state.status
 === "error"` — mesmo padrão de `submitRegistration`/`verifyRegistrationOtp`,
 ver "Erros de resultado de Server Action" em "Toasts" nas Convenções),
@@ -569,9 +582,528 @@ não mais como `FieldError` inline. **Verificado end-to-end no
 navegador**: credenciais erradas e credenciais corretas-mas-não-confirmadas
 mostram esse erro corretamente; o caminho de sucesso (login válido →
 redirect) está sujeito ao mesmo gap de confirmação de e-mail acima e não foi
-observável neste ambiente.
+observável neste ambiente. **Correção**: o redirect pós-login apontava para
+`/` (home) em vez de `/area-do-associado` — a página de destino já existia
+(criada numa tarefa anterior, ver Step 7 acima), só o `redirect()` em
+`signIn` (`app/entrar/actions.ts`) estava desatualizado. Corrigido para
+`redirect("/area-do-associado")`.
+
+`entrar/page.tsx` ganhou um link "Voltar para o início" (`href="/"`) acima do
+`LoginForm`, pedido explícito do usuário ("na tela de login, criar um link
+para voltar pra home"). Reaproveita a mesma convenção já documentada acima
+("Link "Voltar para o início" no topo do lado 1 do wizard") — mesmo texto e
+mesma classe (`text-sm text-muted-foreground underline-offset-2
+hover:text-foreground hover:underline`), aqui com `inline-block` (em vez de
+estar dentro de um `<aside>` flex como no wizard, o link fica direto no `div`
+de centralização da página, então precisa de `inline-block` para o `mb-6`
+funcionar) em vez de posicionado dentro de um `<aside>`/logo — decisão de
+estilo minha, não pedida explicitamente, para manter consistência visual com
+o link equivalente do wizard. Typecheck (`pnpm --filter @inova-cumau/web
+typecheck`) rodou limpo; não verificado no navegador (regra permanente, ver
+"Fluxo de verificação" no topo deste arquivo).
+
+**Sidebar da área do associado**: instalado `npx shadcn@latest add sidebar-07`
+dentro de `apps/web`, **exatamente como o bloco de exemplo do shadcn** (pedido
+explícito do usuário: "criar exatamente como é no componente exemplo e depois
+vamos mudando... conforme a necessidade que eu te indicar") — sem nenhuma
+customização de conteúdo, cores ou ícones ainda. A CLI criou originalmente a
+rota `/dashboard` (stock) com dados de exemplo (`AppSidebar` em
+`components/app-sidebar.tsx` + `NavMain`/`NavProjects`/`NavUser`/
+`TeamSwitcher`), além dos componentes de UI que faltavam (`sidebar.tsx`,
+`breadcrumb.tsx`, `collapsible.tsx`, `skeleton.tsx`, `hooks/use-mobile.ts`).
+Como o bloco usa ícones `lucide-react` (`components.json` tem `iconLibrary:
+"lucide"`), essa é a única parte do app que foge à convenção Tabler do
+projeto — deliberadamente mantido assim por enquanto, já que o pedido foi
+instalar sem alterar; qualquer troca de ícone fica para um pedido futuro
+explícito. `TooltipProvider` (de `components/ui/tooltip.tsx`, que já existia
+no projeto) foi adicionado ao `app/layout.tsx` envolvendo `{children}` —
+exigido pelo próprio aviso da CLI ao final da instalação, já que os tooltips
+do sidebar colapsado (labels dos itens de menu) não funcionam sem esse
+provider. A CLI tentou sobrescrever dois arquivos com customizações
+documentadas deste projeto — `input.tsx` (token `--text-placeholder`, ver
+"Tokens de marca" acima) e `dropdown-menu.tsx` (prop `anchor`, ver convenção
+de "DropdownMenu/Menu" acima) — instalado com `--overwrite --yes` para rodar
+sem prompts interativos e, na sequência, os dois arquivos foram restaurados
+via `git checkout` (estavam limpos/sem alterações pendentes antes da
+instalação, então a restauração não teve risco de perda de trabalho).
+Reaplicar esse mesmo cuidado (`--diff` antes de `--overwrite`, depois `git
+checkout` nos arquivos com customização documentada) em qualquer instalação
+futura de bloco shadcn que toque arquivos de `components/ui/` já
+customizados pelo projeto.
+
+Em seguida, pedido explícito do usuário para mover a rota: o conteúdo de
+`/dashboard/page.tsx` (stock, inalterado) foi transferido para
+`app/area-do-associado/page.tsx`, substituindo o antigo placeholder
+("Estamos construindo esta área...") — só o `export const metadata` (título
+"Área do associado | Inova Cumaú") foi preservado do placeholder antigo, todo
+o resto do JSX é o bloco `sidebar-07` completo (`SidebarProvider` +
+`AppSidebar` + `SidebarInset` com header/breadcrumb/skeletons de exemplo). A
+pasta `app/dashboard/` foi removida (`rm -rf`) — nenhum outro arquivo do
+projeto referenciava `/dashboard` (confirmado via busca antes de apagar), e
+`/area-do-associado` já era o destino de todos os redirects/links existentes
+(`signIn` em `entrar/actions.ts`, os botões de sucesso dos Steps 6/7 do
+wizard), então nenhum outro arquivo precisou mudar. Segue com dados 100%
+stock (times/nav/usuário fictícios) e ícones `lucide-react`, aguardando a
+próxima instrução do usuário sobre conteúdo real. Typecheck (`pnpm --filter
+@inova-cumau/web typecheck`) rodou limpo após as duas etapas (install +
+mudança de rota); não verificado no navegador (regra permanente, ver "Fluxo
+de verificação" no topo deste arquivo).
+
+Primeira etapa de "abrasileirar" o sidebar-07 (`components/app-sidebar.tsx` +
+`components/team-switcher.tsx`): o `data.teams` (antes 3 empresas fictícias —
+"Acme Inc"/"Acme Corp."/"Evil Corp." com ícones `lucide-react` avulsos e
+`plan` "Enterprise"/"Startup"/"Free") virou 2 entradas, ambas **"Inova
+Cumaú"**, distinguidas só pelo campo `plan` — **"Associado"** e
+**"Administrador"** (pedido explícito do usuário: "Enterprise" representava o
+tipo de usuário, e os dois tipos que o app vai ter são esses). O ícone de
+cada entrada trocou de `GalleryVerticalEndIcon`/`AudioLinesIcon`/
+`TerminalIcon` (lucide) para `<Logo variant="white" className="h-4 w-auto" />`
+(`components/logo.tsx`) — a variante "mono-branca" do glifo da marca,
+satisfazendo o pedido de "logo mono-branca sobre floresta" **sem precisar de
+nenhum CSS novo**: o container do trigger principal (`size-8`) já era
+`bg-sidebar-primary text-sidebar-primary-foreground`
+(`--color-sidebar-primary` → `--nav-active-bg` → `--floresta-700`/
+`--floresta-500` claro/escuro; `--color-sidebar-primary-foreground` → branco
+nos dois temas), então só trocar o ícone já bastou ali. O container menor
+dentro do dropdown (`size-6`, item de cada team na lista) **não** tinha esse
+fundo (só `border`) — ganhou `bg-sidebar-primary text-sidebar-primary-foreground`
+no lugar de `border` para o logo branco continuar visível ali também. A
+`key` do `.map()` sobre `teams` trocou de `team.name` para `team.plan`, já
+que as duas entradas agora compartilham o mesmo `name`. **Nenhuma lógica de
+nível de acesso/permissão foi implementada** — `plan` é hoje só um rótulo de
+texto exibido, sem nenhum efeito em rotas, componentes ou dados; o próprio
+usuário pediu para deixar isso para um próximo passo explícito ("Por
+enquanto ainda não vamos mexer no nível de acesso"). O rótulo "Teams" (label
+do grupo no dropdown) e o item "Add team" no fim do popup **permanecem em
+inglês, stock** — não foram tocados nesta tarefa, já que não foram pedidos
+explicitamente e têm relação direta com o desenho ainda pendente de
+níveis de acesso (ex.: "Add team" não faz sentido nesse domínio de
+associado/administrador único). Typecheck (`pnpm --filter @inova-cumau/web
+typecheck`) rodou limpo; não verificado no navegador (regra permanente, ver
+"Fluxo de verificação" no topo deste arquivo).
+
+`/area-do-associado` (`app/area-do-associado/page.tsx`) virou um Server
+Component **assíncrono** e passou a puxar dados reais do usuário logado, no
+lugar do `data.user` stock (`name: "shadcn"`, `email: "m@example.com"`,
+`avatar: "/avatars/shadcn.jpg"`) que `AppSidebar` usava antes. Fluxo: chama
+`supabase.auth.getUser()` (client de `@inova-cumau/supabase/server`) e, se
+não houver usuário autenticado, `redirect("/entrar")` — guarda de acesso que
+a página não tinha até então (interpretação minha, não pedida explicitamente,
+mas necessária para "dados do usuário logado" fazerem sentido: sem ela a
+página quebraria ou mostraria dados vazios para um visitante não autenticado).
+Em seguida busca `startup_nome` em `startup_registrations` filtrando por
+`user_id = authUser.id` — confirmado via `execute_sql` (MCP Supabase, tabela
+`pg_policies`) que existe a policy de RLS `owner can select own registration`
+(`SELECT`, `auth.uid() = user_id`), então o Server Component consegue ler a
+própria linha do associado autenticado sem precisar de nenhuma policy nova.
+O objeto `user` montado e repassado para `<AppSidebar user={user} />` é
+`{ name: registration?.startup_nome ?? "Associado", email: authUser.email ??
+"", avatar: "" }`. Duas decisões de interpretação a registrar: (1) **"e-mail
+cadastrado" foi resolvido como `auth.users.email`** (o e-mail de
+login/autenticação, via `getUser()`), não `startup_registrations
+.responsavel_email` (e-mail do responsável pela inscrição, coletado no Step 1
+do wizard, que pode em tese divergir do e-mail de login) — escolhido por ser
+literalmente o e-mail com o qual a conta foi cadastrada/autenticada; (2)
+**`avatar` fica vazio (`""`)** porque não existe nenhuma feature de upload de
+foto no projeto ainda — `AvatarFallback` cobre esse caso mostrando as
+iniciais computadas do nome (ver abaixo), então não há placeholder de imagem
+quebrado. `AppSidebar` (`components/app-sidebar.tsx`) ganhou uma prop
+obrigatória `user: { name, email, avatar }`, removendo de vez o `data.user`
+stock do objeto `data` (que agora só tem `teams`/`navMain`/`projects`); o
+componente é `"use client"` mas só repassa a prop para `NavUser`, sem lógica
+própria.
+
+`NavUser` (`components/nav-user.tsx`) ganhou duas mudanças: (1) formato do
+`Avatar` mudou de círculo para **quadrado com borda arredondada**, igual ao
+badge do logo no topo (`TeamSwitcher`, `rounded-lg`) — pedido explícito do
+usuário ("vamos usar o Avatar no mesmo formato do logo no topo, quadrado com
+borda arredondada"). Como o componente `Avatar` de `components/ui/avatar.tsx`
+é compartilhado (`rounded-full` hardcoded em `Avatar`/`AvatarImage`/
+`AvatarFallback`, mais um `after:rounded-full` na pseudo-borda de `Avatar`) e
+esse arquivo não foi tocado, a troca para `rounded-lg` foi feita via
+`className` nos dois pontos de uso dentro de `nav-user.tsx` (trigger do
+dropdown + label dentro do dropdown aberto) — `grep` confirmou que `nav-
+user.tsx` é o único consumidor de `@/components/ui/avatar` no app hoje, então
+não existe nenhum outro Avatar circular no projeto que ficasse inconsistente
+com essa mudança; se um novo uso de `Avatar` aparecer no futuro decidir
+explicitamente se ele deve seguir o mesmo formato quadrado ou o círculo
+default do componente. (2) o fallback trocou do texto hardcoded `"CN"` para
+iniciais computadas de verdade a partir do nome (`getInitials`, novo helper
+no topo do arquivo: 2+ palavras → primeira letra da primeira + primeira letra
+da última, maiúsculas; 1 palavra → duas primeiras letras) — com `startup_nome`
+como nome agora, "CN" não fazia mais sentido. Typecheck (`pnpm --filter
+@inova-cumau/web typecheck`) rodou limpo; não verificado no navegador (regra
+permanente, ver "Fluxo de verificação" no topo deste arquivo) — em especial o
+caminho de guarda de acesso (`redirect("/entrar")` sem sessão) e o texto real
+de `startup_nome`/`authUser.email` renderizados não foram vistos na tela.
+
+**Tradução completa do inglês remanescente para PT-BR**: pedido explícito do
+usuário ("Traduzir tudo que está em inglês para o português-BR"), varrendo o
+app inteiro em busca de texto stock/placeholder ainda em inglês, não só a
+área `sidebar-07`. Dois arquivos ganharam a tradução completa do conteúdo
+stock (`data.navMain`/`data.projects` em `components/app-sidebar.tsx`:
+"Playground"→"Área de Testes", "Models"→"Modelos", "Documentation"→
+"Documentação", "Settings"→"Configurações", "History"→"Histórico",
+"Starred"→"Favoritos", "Genesis"→"Gênesis", "Explorer"→"Explorador",
+"Quantum"→"Quântico", "Introduction"→"Introdução", "Get Started"→"Primeiros
+Passos", "Tutorials"→"Tutoriais", "Changelog"→"Registro de Alterações",
+"General"→"Geral", "Team"→"Equipe", "Billing"→"Faturamento", "Limits"→
+"Limites", "Design Engineering"→"Engenharia de Design", "Sales & Marketing"→
+"Vendas e Marketing", "Travel"→"Viagens"); `components/nav-main.tsx`
+("Platform"→"Plataforma"); `components/nav-projects.tsx` ("Projects"→
+"Projetos", "More"→"Mais" ×2, "View Project"→"Ver Projeto", "Share Project"→
+"Compartilhar Projeto", "Delete Project"→"Excluir Projeto");
+`components/nav-user.tsx` ("Upgrade to Pro"→"Fazer upgrade para o Pro",
+"Account"→"Conta", "Billing"→"Faturamento", "Notifications"→"Notificações",
+"Log out"→"Sair"); `components/team-switcher.tsx` ("Teams"→"Equipes", "Add
+team"→"Adicionar equipe" — tradução literal do rótulo, sem redesenhar a
+feature; a incerteza sobre se ela faz sentido no domínio de Associado/
+Administrador único segue em aberto, ver item de Pendente abaixo);
+`app/area-do-associado/page.tsx` (breadcrumb placeholder "Build Your
+Application"→"Construir sua aplicação", "Data Fetching"→"Busca de dados").
+Decisão de interpretação: como todo esse conteúdo é 100% dado de exemplo
+(`// This is sample data.` no próprio `app-sidebar.tsx`), termos ambíguos
+("Genesis", "Quantum" etc.) foram traduzidos por completo em vez de
+mantidos em inglês, priorizando consistência de idioma sobre a estética de
+nome-de-produto que eles sugerem.
+
+Também tocados **componentes `ui/` compartilhados por todo o app** (não só
+pela área logada), já que continham texto de acessibilidade hardcoded em
+inglês: `ui/sidebar.tsx` (`SheetTitle` "Sidebar"→"Barra lateral",
+`SheetDescription` "Displays the mobile sidebar."→"Exibe a barra lateral em
+dispositivos móveis.", e os três "Toggle Sidebar"→"Alternar barra lateral"
+— sr-only span, `aria-label`, `title` — do botão de colapsar a sidebar);
+`ui/dialog.tsx` e `ui/sheet.tsx` (sr-only "Close"→"Fechar" do botão de
+fechar; `ui/dialog.tsx` também tinha um segundo "Close" hardcoded no botão
+opcional de `DialogFooter`, `showCloseButton`, sem `sr-only` — mesma
+tradução, "Fechar"); `ui/breadcrumb.tsx` (`aria-label="breadcrumb"`→`"trilha de
+navegação"` no `<nav>` raiz, sr-only "More"→"Mais" em
+`BreadcrumbEllipsis`); `ui/toast.tsx` (`aria-label="Close toast"`→`"Fechar
+notificação"` em `ToastClose`). Como `Dialog`/`Sheet`/`Toast` são usados em
+todo o app (Steps 2 e 5 do wizard de `/associe-se`, `PhoneCountryInput`,
+o fluxo inteiro de toasts de login/cadastro/OTP — ver histórico acima), o
+alcance desta mudança vai além da área `sidebar-07` que a originou.
+Reaplicar esse mesmo escopo (varrer também os `ui/` compartilhados, não só
+o feature que motivou a tarefa) em qualquer pedido futuro de tradução ou
+auditoria de texto em inglês. Dois falsos positivos identificados e
+descartados na varredura: tokens `.sr-only` como *seletor CSS* dentro de
+`className` (ex. `[&>.sr-only]:w-auto` em `field.tsx` — não é texto
+visível/lido, é sintaxe Tailwind) e os rótulos "-tech" da lista de
+segmentos em `registration-wizard/constants.ts` (ex. "Traveltech") — termos
+de vertical de startup deliberados e já documentados, não prosa solta em
+inglês. Typecheck (`pnpm --filter @inova-cumau/web typecheck`) rodou limpo;
+não verificado no navegador (regra permanente, ver "Fluxo de verificação"
+no topo deste arquivo).
+
+**Botão "Sair" funcional**: pedido explícito do usuário ("Tornar o botão Sair
+funcional"), escopo deliberadamente restrito só a esse item — os outros três
+itens stock do dropdown de `NavUser` ("Fazer upgrade para o Pro", "Conta",
+"Faturamento", "Notificações") permanecem não-funcionais, sem terem sido
+pedidos. Nova Server Action `signOut` em
+`apps/web/src/app/area-do-associado/actions.ts` (arquivo novo, seguindo a
+convenção de colocar Server Actions perto da seção que as usa — escolhido
+porque `area-do-associado/page.tsx` é hoje o único consumidor de `NavUser`),
+espelhando o padrão de `signIn` em `entrar/actions.ts`: chama
+`createClient()` de `@inova-cumau/supabase/server`, `supabase.auth.signOut()`
+e `redirect("/entrar")`. `/entrar` foi escolhido como destino por já ser o
+destino estabelecido para visitante sem sessão (mesmo `redirect("/entrar")`
+já usado como guarda de acesso em `area-do-associado/page.tsx`), dando um
+caminho imediato de volta ao login. Em `components/nav-user.tsx`, o
+`DropdownMenuItem` de "Sair" ganhou `onClick={() => signOut()}`, chamando a
+Server Action diretamente como RPC a partir do Client Component (sem
+`<form>`) — confirmado antes, lendo `ui/dropdown-menu.tsx`, que
+`DropdownMenuItem` espalha as props de `MenuPrimitive.Item` do Base UI e
+aceita `onClick` normalmente. Typecheck (`pnpm --filter @inova-cumau/web
+typecheck`) rodou limpo; não verificado no navegador (regra permanente, ver
+"Fluxo de verificação" no topo deste arquivo).
+
+**Correção arquitetural: sidebar-07 é a área do Admin, não a área do
+associado** (pedido explícito do usuário, corrigindo o entendimento de todo o
+histórico acima sobre "área do associado"): tudo que este arquivo documentou
+até aqui como "área do associado"/`/area-do-associado` (bloco `sidebar-07`,
+`AppSidebar`/`NavMain`/`NavProjects`/`NavUser`/`TeamSwitcher`, ícones
+`lucide-react`, dados stock) é na verdade a **área do Admin** — movida para a
+rota `/admin` (`apps/web/src/app/admin/page.tsx` + `admin/actions.ts`, mesmo
+conteúdo/Server Actions de antes, só a pasta renomeada de `area-do-associado`
+para `admin`; nenhum outro arquivo referenciava o path antigo fora dos já
+listados). A **área do associado real** (associado comum, não admin) é outra
+coisa, ainda a ser construída em conteúdo: quando um associado comum faz
+login, ele não vai para um dashboard separado — ele continua vendo a mesma
+home/landing page institucional (header e rodapé **sempre presentes**, em
+toda página, logado ou não), e a única mudança visível é um **avatar no canto
+superior direito do header** (`HeaderUserMenu`,
+`components/header-user-menu.tsx`) no lugar dos botões "Entrar"/"Associe-se".
+Clicar num item do dropdown do avatar leva a páginas de "área de membro" que
+também vivem dentro do layout institucional, nunca substituindo header/rodapé.
+
+Implementado: nova rota `apps/web/src/app/(marketing)/area-do-associado/page.tsx`
+(dentro do route group `(marketing)`, então herda automaticamente o header/
+rodapé persistentes sem nenhum layout próprio — só por estar nesse grupo);
+`apps/web/src/app/(marketing)/layout.tsx` virou um Server Component
+**assíncrono** que chama `supabase.auth.getUser()` e, se houver sessão, busca
+`startup_nome` em `startup_registrations` (mesmo padrão de `admin/page.tsx`),
+montando `{ name, email, avatar: "" }` e passando como prop `user` para
+`<SiteHeader user={user} />` — logo, **todas** as páginas dentro de
+`(marketing)/` (home, sobre, noticias, midia, parceiros, associe-se, entrar,
+area-do-associado) ganham automaticamente o header ciente de autenticação, sem
+precisar de nenhuma mudança individual em cada página. `SiteHeader`
+(`components/site-header.tsx`) recebe essa prop opcional (`user?: { name,
+email, avatar } | null`) e alterna condicionalmente, em dois pontos (desktop,
+dentro de `.ml-auto`; mobile, dentro do `Sheet` de navegação): usuário logado
+→ `<HeaderUserMenu user={user} />`; não logado → os botões "Entrar"/
+"Associe-se" de sempre. `HeaderUserMenu` (`components/header-user-menu.tsx`,
+novo) é um `DropdownMenu` com `Avatar` quadrado (`rounded-lg`, mesma convenção
+já documentada), label com nome/e-mail, e — por pedido explícito do
+usuário para deixar o conteúdo detalhado para depois ("Vou detalhar os itens
+depois") — só dois itens por enquanto: link para "Área do associado"
+(`DropdownMenuItem render={<Link href="/area-do-associado" />}`, confirma que
+`DropdownMenuItem` suporta o prop `render` do Base UI) e "Sair"
+(`onClick={() => signOut()}`, nova Server Action em
+`app/(marketing)/actions.ts` — **distinta** da `signOut` do admin: aqui
+redireciona para `/` (home), não para `/entrar`, já que um associado comum
+deslogando volta a ser um visitante anônimo da mesma landing page, não é
+expulso para uma tela de login separada). Typecheck (`pnpm --filter
+@inova-cumau/web typecheck`) rodou limpo; não verificado no navegador (regra
+permanente, ver "Fluxo de verificação" no topo deste arquivo).
+
+**Segunda correção arquitetural: área do associado virou dashboard próprio,
+com sidebar** (pedido explícito do usuário: "na area de associado, crie uma
+sidebar com as opções: Perfil> Meus dados, Privacidade, Mensagens,
+Notificações / Atividades> Salvos / Carteira> Cartão de sócio, Cumaú Coin /
+Sair") — isso substitui a premissa da correção arquitetural acima ("não vai
+para um dashboard separado... continua vendo a mesma home/landing page
+institucional"). Antes deste pedido, o usuário havia sugerido reaproveitar
+`sidebar-07` também aqui ("na area do associado, vamos criar npx shadcn@latest
+add sidebar-07"); pedi esclarecimento (`AskUserQuestion`) por conflitar com o
+que estava documentado até então, e o usuário **dispensou a pergunta sem
+responder**, sinalizando para aguardar a próxima instrução em vez de agir
+sobre qualquer uma das alternativas oferecidas — só a mensagem seguinte
+(a lista de opções da sidebar acima) foi tratada como a instrução real a
+executar.
+
+Implementado (nesse momento): nova rota top-level
+`apps/web/src/app/area-do-associado/page.tsx` (fora de `(marketing)`, sem
+herdar `SiteHeader`/`SiteFooter`), espelhando a estrutura de
+`admin/page.tsx`: `SidebarProvider` + `AssociadoSidebar` (nova,
+`components/associado-sidebar.tsx`) + `SidebarInset` com
+header/breadcrumb/conteúdo. `AssociadoSidebar` tinha um cabeçalho estático
+(logo badge, mesmo padrão `bg-sidebar-primary`/`text-sidebar-primary-foreground`
+de `team-switcher.tsx`, sem dropdown/trocador — só "Inova Cumaú"/"Associado"
+fixos) e delegava a navegação para `NavAssociado`
+(`components/nav-associado.tsx`), que implementa exatamente a estrutura
+pedida: três grupos colapsáveis — **Perfil** (Meus dados, Privacidade,
+Mensagens, Notificações), **Atividades** (Salvos), **Carteira** (Cartão de
+sócio, Cumaú Coin) — e um item avulso **Sair** fora de qualquer grupo,
+chamando a mesma Server Action `signOut` de `app/(marketing)/actions.ts` já
+usada por `HeaderUserMenu` (redireciona para `/`, não para `/entrar` — é a
+variante de associado/visitante, distinta da `signOut` do admin). Diferente
+do admin (que usa `lucide-react` como exceção documentada), os ícones aqui
+seguem a convenção padrão do projeto: Tabler
+(`IconChevronRight`/`IconUserCircle`/`IconActivity`/`IconWallet`/
+`IconLogout`).
+
+**Terceira correção arquitetural: sidebar não pode ficar desapartada do
+header/footer da landing page** (pedido explícito do usuário, corrigindo a
+implementação imediatamente acima: *"você não seguiu o plano de manter
+header nav e footer. essa área não é algo desapartado da ladingpage."*) — a
+versão com `SidebarProvider`/`AssociadoSidebar`/`SidebarInset` era um
+dashboard 100% isolado, sem `SiteHeader`/`SiteFooter`, o que contradizia o
+próprio pedido de manter a área do associado dentro da experiência da
+landing page (só trocando o header por uma versão ciente de autenticação,
+como já valia para `/` e as demais páginas de `(marketing)/`). Causa raiz:
+o primitivo `Sidebar` do shadcn (`components/ui/sidebar.tsx`) renderiza seu
+container desktop como `position: fixed` + `h-svh` (altura cheia da
+viewport) — estruturalmente incompatível com coexistir com um header/footer
+em fluxo normal de documento.
+
+Correção: a rota voltou para dentro do grupo `(marketing)`
+(`apps/web/src/app/(marketing)/area-do-associado/page.tsx`), voltando a
+herdar `SiteHeader`/`SiteFooter` automaticamente de `(marketing)/layout.tsx`,
+sem nenhuma mudança nesse layout. `apps/web/src/components/associado-sidebar.tsx`
+(o wrapper do primitivo `Sidebar`) e a rota top-level antiga
+(`apps/web/src/app/area-do-associado/`) foram **removidos**. `NavAssociado`
+(`components/nav-associado.tsx`) deixou de depender do contexto do Sidebar —
+trocou `SidebarMenuSub`/`SidebarMenuButton` por markup simples
+(`Collapsible`/`CollapsibleTrigger`/`CollapsibleContent` de
+`components/ui/collapsible.tsx`, que não tem dependência de contexto, mais
+`<ul>`/`<a>`/`<button>` estilizados à mão) — mesmos três grupos, mesmos
+ícones Tabler, mesmo `signOut` de `(marketing)/actions.ts`, comportamento
+idêntico ao anterior, só sem o primitivo Sidebar por trás. O chevron de cada
+grupo usa `group-data-open/collapsible:rotate-90` (não
+`group-data-[panel-open]`) — confirmado via leitura do pacote
+`@base-ui/react` instalado que o `Collapsible` **Root** (onde fica
+`className="group/collapsible"`) reaplica em si mesmo os atributos
+`data-open`/`data-closed` do **Panel**, enquanto `data-panel-open` é um
+atributo à parte, exclusivo do **Trigger** — nunca presente no Root.
+Reaplicar esse cuidado (checar `data-open`/`data-closed` no Root, não
+`data-panel-open`) em qualquer novo uso de `Collapsible` fora do contexto do
+Sidebar.
+
+A página em si (`(marketing)/area-do-associado/page.tsx`) virou um layout de
+duas colunas em fluxo normal (sem `position: fixed`, sem `SidebarProvider`):
+`<section className="mx-auto max-w-6xl px-4 pt-16 pb-20 sm:px-6">` (mesma
+convenção de container já usada em `sobre/page.tsx`, `pt-16` alinhado ao
+padrão de `sobre/ecossistema/page.tsx`) envolvendo
+`<div className="flex flex-col gap-8 lg:flex-row">` com um
+`<aside className="lg:w-64 lg:shrink-0"><NavAssociado /></aside>` à esquerda
+e uma `<div className="flex-1">` à direita com o mesmo texto "Bem-vindo(a),
+{nome}" (`startup_nome`, inalterado) e o placeholder de conteúdo. Mantém a
+mesma guarda de acesso de antes (`supabase.auth.getUser()` +
+`redirect("/entrar")` sem sessão). O `Breadcrumb`/header interno do antigo
+`SidebarInset` foi removido (não fazia sentido fora do padrão Sidebar; o
+`SiteHeader` já cumpre esse papel). `PageHeader` (componente já usado em
+outras páginas institucionais) foi avaliado e descartado para este caso —
+seu estilo centralizado/com eyebrow não serve para uma saudação
+personalizada alinhada à esquerda. Todos os sub-itens (Meus dados,
+Privacidade, Mensagens, Notificações, Salvos, Cartão de sócio, Cumaú Coin)
+continuam `href="#"` — só a navegação/estrutura foi pedida até aqui, não o
+conteúdo de cada página (ver "Pendente", abaixo). Typecheck (`pnpm --filter
+@inova-cumau/web typecheck`) rodou limpo; não verificado no navegador (regra
+permanente, ver "Fluxo de verificação" no topo deste arquivo).
+
+O nome/e-mail exibidos no header para um associado logado deixaram de vir de
+`startup_nome`/`authUser.email` e passaram a vir do **responsável pela
+inscrição** (Step 1 do wizard): `(marketing)/layout.tsx` agora consulta
+`.select("responsavel_nome, responsavel_email")` em vez de `startup_nome`,
+extrai só o **primeiro nome** (`registration?.responsavel_nome?.trim()
+.split(/\s+/)[0]`, fallback `"Associado"`) e usa `responsavel_email` como
+e-mail exibido (fallback `authUser.email`, o e-mail de login, só se
+`responsavel_email` vier vazio) — pedido explícito do usuário. Além disso,
+`HeaderUserMenu` (`components/header-user-menu.tsx`) ganhou o **primeiro
+nome** também dentro do `DropdownMenuTrigger`, ao lado do avatar, visível
+direto na barra do header (antes só aparecia dentro do dropdown já aberto,
+no `DropdownMenuLabel`) — `<span className="max-w-[140px] truncate text-sm
+font-medium">{user.name}</span>`. **Só o nome fica no trigger — o e-mail
+permanece exclusivamente dentro do conteúdo aberto do dropdown**
+(`DropdownMenuLabel`), pedido explícito do usuário após uma primeira versão
+que também duplicava o e-mail ao lado do avatar. Como `HeaderUserMenu` é
+compartilhado entre a barra desktop (`.ml-auto` em `site-header.tsx`) e o
+menu mobile (dentro do `Sheet`), o mesmo trigger aparece nos dois lugares
+sem nenhuma variante condicional por breakpoint (decisão deliberada de
+manter simples — se ficar apertado em telas muito estreitas, ajustar com
+uma instrução futura explícita). O bloco já existente dentro do
+`DropdownMenuLabel` (conteúdo aberto do dropdown, com nome **e** e-mail) não
+foi alterado estruturalmente, só passou a refletir os mesmos valores novos
+automaticamente. `area-do-associado/page.tsx` (texto "Bem-vindo(a), {nome}")
+**não foi tocado** — continua usando `startup_nome`, fora do escopo deste
+pedido. Typecheck (`pnpm --filter @inova-cumau/web typecheck`) rodou limpo;
+não verificado no navegador (regra permanente, ver "Fluxo de verificação" no
+topo deste arquivo).
+
+**Correção visual na sidebar de `area-do-associado`**: pedido explícito do
+usuário ("apenas corrija o componente sidebar. a linha da seção está fora da
+direção correta, tem muito espaço sendo consumido a direita"). Diagnóstico
+confirmado via `AskUserQuestion` (usuário escolheu "Linha vertical de
+indentação"): em `NavAssociado` (`components/nav-associado.tsx`), o `<ul>`
+de sub-itens dentro de cada `CollapsibleContent` tinha só `pl-4` (sem
+margem/limite à direita), então a linha de indentação (`border-l`) e a área
+de hover/clique de cada `<a>` de sub-item se esticavam sem limite até a
+borda direita da coluna `lg:w-64` da sidebar — diferente do padrão stock do
+shadcn (`SidebarMenuSub`, usado pelo admin via `nav-main.tsx`), que usa
+`mx-3.5` para conter a lista numa coluna mais estreita que o container pai.
+Corrigido espelhando esse mesmo padrão de contenção em escala menor: o `<ul>`
+ganhou `mr-2` (além do `ml-2` que substituiu o antigo `pl-4`→`pl-3` de
+indentação à esquerda), classe final
+`mt-0.5 mr-2 ml-2 flex flex-col gap-0.5 border-l border-border pl-3`.
+Escopo deliberadamente restrito só a esse arquivo (pedido do usuário, "apenas
+corrija o componente sidebar") — nenhum outro arquivo foi tocado. Typecheck
+(`pnpm --filter @inova-cumau/web typecheck`) rodou limpo; não verificado no
+navegador (regra permanente, ver "Fluxo de verificação" no topo deste
+arquivo).
+
+Essa primeira correção resolveu o espaço sobrando à direita, mas o usuário
+apontou na sequência que a linha vertical continuava fora do lugar "em
+relação a como de fato é o componente do shadcn... está pra fora da direção
+do ícone" — ou seja, a linha de indentação não caía sob o centro do ícone do
+item pai, ao contrário do padrão real do shadcn. Diagnosticado comparando
+diretamente com o `sidebar.tsx` stock (`components/ui/sidebar.tsx`, usado
+pelo admin): `sidebarMenuButtonVariants` usa `p-2` (8px) de padding + ícone
+`size-4` (16px), então o centro do ícone fica a 16px da borda esquerda do
+container; `SidebarMenuSub` usa `mx-3.5 translate-x-px` (~15px) para a linha
+`border-l`, alinhando quase exatamente sob esse centro. `NavAssociado`, por
+outro lado, usava `px-2.5` (10px) no trigger — não `p-2` como o stock — o que
+jogava o centro do ícone para 18px, bem longe dos 8px (`ml-2`) onde a linha
+antiga estava. Corrigido replicando exatamente os valores do componente real
+do shadcn: `navItemTriggerClass` trocou `px-2.5 py-2` por `p-2` (igual ao
+`SidebarMenuButton` stock, centro do ícone agora em 16px) e o `<ul>` de
+sub-itens trocou `mt-0.5 mr-2 ml-2 ... pl-3` por
+`mx-3.5 mt-0.5 flex translate-x-px flex-col gap-0.5 border-l border-border
+pl-2.5` (mesmos `mx-3.5`/`translate-x-px`/`pl-2.5` do `SidebarMenuSub` stock).
+Escopo novamente restrito a `nav-associado.tsx`. Typecheck (`pnpm --filter
+@inova-cumau/web typecheck`) rodou limpo; não verificado no navegador (regra
+permanente, ver "Fluxo de verificação" no topo deste arquivo).
+
+**Página "Meus dados"** (`apps/web/src/app/(marketing)/area-do-associado/meus-dados/`):
+primeira página real da sidebar do associado, implementada em quatro arquivos:
+
+- `schema.ts` — `meusDadosSchema` (Zod): combina todos os campos editáveis de
+  `startup_registrations` — campos do responsável (`step1Schema`), do negócio
+  (`step2Schema`, com CNPJ/ausente + autofill BrasilAPI) e segmentação
+  (`step4Schema`, com `MultiSelectCombobox` para segmentos e objetivos) — com os
+  mesmos `superRefine`s de CNPJ válido/ausente, "outra"/"outros" condicionais.
+  Campos excluídos deliberadamente: `notify_email_editais`/`notify_email_novidades`/
+  `perfil_visivel_publico` (futuras páginas Notificações/Privacidade), os 7 campos
+  de contato sempre-`null` (`startup_site`, `contato_email`, `contato_telefone`,
+  `contato_whatsapp`, `contato_instagram`, `contato_facebook`, `contato_linkedin`),
+  e campos imutáveis/sistema (`status`, `termos_aceitos*`, `id`, `created_at`,
+  `updated_at`, `user_id`).
+- `actions.ts` — Server Action `updateMeusDados` (`useActionState`): revalida com
+  Zod no servidor (nunca confia no payload do client), faz `.update({...}).eq("user_id",
+  user.id)` em `startup_registrations` (RLS UPDATE policy já existia, sem migration
+  nova), exporta `lookupCnpj` re-exportando de `associe-se/actions.ts` para o form
+  client poder chamar o autofill de CNPJ. Retorna `{ status: "success" }` em caso de
+  êxito (toast verde disparado no client) ou `{ status: "error" | "validation_error" }`
+  em falha. `revalidatePath` em `/area-do-associado` e `/area-do-associado/meus-dados`
+  após update bem-sucedido.
+- `meus-dados-form.tsx` — Client Component `MeusDadosForm`: formulário controlado
+  (todos os campos via `useState` — necessário porque há interação entre estados:
+  CNPJ ausente desabilita input, autofill preenche outros campos, arrays de
+  multi-select precisam de hidden inputs); reutiliza `PhoneCountryInput`,
+  `MultiSelectCombobox`, Select+Dialog de fase do negócio e textareas com contador
+  exatamente como nos steps correspondentes do wizard; feedback de salvamento via
+  toast (`type: "success"` / `type: "error"`), mesmo padrão dos outros fluxos de
+  Server Action. Arrays (`segmentos`, `objetivo_filiacao`) e booleano
+  (`startup_cnpj_ausente`) são passados como `<input type="hidden">` porque
+  `formData.getAll()` / `formData.get() === "true"` é a única forma confiável de
+  serializar esses tipos num `<form action={serverAction}>`.
+- `page.tsx` — Server Component assíncrono: guarda de acesso (`redirect("/entrar")`
+  sem sessão ou sem `startup_registrations`), seleciona todos os campos editáveis
+  da tabela em um único `.select(...)`, passa como prop `initial` para `MeusDadosForm`.
+  Layout de duas colunas idêntico ao de `area-do-associado/page.tsx` (herda
+  `SiteHeader`/`SiteFooter` por estar no grupo `(marketing)/`).
+
+`nav-associado.tsx`: `{ title: "Meus dados", url: "#" }` → `url:
+"/area-do-associado/meus-dados"`. Typecheck (`pnpm --filter @inova-cumau/web
+typecheck`) rodou limpo; não verificado no navegador (regra permanente, ver "Fluxo
+de verificação" no topo deste arquivo).
 
 **Pendente**:
+- Construir o conteúdo real das demais páginas linkadas pela sidebar de
+  `area-do-associado/page.tsx` (`components/nav-associado.tsx`) — Privacidade,
+  Mensagens, Notificações (grupo Perfil), Salvos (grupo Atividades), Cartão de
+  sócio e Cumaú Coin (grupo Carteira) — ainda `href="#"`, sem rota própria nem
+  conteúdo. Aguardando instrução explícita do usuário sobre o que entra em cada
+  página.
+- Decidir se o `TeamSwitcher` (área do Admin, `/admin`) deve ter um seletor de
+  "equipes" no domínio de Associado/Administrador único da Inova Cumaú — o
+  rótulo "Equipes"/"Adicionar equipe" já foi traduzido (ver acima), mas a
+  pergunta de design (a feature em si faz sentido aqui?) segue em aberto, sem
+  instrução explícita do usuário.
+- Desenhar e implementar o nível de acesso real por tipo de usuário
+  (Associado vs. Administrador), incluindo proteger `/admin` para não ser
+  acessível por um associado comum (hoje `/admin` só verifica sessão, não
+  papel/role — a tabela `user_roles` já existe no schema Supabase mas não é
+  referenciada em nenhum código ainda). Hoje `plan` é só texto exibido no
+  `TeamSwitcher`, sem nenhuma lógica de permissão associada. Aguardando
+  instrução explícita do usuário.
+- Adaptar os itens de navegação do Admin (`navMain`/`projects`, ainda 100%
+  stock) ao conteúdo real dessa área (o header com breadcrumb fixo "Build
+  Your Application"/"Data Fetching" e os blocos cinza de skeleton também
+  continuam placeholder) — nome/e-mail do `NavUser` já são reais (ver acima),
+  avatar segue sem foto por falta de feature de upload. Aguardando instrução
+  explícita do usuário sobre o que entra em cada etapa.
+- Implementar upload/edição de foto de perfil, caso desejado — hoje `avatar`
+  é sempre `""` (`AvatarFallback` com iniciais cobre a ausência).
 - Colar o template `docs/email-templates/confirm-signup.html` no painel do
   Supabase (Authentication → Email Templates → "Confirm signup", campo
   "Message body (HTML)") e confirmar que `{{ .ConfirmationURL }}` não
@@ -588,6 +1120,64 @@ observável neste ambiente.
 **Dados reais ausentes** (usar placeholder explícito até serem fornecidos — nunca
 inventar): número de associados, depoimentos, logos de parceiros, estatísticas de
 impacto.
+
+**Correção: botão "Salvar alterações" com largura/posição erradas** (`meus-dados-form.tsx`):
+o `<Field className="mt-2 flex-row justify-end">` fazia o botão esticar para
+`w-full` porque `Field` aplica `*:w-full` na orientação vertical padrão.
+Corrigido usando a prop `orientation="horizontal"` do próprio `Field`
+(`<Field orientation="horizontal" className="mt-2 justify-end">`), que já
+existe para esse propósito, em vez de só sobrescrever via `className`.
+
+**Correção: abrir um `Select` rolava a página para o topo** (bug relatado
+pelo usuário: "quando clico em selects, sou redirecionado para o topo").
+Causa raiz, confirmada lendo o código-fonte do `@base-ui/react` (`select/
+popup/SelectPopup.js` e `floating-ui-react/components/FloatingFocusManager.js`):
+o `Select` do Base UI usa `FloatingFocusManager` sem customizar
+`initialFocus`, então ao abrir o popup o foco vai por padrão para o primeiro
+elemento focável **dentro** do popup (ex.: o `SelectItem` selecionado), não
+para o container do popup — e a chamada interna de `enqueueFocus` só passa
+`preventScroll: true` quando o alvo do foco é o próprio container, então
+focar um item interno roda com `preventScroll: false`, permitindo o
+scroll-into-view nativo do navegador disparado pelo `focus()`. Não há prop
+pública (`initialFocus`/`preventScroll`) exposta pelos `.d.ts` do módulo
+`select` para desativar esse comportamento diretamente. Corrigido em
+`apps/web/src/components/ui/select.tsx`: `Select` deixou de ser um simples
+alias (`const Select = SelectPrimitive.Root`) e virou um wrapper genérico
+(`function Select<Value, Multiple extends boolean | undefined = false>({
+onOpenChange, ...props }: SelectPrimitive.Root.Props<Value, Multiple>)` —
+os parâmetros de tipo são obrigatórios porque `SelectRoot` do Base UI é
+genérico; usar `SelectPrimitive.Root.Props` sem argumentos de tipo é erro de
+TypeScript, `TS2707`) que intercepta `onOpenChange`. Uma primeira tentativa
+tentou restaurar o scroll via dois `requestAnimationFrame` aninhados
+(adivinhando o timing relativo ao `enqueueFocus` interno do Base UI), mas o
+usuário reportou que **não resolveu** o bug em teste real — apostar em um
+número fixo de frames para vencer uma corrida contra o scheduling interno do
+Base UI não é confiável. Substituído por uma abordagem orientada a evento:
+ao abrir (`open === true`), guarda `window.scrollX/scrollY` e registra um
+listener de `scroll` em `window` (capture phase) que restaura essa posição
+imediatamente a cada evento de scroll disparado; o listener é removido após
+300ms (`window.setTimeout`), janela suficiente para cobrir o scroll-into-view
+do Base UI sem interferir em scroll legítimo do usuário depois que o popup
+estabiliza. Reaplicar esse mesmo padrão (listener de `scroll` real, não
+contagem de frames) em qualquer outro componente baseado em
+`FloatingFocusManager` que apresente o mesmo sintoma (ex.: `DropdownMenu`,
+`Popover`, `Menu`, se o mesmo bug for reportado neles). Não verificado no
+navegador (regra permanente, ver "Fluxo de verificação" no topo deste
+arquivo).
+
+**Mesmo bug reportado no `Popover`** (usuário: abrir os dropdowns de
+"Segmentos de atuação"/"Objetivo da filiação" — `MultiSelectCombobox`, que
+usa `Popover`, não `Select` — na página "Meus dados" jogava a página pro
+topo). Aplicado exatamente o mesmo fix de `select.tsx` em
+`components/ui/popover.tsx`: `Popover` deixou de ser um alias direto de
+`PopoverPrimitive.Root` e virou um wrapper que intercepta `onOpenChange`,
+guardando `window.scrollX/scrollY` ao abrir e restaurando via listener de
+`scroll` (capture phase, removido após 300ms). Como `Popover` é a base de
+`MultiSelectCombobox` (compartilhado entre o Step 4 do wizard de
+`/associe-se` e a página "Meus dados") e de qualquer outro Popover do app,
+o fix cobre todos os usos automaticamente, sem mudança nos componentes
+consumidores. Não verificado no navegador (regra permanente, ver "Fluxo de
+verificação" no topo deste arquivo).
 
 ## Convenções
 
@@ -725,6 +1315,17 @@ impacto.
   único de página, sem isolamento) já que as colunas empilham em vez de ficar
   lado a lado. Reaplicar esse padrão em qualquer novo layout de duas colunas que
   precise que só um lado role.
+- Link "Voltar para o início" no topo do lado 1 do wizard
+  (`components/registration-wizard/wizard.tsx`): acima do `Link` do logo
+  (`Logo`/`LogoWordmark`) dentro do `<aside>`, um link de texto simples
+  (`Voltar para o início`, sem ícone) apontando para `/`, estilizado como
+  `text-sm text-muted-foreground underline-offset-2 hover:text-foreground
+  hover:underline` (mesmo padrão de link de texto já usado em "Esqueceu sua
+  senha?" em `login-form.tsx`) com `mb-6` para separá-lo do logo abaixo.
+  Pedido explícito do usuário. Diferente do "Voltar para o início" já
+  existente em `area-do-associado/page.tsx` (um `Button variant="outline"`
+  no rodapé da página) — aqui é deliberadamente um link puro de texto, sem
+  ícone, no topo, não um botão.
 - `InputGroupAddon` (`apps/web/src/components/ui/input-group.tsx`) tem um
   `onClick` que foca o primeiro `<input>` do `InputGroup` pai — pensado para
   cliques na área do addon (ícone, espaço em branco) fora de um `<input>`/

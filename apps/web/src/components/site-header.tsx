@@ -26,6 +26,7 @@ import {
 } from "@tabler/icons-react";
 
 import { Logo, LogoWordmark } from "@/components/logo";
+import { HeaderUserMenu } from "@/components/header-user-menu";
 import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
@@ -297,7 +298,11 @@ function MegaMenuFooter() {
   );
 }
 
-export function SiteHeader() {
+export function SiteHeader({
+  user,
+}: {
+  user?: { name: string; email: string; avatar: string } | null;
+} = {}) {
   const headerRef = React.useRef<HTMLElement>(null);
   const [menuOpen, setMenuOpen] = React.useState(false);
 
@@ -383,21 +388,27 @@ export function SiteHeader() {
         </NavigationMenu>
 
         <div className="ml-auto flex items-center gap-1.5 sm:gap-2">
-          <Button
-            render={<Link href="/entrar" />}
-            nativeButton={false}
-            variant="ghost"
-            className="hidden text-rio-700 hover:bg-rio-700/10 hover:text-rio-700 sm:inline-flex"
-          >
-            Entrar
-          </Button>
-          <Button
-            render={<Link href="/associe-se" />}
-            nativeButton={false}
-            className="hidden sm:inline-flex"
-          >
-            Associe-se
-          </Button>
+          {user ? (
+            <HeaderUserMenu user={user} />
+          ) : (
+            <>
+              <Button
+                render={<Link href="/entrar" />}
+                nativeButton={false}
+                variant="ghost"
+                className="hidden text-rio-700 hover:bg-rio-700/10 hover:text-rio-700 sm:inline-flex"
+              >
+                Entrar
+              </Button>
+              <Button
+                render={<Link href="/associe-se" />}
+                nativeButton={false}
+                className="hidden sm:inline-flex"
+              >
+                Associe-se
+              </Button>
+            </>
+          )}
 
           <Sheet>
             <SheetTrigger render={<Button variant="ghost" size="icon" className="md:hidden" />}>
@@ -466,15 +477,21 @@ export function SiteHeader() {
                     </Link>
                   ),
                 )}
-                <Link
-                  href="/entrar"
-                  className="text-sm font-medium text-muted-foreground"
-                >
-                  Entrar
-                </Link>
-                <Button render={<Link href="/associe-se" />} nativeButton={false}>
-                  Associe-se
-                </Button>
+                {user ? (
+                  <HeaderUserMenu user={user} />
+                ) : (
+                  <>
+                    <Link
+                      href="/entrar"
+                      className="text-sm font-medium text-muted-foreground"
+                    >
+                      Entrar
+                    </Link>
+                    <Button render={<Link href="/associe-se" />} nativeButton={false}>
+                      Associe-se
+                    </Button>
+                  </>
+                )}
               </nav>
             </SheetContent>
           </Sheet>

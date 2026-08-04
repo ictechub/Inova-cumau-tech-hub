@@ -26,5 +26,5 @@ export async function signIn(
     return { status: "error", message: "E-mail ou senha incorretos." };
   }
 
-  redirect("/");
+  redirect("/area-do-associado");
 }
