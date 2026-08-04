@@ -26,5 +26,19 @@ export async function signIn(
     return { status: "error", message: "E-mail ou senha incorretos." };
   }
 
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (user) {
+    const { data: registration } = await supabase
+      .from("startup_registrations")
+      .select("role")
+      .eq("user_id", user.id)
+      .single();
+
+    if (registration?.role === "admin") {
+      redirect("/admin");
+    }
+  }
+
   redirect("/area-do-associado");
 }

@@ -83,6 +83,7 @@ export type Database = {
           responsavel_nome: string
           responsavel_telefone: string
           responsavel_whatsapp: string | null
+          role: string
           segmentacao_outros_detalhes: string | null
           segmento_outro: string | null
           segmentos: string[]
@@ -121,6 +122,7 @@ export type Database = {
           responsavel_nome: string
           responsavel_telefone: string
           responsavel_whatsapp?: string | null
+          role?: string
           segmentacao_outros_detalhes?: string | null
           segmento_outro?: string | null
           segmentos?: string[]
@@ -159,6 +161,7 @@ export type Database = {
           responsavel_nome?: string
           responsavel_telefone?: string
           responsavel_whatsapp?: string | null
+          role?: string
           segmentacao_outros_detalhes?: string | null
           segmento_outro?: string | null
           segmentos?: string[]
