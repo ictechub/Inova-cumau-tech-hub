@@ -44,7 +44,13 @@ import {
   OBJETIVOS_FILIACAO,
 } from "@/components/registration-wizard/constants";
 import { formatCNPJ } from "@/lib/masks";
-import { updateMeusDados, lookupCnpj, type UpdateResult } from "./actions";
+import {
+  updateMeusDados,
+  lookupCnpj,
+  uploadAvatar,
+  deleteAvatar,
+  type UpdateResult,
+} from "./actions";
 
 type CnpjLookupStatus =
   | "idle"
@@ -54,7 +60,14 @@ type CnpjLookupStatus =
   | "invalid"
   | "error";
 
+function getInitials(name: string) {
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  if (parts.length >= 2) return ((parts[0]?.[0] ?? "") + (parts[parts.length - 1]?.[0] ?? "")).toUpperCase();
+  return (parts[0] ?? name).slice(0, 2).toUpperCase();
+}
+
 type InitialData = {
+  avatar_url?: string | null;
   responsavel_nome: string;
   responsavel_email: string;
   responsavel_telefone: string;
@@ -113,6 +126,10 @@ export function MeusDadosForm({ initial }: { initial: InitialData }) {
     initial.objetivo_filiacao_outro ?? "",
   );
 
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(initial.avatar_url ?? null);
+  const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const errors =
     state?.status === "validation_error" ? state.errors : {};
 
@@ -152,8 +169,79 @@ export function MeusDadosForm({ initial }: { initial: InitialData }) {
     setCnpjStatus("idle");
   }
 
+  async function handleAvatarChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    e.target.value = "";
+    setIsUploadingAvatar(true);
+    const result = await uploadAvatar(file);
+    setIsUploadingAvatar(false);
+    if (result.status === "success") {
+      setAvatarUrl(result.avatarUrl);
+      toast.add({ type: "success", description: "Foto atualizada com sucesso." });
+    } else {
+      toast.add({ type: "error", description: result.message });
+    }
+  }
+
+  async function handleDeleteAvatar() {
+    setIsUploadingAvatar(true);
+    const result = await deleteAvatar();
+    setIsUploadingAvatar(false);
+    if (result.status === "success") {
+      setAvatarUrl(null);
+      toast.add({ type: "success", description: "Foto removida." });
+    } else {
+      toast.add({ type: "error", description: result.message });
+    }
+  }
+
   return (
     <form action={formAction}>
+      {/* ── Foto de perfil ─────────────────────────────────────────── */}
+      <div className="mb-8 flex items-center gap-4">
+        <Avatar className="size-14 rounded-lg after:hidden">
+          <AvatarImage src={avatarUrl ?? ""} alt="Foto de perfil" className="rounded-lg object-cover" />
+          <AvatarFallback className="rounded-lg text-sm font-medium">
+            {getInitials(responsavel_nome || "?")}
+          </AvatarFallback>
+        </Avatar>
+        <div className="flex flex-col gap-2">
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/jpeg,image/png,image/webp"
+            className="hidden"
+            onChange={handleAvatarChange}
+          />
+          <div className="flex items-center gap-2">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => fileInputRef.current?.click()}
+              disabled={isUploadingAvatar}
+            >
+              <IconCamera className="mr-1.5 size-4" />
+              {isUploadingAvatar ? "Enviando..." : "Alterar foto"}
+            </Button>
+            {avatarUrl && (
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                className="text-destructive hover:bg-destructive/10 hover:text-destructive"
+                onClick={handleDeleteAvatar}
+                disabled={isUploadingAvatar}
+              >
+                Excluir foto
+              </Button>
+            )}
+          </div>
+          <p className="text-xs text-muted-foreground">JPEG, PNG ou WebP · máx. 2 MB</p>
+        </div>
+      </div>
+
       {/* Hidden fields para arrays e booleanos */}
       <input type="hidden" name="startup_cnpj_ausente" value={String(startup_cnpj_ausente)} />
       {segmentos.map((s) => (

@@ -15,6 +15,11 @@ export type AvatarUploadResult =
   | { status: "success"; avatarUrl: string }
   | { status: "error"; message: string };
 
+export type AvatarDeleteResult =
+  | { status: "success" }
+  | { status: "error"; message: string };
+
+const AVATAR_BUCKET = "profile-photos";
 const AVATAR_MAX_BYTES = 2 * 1024 * 1024;
 const AVATAR_ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
 
@@ -43,7 +48,7 @@ export async function uploadAvatar(file: File): Promise<AvatarUploadResult> {
   const path = `${user.id}/avatar.${extension}`;
 
   const { error: uploadError } = await supabase.storage
-    .from("avatars")
+    .from(AVATAR_BUCKET)
     .upload(path, file, { upsert: true, contentType: file.type });
 
   if (uploadError) {
@@ -55,7 +60,7 @@ export async function uploadAvatar(file: File): Promise<AvatarUploadResult> {
 
   const {
     data: { publicUrl },
-  } = supabase.storage.from("avatars").getPublicUrl(path);
+  } = supabase.storage.from(AVATAR_BUCKET).getPublicUrl(path);
 
   const avatarUrl = `${publicUrl}?v=${Date.now()}`;
 
@@ -76,6 +81,41 @@ export async function uploadAvatar(file: File): Promise<AvatarUploadResult> {
   revalidatePath("/", "layout");
 
   return { status: "success", avatarUrl };
+}
+
+export async function deleteAvatar(): Promise<AvatarDeleteResult> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return { status: "error", message: "Sessão expirada. Faça login novamente." };
+  }
+
+  const { data: files } = await supabase.storage
+    .from(AVATAR_BUCKET)
+    .list(user.id);
+
+  if (files && files.length > 0) {
+    const paths = files.map((f) => `${user.id}/${f.name}`);
+    await supabase.storage.from(AVATAR_BUCKET).remove(paths);
+  }
+
+  const { error } = await supabase
+    .from("startup_registrations")
+    .update({ avatar_url: null })
+    .eq("user_id", user.id);
+
+  if (error) {
+    return { status: "error", message: "Não foi possível remover a foto. Tente novamente." };
+  }
+
+  revalidatePath("/area-do-associado");
+  revalidatePath("/area-do-associado/meus-dados");
+  revalidatePath("/", "layout");
+
+  return { status: "success" };
 }
 
 export async function updateMeusDados(
