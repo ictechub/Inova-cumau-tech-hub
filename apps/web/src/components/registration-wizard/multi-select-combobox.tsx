@@ -10,6 +10,8 @@ import {
   InputGroupInput,
 } from "@/components/ui/input-group";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { ScrollHoverButton } from "@/components/ui/scroll-hover-button";
+import { useScrollableList } from "@/hooks/use-scrollable-list";
 import { cn } from "@/lib/utils";
 
 export type MultiSelectOption = { value: string; label: string };
@@ -33,6 +35,8 @@ export function MultiSelectCombobox({
   emptyMessage?: string;
 }) {
   const [query, setQuery] = useState("");
+  const { listRef, setListRef, canScrollUp, canScrollDown, updateScrollState } =
+    useScrollableList();
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -119,33 +123,43 @@ export function MultiSelectCombobox({
             onChange={(e) => setQuery(e.target.value)}
           />
         </InputGroup>
-        <div className="max-h-60 overflow-y-auto p-1">
-          {filtered.length === 0 ? (
-            <p className="px-2 py-4 text-center text-sm text-muted-foreground">
-              {emptyMessage}
-            </p>
-          ) : (
-            filtered.map((option) => {
-              const checked = value.includes(option.value);
-              return (
-                <button
-                  key={option.value}
-                  type="button"
-                  onClick={() => toggle(option.value)}
-                  className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-sm hover:bg-accent hover:text-accent-foreground"
-                >
-                  <span
-                    className={cn(
-                      "flex size-4 shrink-0 items-center justify-center rounded-[4px] border border-input",
-                      checked && "border-primary bg-primary text-primary-foreground",
-                    )}
+        <div className="relative">
+          {canScrollUp && <ScrollHoverButton direction="up" listRef={listRef} />}
+          <div
+            ref={setListRef}
+            onScroll={updateScrollState}
+            className="no-scrollbar max-h-60 overflow-y-auto p-1"
+          >
+            {filtered.length === 0 ? (
+              <p className="px-2 py-4 text-center text-sm text-muted-foreground">
+                {emptyMessage}
+              </p>
+            ) : (
+              filtered.map((option) => {
+                const checked = value.includes(option.value);
+                return (
+                  <button
+                    key={option.value}
+                    type="button"
+                    onClick={() => toggle(option.value)}
+                    className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-sm hover:bg-accent hover:text-accent-foreground"
                   >
-                    {checked && <CheckIcon className="size-3.5" />}
-                  </span>
-                  {option.label}
-                </button>
-              );
-            })
+                    <span
+                      className={cn(
+                        "flex size-4 shrink-0 items-center justify-center rounded-[4px] border border-input",
+                        checked && "border-primary bg-primary text-primary-foreground",
+                      )}
+                    >
+                      {checked && <CheckIcon className="size-3.5" />}
+                    </span>
+                    {option.label}
+                  </button>
+                );
+              })
+            )}
+          </div>
+          {canScrollDown && (
+            <ScrollHoverButton direction="down" listRef={listRef} />
           )}
         </div>
       </PopoverContent>

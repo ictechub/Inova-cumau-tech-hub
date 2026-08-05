@@ -16,6 +16,8 @@ import {
   InputGroupButton,
   InputGroupInput,
 } from "@/components/ui/input-group";
+import { ScrollHoverButton } from "@/components/ui/scroll-hover-button";
+import { useScrollableList } from "@/hooks/use-scrollable-list";
 import { formatPhone } from "@/lib/masks";
 import {
   PHONE_COUNTRIES,
@@ -46,6 +48,8 @@ export function PhoneCountryInput({
   const searchRef = useRef<HTMLInputElement>(null);
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
+  const { listRef, setListRef, canScrollUp, canScrollDown, updateScrollState } =
+    useScrollableList();
 
   useEffect(() => {
     if (!open) return;
@@ -114,25 +118,35 @@ export function PhoneCountryInput({
                 }}
               />
             </InputGroup>
-            <div
-              className="max-h-64 overflow-y-auto p-1"
-              onFocus={() => searchRef.current?.focus()}
-            >
-              {filteredCountries.length === 0 ? (
-                <p className="px-2 py-4 text-center text-sm text-muted-foreground">
-                  Nenhum país encontrado.
-                </p>
-              ) : (
-                filteredCountries.map((item) => (
-                  <DropdownMenuItem
-                    key={item.iso2}
-                    onClick={() => handleCountrySelect(item)}
-                  >
-                    <CountryFlag iso2={item.iso2} className="h-3 w-4 shrink-0 rounded-xs" />
-                    <span className="flex-1 truncate">{item.name}</span>
-                    <span className="text-muted-foreground">{item.dialCode}</span>
-                  </DropdownMenuItem>
-                ))
+            <div className="relative">
+              {canScrollUp && (
+                <ScrollHoverButton direction="up" listRef={listRef} />
+              )}
+              <div
+                ref={setListRef}
+                onScroll={updateScrollState}
+                className="no-scrollbar max-h-64 overflow-y-auto p-1"
+                onFocus={() => searchRef.current?.focus()}
+              >
+                {filteredCountries.length === 0 ? (
+                  <p className="px-2 py-4 text-center text-sm text-muted-foreground">
+                    Nenhum país encontrado.
+                  </p>
+                ) : (
+                  filteredCountries.map((item) => (
+                    <DropdownMenuItem
+                      key={item.iso2}
+                      onClick={() => handleCountrySelect(item)}
+                    >
+                      <CountryFlag iso2={item.iso2} className="h-3 w-4 shrink-0 rounded-xs" />
+                      <span className="flex-1 truncate">{item.name}</span>
+                      <span className="text-muted-foreground">{item.dialCode}</span>
+                    </DropdownMenuItem>
+                  ))
+                )}
+              </div>
+              {canScrollDown && (
+                <ScrollHoverButton direction="down" listRef={listRef} />
               )}
             </div>
           </DropdownMenuContent>
