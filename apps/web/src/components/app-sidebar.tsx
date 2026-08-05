@@ -32,7 +32,7 @@ const data = {
   ],
   navMain: [
     {
-      title: "Área de Testes",
+      title: "Dashboard",
       url: "#",
       icon: (
         <TerminalSquareIcon
@@ -45,7 +45,7 @@ const data = {
           url: "#",
         },
         {
-          title: "Favoritos",
+          title: "Métricas",
           url: "#",
         },
         {

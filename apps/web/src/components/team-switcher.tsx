@@ -11,7 +11,6 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import {
@@ -20,7 +19,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
-import { ChevronsUpDownIcon, HomeIcon, PlusIcon, UserCircleIcon } from "lucide-react"
+import { ChevronsUpDownIcon, HomeIcon, UserCircleIcon } from "lucide-react"
 
 export function TeamSwitcher({
   teams,
@@ -67,29 +66,28 @@ export function TeamSwitcher({
               <DropdownMenuLabel className="text-xs text-muted-foreground">
                 Equipes
               </DropdownMenuLabel>
-              {teams.map((team, index) => (
+              {teams.map((team) => (
                 <DropdownMenuItem
                   key={team.plan}
                   onClick={() => setActiveTeam(team)}
-                  className="gap-2 p-2"
+                  className="cursor-pointer gap-2 p-2"
                 >
                   <div className="flex size-6 items-center justify-center rounded-md bg-sidebar-primary text-sidebar-primary-foreground">
                     {team.logo}
                   </div>
                   {team.name}
-                  <DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>
                 </DropdownMenuItem>
               ))}
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem className="gap-2 p-2" render={<Link href="/" />}>
+              <DropdownMenuItem className="cursor-pointer gap-2 p-2" render={<Link href="/" />}>
                 <div className="flex size-6 items-center justify-center rounded-md border bg-transparent">
                   <HomeIcon className="size-4" />
                 </div>
                 <div className="font-medium text-muted-foreground">Início do site</div>
               </DropdownMenuItem>
-              <DropdownMenuItem className="gap-2 p-2" render={<Link href="/area-do-associado" />}>
+              <DropdownMenuItem className="cursor-pointer gap-2 p-2" render={<Link href="/area-do-associado" />}>
                 <div className="flex size-6 items-center justify-center rounded-md border bg-transparent">
                   <UserCircleIcon className="size-4" />
                 </div>

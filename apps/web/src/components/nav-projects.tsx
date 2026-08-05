@@ -56,18 +56,18 @@ export function NavProjects({
                 side={isMobile ? "bottom" : "right"}
                 align={isMobile ? "end" : "start"}
               >
-                <DropdownMenuItem>
+                <DropdownMenuItem className="cursor-pointer">
                   <FolderIcon
                   />
                   <span>Ver Projeto</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem>
+                <DropdownMenuItem className="cursor-pointer">
                   <ArrowRightIcon
                   />
                   <span>Compartilhar Projeto</span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem variant="destructive">
+                <DropdownMenuItem variant="destructive" className="cursor-pointer">
                   <Trash2Icon
                   />
                   <span>Excluir Projeto</span>
