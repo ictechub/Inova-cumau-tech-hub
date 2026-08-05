@@ -270,6 +270,14 @@
   --white-exception: #ffffff;
 
   --radius: 0.625rem;
+
+  /* Card de mapa (business-map-card) */
+  --map-bg: var(--surface);
+  --map-land: var(--neutral-100);
+  --map-land-hover: var(--floresta-200);
+  --map-land-active: var(--floresta-400);
+  --map-border: var(--surface);
+  --map-label: var(--text-muted);
 }
 
 .dark {
@@ -309,6 +317,14 @@
   --nav-hover-bg: var(--neutral-800);
   --nav-active-bg: var(--floresta-500);
   --nav-active-text: #ffffff;
+
+  /* Card de mapa (business-map-card) */
+  --map-bg: var(--surface);
+  --map-land: var(--neutral-800);
+  --map-land-hover: var(--floresta-800);
+  --map-land-active: var(--floresta-600);
+  --map-border: var(--surface);
+  --map-label: var(--text-muted);
 }
 
 @layer base {
@@ -358,5 +374,32 @@
   [aria-disabled="true"] {
     cursor: not-allowed;
   }
+}
+
+.map-fullscreen-card:fullscreen {
+  display: flex;
+  flex-direction: column;
+  background: var(--color-background);
+  border-radius: 0;
+  border: none;
+}
+
+.map-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) transparent;
+}
+.map-scroll::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.map-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.map-scroll::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 9999px;
+}
+.map-scroll::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--color-muted-foreground) 50%, transparent);
 }
 

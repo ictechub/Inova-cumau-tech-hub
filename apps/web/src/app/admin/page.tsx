@@ -34,13 +34,13 @@ export default async function AdminPage() {
 
   const { data: registration } = await supabase
     .from("startup_registrations")
-    .select("startup_nome, avatar_url, role")
+    .select("responsavel_nome, responsavel_email, avatar_url, role")
     .eq("user_id", authUser.id)
     .single();
 
   const user = {
-    name: registration?.startup_nome ?? "Associado",
-    email: authUser.email ?? "",
+    name: registration?.responsavel_nome ?? "Associado",
+    email: registration?.responsavel_email ?? authUser.email ?? "",
     avatar: registration?.avatar_url ?? "",
     role: (registration?.role ?? "associado") as "admin" | "associado",
   };
