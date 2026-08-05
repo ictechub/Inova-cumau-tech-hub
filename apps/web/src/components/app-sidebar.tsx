@@ -14,7 +14,13 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar"
-import { TerminalSquareIcon, BotIcon, BookOpenIcon, Settings2Icon, FrameIcon, PieChartIcon, MapIcon } from "lucide-react"
+import {
+  IconLayoutDashboard,
+  IconTools,
+  IconAdjustmentsCog,
+  IconFrame,
+  IconChartPie,
+} from "@tabler/icons-react"
 
 // This is sample data.
 const data = {
@@ -35,7 +41,7 @@ const data = {
       title: "Dashboard",
       url: "#",
       icon: (
-        <TerminalSquareIcon
+        <IconLayoutDashboard
         />
       ),
       isActive: true,
@@ -46,7 +52,7 @@ const data = {
         },
         {
           title: "Métricas",
-          url: "#",
+          url: "/admin/metricas",
         },
         {
           title: "Configurações",
@@ -55,10 +61,10 @@ const data = {
       ],
     },
     {
-      title: "Modelos",
+      title: "Editor de conteúdo",
       url: "#",
       icon: (
-        <BotIcon
+        <IconTools
         />
       ),
       items: [
@@ -77,36 +83,10 @@ const data = {
       ],
     },
     {
-      title: "Documentação",
-      url: "#",
-      icon: (
-        <BookOpenIcon
-        />
-      ),
-      items: [
-        {
-          title: "Introdução",
-          url: "#",
-        },
-        {
-          title: "Primeiros Passos",
-          url: "#",
-        },
-        {
-          title: "Tutoriais",
-          url: "#",
-        },
-        {
-          title: "Registro de Alterações",
-          url: "#",
-        },
-      ],
-    },
-    {
       title: "Configurações",
       url: "#",
       icon: (
-        <Settings2Icon
+        <IconAdjustmentsCog
         />
       ),
       items: [
@@ -134,7 +114,7 @@ const data = {
       name: "Engenharia de Design",
       url: "#",
       icon: (
-        <FrameIcon
+        <IconFrame
         />
       ),
     },
@@ -142,15 +122,7 @@ const data = {
       name: "Vendas e Marketing",
       url: "#",
       icon: (
-        <PieChartIcon
-        />
-      ),
-    },
-    {
-      name: "Viagens",
-      url: "#",
-      icon: (
-        <MapIcon
+        <IconChartPie
         />
       ),
     },
