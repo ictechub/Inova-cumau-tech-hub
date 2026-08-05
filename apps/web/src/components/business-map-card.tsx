@@ -90,22 +90,6 @@ export interface CityPoint {
   coordinates: [number, number] // [lng, lat]
 }
 
-// ─── Mock (fallback quando não há negócios geocodificados) ────────────────────
-const MOCK_CITIES: CityPoint[] = [
-  { city:"Santana",         state:"AP", count:14, coordinates:[-51.18, -0.06] },
-  { city:"Macapá",          state:"AP", count:22, coordinates:[-51.07,  0.03] },
-  { city:"Laranjal do Jari",state:"AP", count: 4, coordinates:[-52.45, -0.80] },
-  { city:"Oiapoque",        state:"AP", count: 3, coordinates:[-51.83,  3.84] },
-  { city:"Belém",           state:"PA", count: 9, coordinates:[-48.50, -1.46] },
-  { city:"Santarém",        state:"PA", count: 5, coordinates:[-54.71, -2.44] },
-  { city:"Manaus",          state:"AM", count: 7, coordinates:[-60.02, -3.10] },
-  { city:"São Paulo",       state:"SP", count:11, coordinates:[-46.63,-23.55] },
-  { city:"Rio de Janeiro",  state:"RJ", count: 6, coordinates:[-43.17,-22.91] },
-  { city:"Fortaleza",       state:"CE", count: 4, coordinates:[-38.54, -3.72] },
-  { city:"Recife",          state:"PE", count: 3, coordinates:[-34.88, -8.05] },
-  { city:"Brasília",        state:"DF", count: 4, coordinates:[-47.93,-15.78] },
-]
-
 const BR_STATES = brazilPaths as { id: string; path: string }[]
 
 // ─── Helpers de UI ──────────────────────────────────────────────────────────────
@@ -130,8 +114,7 @@ function MiniBar({ pct }: { pct: number }) {
 
 // ─── Componente ───────────────────────────────────────────────────────────────
 export function BusinessMapCard({ cities }: { cities: CityPoint[] }) {
-  const isMock = cities.length === 0
-  const data   = isMock ? MOCK_CITIES : cities
+  const data = cities
 
   // ── Seleção Brasil ─────────────────────────────────────────────────────────
   const [selectedRegion,  setSelectedRegion]  = useState<RegionId | null>(null)
@@ -629,7 +612,7 @@ export function BusinessMapCard({ cities }: { cities: CityPoint[] }) {
                 <div className="px-5 pt-5 pb-3 shrink-0">
                   <p className="text-3xl font-bold tabular-nums leading-none">{total.toLocaleString("pt-BR")}</p>
                   <p className="text-xs text-muted-foreground mt-1">
-                    {isMock ? "negócios (exemplo)" : "negócios com localização"}
+                    negócios com localização
                   </p>
                 </div>
                 <div className="flex-1 overflow-y-auto map-scroll px-5 pb-5 space-y-3">
