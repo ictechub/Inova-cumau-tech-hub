@@ -157,6 +157,11 @@ const data = {
   ],
 }
 
+const ROLE_LABEL: Record<string, string> = {
+  admin: "Administrador",
+  associado: "Associado",
+}
+
 export function AppSidebar({
   user,
   ...props
@@ -165,12 +170,15 @@ export function AppSidebar({
     name: string
     email: string
     avatar: string
+    role?: string
   }
 }) {
+  const team = [{ ...data.teams[0]!, plan: ROLE_LABEL[user.role ?? "associado"] ?? "Associado" }]
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <TeamSwitcher teams={data.teams} />
+        <TeamSwitcher teams={team} />
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
