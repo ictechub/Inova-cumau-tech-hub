@@ -2,6 +2,8 @@
 
 import * as React from "react"
 
+import Link from "next/link"
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,7 +20,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
-import { ChevronsUpDownIcon, PlusIcon } from "lucide-react"
+import { ChevronsUpDownIcon, HomeIcon, PlusIcon, UserCircleIcon } from "lucide-react"
 
 export function TeamSwitcher({
   teams,
@@ -81,13 +83,17 @@ export function TeamSwitcher({
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem className="gap-2 p-2">
+              <DropdownMenuItem className="gap-2 p-2" render={<Link href="/" />}>
                 <div className="flex size-6 items-center justify-center rounded-md border bg-transparent">
-                  <PlusIcon className="size-4" />
+                  <HomeIcon className="size-4" />
                 </div>
-                <div className="font-medium text-muted-foreground">
-                  Adicionar equipe
+                <div className="font-medium text-muted-foreground">Início do site</div>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="gap-2 p-2" render={<Link href="/area-do-associado" />}>
+                <div className="flex size-6 items-center justify-center rounded-md border bg-transparent">
+                  <UserCircleIcon className="size-4" />
                 </div>
+                <div className="font-medium text-muted-foreground">Área do associado</div>
               </DropdownMenuItem>
             </DropdownMenuGroup>
           </DropdownMenuContent>
