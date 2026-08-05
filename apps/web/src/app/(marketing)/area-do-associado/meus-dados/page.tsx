@@ -22,7 +22,7 @@ export default async function MeusDadosPage() {
   const { data: registration } = await supabase
     .from("startup_registrations")
     .select(
-      "responsavel_nome, responsavel_email, responsavel_telefone, responsavel_whatsapp, responsavel_cargo, startup_nome, startup_cnpj, startup_cnpj_ausente, contato_endereco, contato_cidade, fase_negocio, startup_descricao, segmentos, segmento_outro, segmentacao_outros_detalhes, objetivo_filiacao, objetivo_filiacao_outro, avatar_url",
+      "responsavel_nome, responsavel_email, responsavel_telefone, responsavel_whatsapp, responsavel_cargo, startup_nome, startup_cnpj, startup_cnpj_ausente, contato_endereco, contato_cidade, contato_estado, fase_negocio, startup_descricao, segmentos, segmento_outro, segmentacao_outros_detalhes, objetivo_filiacao, objetivo_filiacao_outro, avatar_url",
     )
     .eq("user_id", authUser.id)
     .single();
@@ -55,6 +55,7 @@ export default async function MeusDadosPage() {
               startup_cnpj_ausente: registration.startup_cnpj_ausente,
               contato_endereco: registration.contato_endereco,
               contato_cidade: registration.contato_cidade,
+              contato_estado: registration.contato_estado,
               fase_negocio: registration.fase_negocio,
               startup_descricao: registration.startup_descricao,
               segmentos: registration.segmentos ?? [],

@@ -32,6 +32,7 @@ export const step2Schema = z
     startup_cnpj_ausente: z.boolean(),
     contato_endereco: z.string().trim().optional().or(z.literal("")),
     contato_cidade: z.string().trim().min(2, "Informe a cidade."),
+    contato_estado: z.string().trim().length(2, "Selecione o estado."),
     fase_negocio: z.enum(BUSINESS_PHASE_VALUES, {
       message: "Selecione a fase do negócio.",
     }),
@@ -143,6 +144,7 @@ export const wizardDataSchema = z
     startup_cnpj_ausente: z.boolean(),
     contato_endereco: z.string().trim().optional().or(z.literal("")),
     contato_cidade: z.string().trim().min(2, "Informe a cidade."),
+    contato_estado: z.string().trim().length(2, "Selecione o estado."),
     fase_negocio: z.enum(BUSINESS_PHASE_VALUES, {
       message: "Selecione a fase do negócio.",
     }),

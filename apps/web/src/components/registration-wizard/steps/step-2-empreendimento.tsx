@@ -34,8 +34,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { CityCombobox } from "@/components/city-combobox";
 import { formatCNPJ } from "@/lib/masks";
-import { BUSINESS_PHASES } from "../constants";
+import { BRAZIL_STATES, BUSINESS_PHASES } from "../constants";
 import { step2Schema, type Step2Data } from "../schema";
 
 type CnpjLookupStatus =
@@ -61,6 +62,7 @@ export function Step2Empreendimento({
     startup_cnpj_ausente: defaultValues.startup_cnpj_ausente ?? false,
     contato_endereco: defaultValues.contato_endereco ?? "",
     contato_cidade: defaultValues.contato_cidade ?? "",
+    contato_estado: defaultValues.contato_estado ?? "",
     fase_negocio: defaultValues.fase_negocio ?? "",
     startup_descricao: defaultValues.startup_descricao ?? "",
   });
@@ -87,6 +89,7 @@ export function Step2Empreendimento({
           startup_nome: v.startup_nome || result.data.startupNome,
           contato_endereco: v.contato_endereco || result.data.enderecoCompleto,
           contato_cidade: v.contato_cidade || result.data.cidade,
+          contato_estado: v.contato_estado || result.data.estado,
         }));
       }
     });
@@ -187,18 +190,51 @@ export function Step2Empreendimento({
           <FieldError errors={errors.contato_endereco?.map((message) => ({ message }))} />
         </Field>
 
-        <Field>
-          <FieldLabel htmlFor="contato_cidade" required>
-            Cidade
-          </FieldLabel>
-          <Input
-            id="contato_cidade"
-            placeholder="Ex.: Santana/AP"
-            value={values.contato_cidade}
-            onChange={(e) => setValues((v) => ({ ...v, contato_cidade: e.target.value }))}
-          />
-          <FieldError errors={errors.contato_cidade?.map((message) => ({ message }))} />
-        </Field>
+        <div className="grid grid-cols-3 gap-4">
+          <Field>
+            <FieldLabel htmlFor="contato_estado" required>
+              Estado
+            </FieldLabel>
+            <Select
+              items={BRAZIL_STATES}
+              value={values.contato_estado}
+              onValueChange={(value) =>
+                setValues((v) => ({
+                  ...v,
+                  contato_estado: value as string,
+                  contato_cidade: v.contato_estado === value ? v.contato_cidade : "",
+                }))
+              }
+            >
+              <SelectTrigger id="contato_estado" className="w-full">
+                <SelectValue placeholder="UF">
+                  {(value: string | null) => value || "UF"}
+                </SelectValue>
+              </SelectTrigger>
+              <SelectContent>
+                {BRAZIL_STATES.map((state) => (
+                  <SelectItem key={state.value} value={state.value} label={state.value}>
+                    {state.value}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <FieldError errors={errors.contato_estado?.map((message) => ({ message }))} />
+          </Field>
+
+          <Field className="col-span-2">
+            <FieldLabel htmlFor="contato_cidade" required>
+              Cidade
+            </FieldLabel>
+            <CityCombobox
+              id="contato_cidade"
+              uf={values.contato_estado}
+              value={values.contato_cidade}
+              onValueChange={(city) => setValues((v) => ({ ...v, contato_cidade: city }))}
+            />
+            <FieldError errors={errors.contato_cidade?.map((message) => ({ message }))} />
+          </Field>
+        </div>
 
         <Field>
           <FieldLabel htmlFor="startup_descricao" required>

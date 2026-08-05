@@ -38,7 +38,9 @@ import {
 import { toast } from "@/components/ui/toast";
 import { PhoneCountryInput } from "@/components/registration-wizard/phone-country-input";
 import { MultiSelectCombobox } from "@/components/registration-wizard/multi-select-combobox";
+import { CityCombobox } from "@/components/city-combobox";
 import {
+  BRAZIL_STATES,
   BUSINESS_PHASES,
   TECH_SEGMENTS,
   OBJETIVOS_FILIACAO,
@@ -78,6 +80,7 @@ type InitialData = {
   startup_cnpj_ausente: boolean;
   contato_endereco: string | null;
   contato_cidade: string;
+  contato_estado: string | null;
   fase_negocio: string;
   startup_descricao: string;
   segmentos: string[];
@@ -110,6 +113,7 @@ export function MeusDadosForm({ initial }: { initial: InitialData }) {
   const [startup_cnpj_ausente, setStartupCnpjAusente] = useState(initial.startup_cnpj_ausente);
   const [contato_endereco, setContatoEndereco] = useState(initial.contato_endereco ?? "");
   const [contato_cidade, setContatoCidade] = useState(initial.contato_cidade);
+  const [contato_estado, setContatoEstado] = useState(initial.contato_estado ?? "");
   const [fase_negocio, setFaseNegocio] = useState(initial.fase_negocio);
   const [startup_descricao, setStartupDescricao] = useState(initial.startup_descricao);
   const [cnpjStatus, setCnpjStatus] = useState<CnpjLookupStatus>("idle");
@@ -159,6 +163,7 @@ export function MeusDadosForm({ initial }: { initial: InitialData }) {
         setStartupNome((v) => v || result.data.startupNome);
         setContatoEndereco((v) => v || result.data.enderecoCompleto);
         setContatoCidade((v) => v || result.data.cidade);
+        setContatoEstado((v) => v || result.data.estado);
       }
     });
   }
@@ -412,19 +417,52 @@ export function MeusDadosForm({ initial }: { initial: InitialData }) {
           <FieldError errors={errors.contato_endereco?.map((message) => ({ message }))} />
         </Field>
 
-        <Field>
-          <FieldLabel htmlFor="contato_cidade" required>
-            Cidade
-          </FieldLabel>
-          <Input
-            id="contato_cidade"
-            name="contato_cidade"
-            placeholder="Ex.: Santana/AP"
-            value={contato_cidade}
-            onChange={(e) => setContatoCidade(e.target.value)}
-          />
-          <FieldError errors={errors.contato_cidade?.map((message) => ({ message }))} />
-        </Field>
+        <div className="grid gap-4 sm:grid-cols-3">
+          <Field>
+            <FieldLabel htmlFor="contato_estado" required>
+              Estado
+            </FieldLabel>
+            <Select
+              items={BRAZIL_STATES}
+              value={contato_estado}
+              onValueChange={(value) => {
+                setContatoEstado((prev) => {
+                  if (prev !== value) setContatoCidade("");
+                  return value as string;
+                });
+              }}
+            >
+              <input type="hidden" name="contato_estado" value={contato_estado} />
+              <SelectTrigger id="contato_estado" className="w-full">
+                <SelectValue placeholder="UF">
+                  {(value: string | null) => value || "UF"}
+                </SelectValue>
+              </SelectTrigger>
+              <SelectContent>
+                {BRAZIL_STATES.map((state) => (
+                  <SelectItem key={state.value} value={state.value} label={state.value}>
+                    {state.value}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <FieldError errors={errors.contato_estado?.map((message) => ({ message }))} />
+          </Field>
+
+          <Field className="sm:col-span-2">
+            <FieldLabel htmlFor="contato_cidade" required>
+              Cidade
+            </FieldLabel>
+            <CityCombobox
+              id="contato_cidade"
+              uf={contato_estado}
+              value={contato_cidade}
+              onValueChange={setContatoCidade}
+            />
+            <input type="hidden" name="contato_cidade" value={contato_cidade} />
+            <FieldError errors={errors.contato_cidade?.map((message) => ({ message }))} />
+          </Field>
+        </div>
 
         <Field>
           <FieldLabel htmlFor="startup_descricao" required>

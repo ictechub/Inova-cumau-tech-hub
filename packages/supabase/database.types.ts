@@ -65,6 +65,7 @@ export type Database = {
           contato_cidade: string
           contato_email: string | null
           contato_endereco: string | null
+          contato_estado: string | null
           contato_facebook: string | null
           contato_instagram: string | null
           contato_linkedin: string | null
@@ -104,6 +105,7 @@ export type Database = {
           contato_cidade: string
           contato_email?: string | null
           contato_endereco?: string | null
+          contato_estado?: string | null
           contato_facebook?: string | null
           contato_instagram?: string | null
           contato_linkedin?: string | null
@@ -143,6 +145,7 @@ export type Database = {
           contato_cidade?: string
           contato_email?: string | null
           contato_endereco?: string | null
+          contato_estado?: string | null
           contato_facebook?: string | null
           contato_instagram?: string | null
           contato_linkedin?: string | null

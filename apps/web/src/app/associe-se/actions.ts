@@ -19,12 +19,13 @@ type BrasilApiCnpjResponse = {
   numero?: string;
   bairro?: string;
   municipio?: string;
+  uf?: string;
 };
 
 export type CnpjLookupResult =
   | {
       status: "success";
-      data: { startupNome: string; enderecoCompleto: string; cidade: string };
+      data: { startupNome: string; enderecoCompleto: string; cidade: string; estado: string };
     }
   | { status: "not_found" }
   | { status: "invalid" }
@@ -74,6 +75,7 @@ export async function lookupCnpj(cnpj: string): Promise<CnpjLookupResult> {
       startupNome: (payload.nome_fantasia || payload.razao_social || "").trim(),
       enderecoCompleto,
       cidade: payload.municipio ?? "",
+      estado: payload.uf ?? "",
     },
   };
 }
@@ -106,6 +108,7 @@ async function insertStartupRegistration(
     contato_linkedin: null,
     contato_endereco: wizardData.contato_endereco || null,
     contato_cidade: wizardData.contato_cidade,
+    contato_estado: wizardData.contato_estado || null,
     segmentos: wizardData.segmentos,
     segmento_outro: wizardData.segmento_outro || null,
     segmentacao_outros_detalhes: wizardData.segmentacao_outros_detalhes || null,
