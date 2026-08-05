@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { IconUserCircle, IconLogout } from "@tabler/icons-react";
+import { IconUserCircle, IconLogout, IconShieldCog } from "@tabler/icons-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -25,7 +25,7 @@ function getInitials(name: string) {
 export function HeaderUserMenu({
   user,
 }: {
-  user: { name: string; email: string; avatar: string };
+  user: { name: string; email: string; avatar: string; role?: string };
 }) {
   const initials = getInitials(user.name);
 
@@ -73,6 +73,12 @@ export function HeaderUserMenu({
           <IconUserCircle />
           Área do associado
         </DropdownMenuItem>
+        {user.role === "admin" && (
+          <DropdownMenuItem render={<Link href="/admin" />}>
+            <IconShieldCog />
+            Área administrativa
+          </DropdownMenuItem>
+        )}
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={() => signOut()}>
           <IconLogout />

@@ -12,12 +12,17 @@ export default async function MarketingLayout({
     data: { user: authUser },
   } = await supabase.auth.getUser();
 
-  let user: { name: string; email: string; avatar: string } | null = null;
+  let user: {
+    name: string;
+    email: string;
+    avatar: string;
+    role?: string;
+  } | null = null;
 
   if (authUser) {
     const { data: registration } = await supabase
       .from("startup_registrations")
-      .select("responsavel_nome, responsavel_email, avatar_url")
+      .select("responsavel_nome, responsavel_email, avatar_url, role")
       .eq("user_id", authUser.id)
       .single();
 
@@ -29,6 +34,7 @@ export default async function MarketingLayout({
       name: primeiroNome ?? "Associado",
       email: registration?.responsavel_email ?? authUser.email ?? "",
       avatar: registration?.avatar_url ?? "",
+      role: registration?.role ?? "associado",
     };
   }
 
