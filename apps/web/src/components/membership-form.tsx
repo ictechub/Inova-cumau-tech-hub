@@ -8,6 +8,13 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { initialFormState } from "@/lib/form-state";
 
 const SEGMENTOS = [
@@ -42,22 +49,22 @@ export function MembershipForm() {
           </div>
           <div className="grid gap-1.5">
             <Label htmlFor="segmento">Segmento</Label>
-            <select
-              id="segmento"
+            <Select
               name="segmento"
               required
-              defaultValue=""
-              className="h-8 w-full min-w-0 rounded-lg border border-input bg-transparent px-2.5 py-1 text-base outline-none transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 md:text-sm dark:bg-input/30"
+              items={SEGMENTOS.map((segmento) => ({ value: segmento, label: segmento }))}
             >
-              <option value="" disabled>
-                Selecione
-              </option>
-              {SEGMENTOS.map((segmento) => (
-                <option key={segmento} value={segmento}>
-                  {segmento}
-                </option>
-              ))}
-            </select>
+              <SelectTrigger id="segmento" className="w-full">
+                <SelectValue placeholder="Selecione" />
+              </SelectTrigger>
+              <SelectContent>
+                {SEGMENTOS.map((segmento) => (
+                  <SelectItem key={segmento} value={segmento} label={segmento}>
+                    {segmento}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
           <div className="grid gap-1.5">
             <Label htmlFor="whatsapp">WhatsApp</Label>
