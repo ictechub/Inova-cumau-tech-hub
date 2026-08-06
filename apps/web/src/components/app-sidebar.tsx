@@ -92,7 +92,7 @@ const data = {
       items: [
         {
           title: "Geral",
-          url: "#",
+          url: "/admin/configuracoes",
         },
         {
           title: "Equipe",
