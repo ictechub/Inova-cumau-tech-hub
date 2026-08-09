@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 
 import { NavAssociado } from "@/components/nav-associado";
 import { createClient } from "@inova-cumau/supabase/server";
+import { getPlatformRole } from "@/lib/user-role";
 import { MeusDadosForm } from "./meus-dados-form";
 
 export const metadata: Metadata = {
@@ -19,10 +20,16 @@ export default async function MeusDadosPage() {
     redirect("/entrar");
   }
 
+  const role = await getPlatformRole(supabase, authUser.id);
+
+  if (role !== "associado") {
+    redirect("/admin");
+  }
+
   const { data: registration } = await supabase
     .from("startup_registrations")
     .select(
-      "responsavel_nome, responsavel_email, responsavel_telefone, responsavel_whatsapp, responsavel_cargo, startup_nome, startup_cnpj, startup_cnpj_ausente, contato_endereco, contato_cidade, contato_estado, fase_negocio, startup_descricao, segmentos, segmento_outro, segmentacao_outros_detalhes, objetivo_filiacao, objetivo_filiacao_outro, avatar_url",
+      "responsavel_nome, responsavel_email, responsavel_telefone, responsavel_whatsapp, responsavel_cargo, startup_nome, startup_cnpj, startup_cnpj_ausente, contato_endereco, contato_cidade, contato_estado, fase_negocio, startup_descricao, segmentos, segmento_outro, segmentacao_outros_detalhes, objetivo_filiacao, objetivo_filiacao_outro, avatar_url, matricula_numero, created_at",
     )
     .eq("user_id", authUser.id)
     .single();
@@ -63,6 +70,8 @@ export default async function MeusDadosPage() {
               segmentacao_outros_detalhes: registration.segmentacao_outros_detalhes,
               objetivo_filiacao: registration.objetivo_filiacao ?? [],
               objetivo_filiacao_outro: registration.objetivo_filiacao_outro,
+              matricula_numero: registration.matricula_numero,
+              created_at: registration.created_at,
             }}
           />
         </div>

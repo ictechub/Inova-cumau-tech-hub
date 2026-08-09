@@ -59,6 +59,83 @@ export type Database = {
         }
         Relationships: []
       }
+      project_permissions: {
+        Row: {
+          created_at: string
+          granted_by: string | null
+          id: string
+          permission: string
+          project_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          granted_by?: string | null
+          id?: string
+          permission: string
+          project_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          granted_by?: string | null
+          id?: string
+          permission?: string
+          project_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "project_permissions_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      projects: {
+        Row: {
+          content: Json
+          cover_image_url: string | null
+          created_at: string
+          id: string
+          owner_id: string
+          published_at: string | null
+          slug: string
+          status: string
+          tags: string[]
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          content?: Json
+          cover_image_url?: string | null
+          created_at?: string
+          id?: string
+          owner_id: string
+          published_at?: string | null
+          slug: string
+          status?: string
+          tags?: string[]
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          content?: Json
+          cover_image_url?: string | null
+          created_at?: string
+          id?: string
+          owner_id?: string
+          published_at?: string | null
+          slug?: string
+          status?: string
+          tags?: string[]
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       startup_registrations: {
         Row: {
           avatar_url: string | null
@@ -74,6 +151,7 @@ export type Database = {
           created_at: string
           fase_negocio: string
           id: string
+          matricula_numero: number
           notify_email_editais: boolean
           notify_email_novidades: boolean
           objetivo_filiacao: string[]
@@ -114,6 +192,7 @@ export type Database = {
           created_at?: string
           fase_negocio: string
           id?: string
+          matricula_numero?: number
           notify_email_editais?: boolean
           notify_email_novidades?: boolean
           objetivo_filiacao?: string[]
@@ -154,6 +233,7 @@ export type Database = {
           created_at?: string
           fase_negocio?: string
           id?: string
+          matricula_numero?: number
           notify_email_editais?: boolean
           notify_email_novidades?: boolean
           objetivo_filiacao?: string[]
@@ -181,6 +261,47 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      team_members: {
+        Row: {
+          area: string | null
+          created_at: string
+          hierarchy_level: string
+          id: string
+          permission_role: string
+          reports_to: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          area?: string | null
+          created_at?: string
+          hierarchy_level: string
+          id?: string
+          permission_role?: string
+          reports_to?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          area?: string | null
+          created_at?: string
+          hierarchy_level?: string
+          id?: string
+          permission_role?: string
+          reports_to?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "team_members_reports_to_fkey"
+            columns: ["reports_to"]
+            isOneToOne: false
+            referencedRelation: "team_members"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_roles: {
         Row: {

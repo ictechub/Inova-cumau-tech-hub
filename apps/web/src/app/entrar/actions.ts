@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation";
 
 import { createClient } from "@inova-cumau/supabase/server";
+import { getPlatformRole, isPlatformAdmin } from "@/lib/user-role";
 import type { LoginFormState } from "./form-state";
 
 export async function signIn(
@@ -29,13 +30,9 @@ export async function signIn(
   const { data: { user } } = await supabase.auth.getUser();
 
   if (user) {
-    const { data: registration } = await supabase
-      .from("startup_registrations")
-      .select("role")
-      .eq("user_id", user.id)
-      .single();
+    const role = await getPlatformRole(supabase, user.id);
 
-    if (registration?.role === "admin") {
+    if (isPlatformAdmin(role) || role === "consultor") {
       redirect("/admin");
     }
   }

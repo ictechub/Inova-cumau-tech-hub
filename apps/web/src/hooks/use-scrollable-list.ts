@@ -2,7 +2,7 @@
 
 import * as React from "react"
 
-// Tolerância de subpixel usada pelo SelectScrollArrow nativo do Base UI —
+// Tolerância de subpixel usada pelo SelectScrollArrow nativo do Base UI:
 // sem ela, scrollTop fracionário (comum com escala de tela do Windows em
 // 125%/150%) faz o cálculo de alvo re-testar sempre a mesma borda e travar
 // o auto-scroll no mesmo item.
@@ -27,7 +27,7 @@ function normalizeScrollOffset(value: number, max: number) {
 // que não têm a primitiva de scroll arrows (Command, Popover custom): em vez
 // de recalcular o alvo re-testando a mesma borda a cada tick (o que trava
 // quando scrollTop fica preso num valor fracionário), avança sempre para o
-// índice do item adjacente ao primeiro/último item visível — progresso
+// índice do item adjacente ao primeiro/último item visível, progresso
 // garantido a cada chamada.
 export function getTargetScrollTop(
   items: HTMLElement[],
@@ -81,7 +81,7 @@ export function getTargetScrollTop(
 export function useScrollableList() {
   const listRef = React.useRef<HTMLElement | null>(null)
   // A lista normalmente vive dentro de um popover/dropdown portalado, montado
-  // só quando aberto — um `useRef` puro não dispara re-render nem re-execução
+  // só quando aberto; um `useRef` puro não dispara re-render nem re-execução
   // de efeito quando `.current` passa de null pro elemento real, então o
   // estado de scroll ficava travado em "sem overflow" até o primeiro scroll
   // manual (que é o único outro lugar que chama updateScrollState). Espelhar
@@ -119,7 +119,7 @@ export function useScrollableList() {
     mutationObserver.observe(listNode, { childList: true, subtree: true })
     // A posição do popover (e a altura disponível que limita a lista) é
     // recalculada de forma assíncrona após a montagem, fora do alcance dos
-    // observers acima — sem isso o estado de scroll pode congelar num valor
+    // observers acima; sem isso o estado de scroll pode congelar num valor
     // transitório da animação de abertura.
     const timeouts = [50, 150, 300, 600].map((delay) =>
       window.setTimeout(updateScrollState, delay)

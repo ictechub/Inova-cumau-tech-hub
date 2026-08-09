@@ -266,7 +266,7 @@
   --nav-active-bg: var(--floresta-700);
   --nav-active-text: #ffffff;
 
-  /* Exceção fora da escala de tokens — uso pontual (ex.: bg do Hero). */
+  /* Exceção fora da escala de tokens, uso pontual (ex.: bg do Hero). */
   --white-exception: #ffffff;
 
   --radius: 0.625rem;

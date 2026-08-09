@@ -17,6 +17,7 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { createClient } from "@inova-cumau/supabase/server";
+import { getPlatformRole, isPlatformAdmin } from "@/lib/user-role";
 import { ConfiguracoesTabs } from "./configuracoes-tabs";
 
 export const metadata: Metadata = {
@@ -33,29 +34,26 @@ export default async function ConfiguracoesPage() {
     redirect("/entrar");
   }
 
-  const { data: registration } = await supabase
-    .from("startup_registrations")
-    .select(
-      "responsavel_nome, responsavel_email, responsavel_cargo, avatar_url, role, perfil_visivel_publico, startup_site, contato_instagram, contato_facebook, contato_linkedin, notify_email_novidades, notify_email_editais",
-    )
-    .eq("user_id", authUser.id)
-    .single();
+  const [{ data: registration }, role] = await Promise.all([
+    supabase
+      .from("startup_registrations")
+      .select(
+        "responsavel_nome, responsavel_email, responsavel_cargo, avatar_url, perfil_visivel_publico, startup_site, contato_instagram, contato_facebook, contato_linkedin, notify_email_novidades, notify_email_editais",
+      )
+      .eq("user_id", authUser.id)
+      .single(),
+    getPlatformRole(supabase, authUser.id),
+  ]);
 
-  if (!registration || registration.role !== "admin") {
+  if (!registration || (!isPlatformAdmin(role) && role !== "consultor")) {
     redirect("/area-do-associado");
   }
-
-  const { data: admins } = await supabase
-    .from("startup_registrations")
-    .select("responsavel_nome, responsavel_email, responsavel_cargo, avatar_url")
-    .eq("role", "admin")
-    .order("responsavel_nome");
 
   const user = {
     name: registration.responsavel_nome,
     email: registration.responsavel_email ?? authUser.email ?? "",
     avatar: registration.avatar_url ?? "",
-    role: "admin" as const,
+    role,
   };
 
   return (
@@ -75,8 +73,12 @@ export default async function ConfiguracoesPage() {
                   <BreadcrumbLink href="/admin">Admin</BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator className="hidden md:block" />
+                <BreadcrumbItem className="hidden md:block">
+                  <span>Configurações</span>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator className="hidden md:block" />
                 <BreadcrumbItem>
-                  <BreadcrumbPage>Configurações</BreadcrumbPage>
+                  <BreadcrumbPage>Geral</BreadcrumbPage>
                 </BreadcrumbItem>
               </BreadcrumbList>
             </Breadcrumb>
@@ -84,10 +86,10 @@ export default async function ConfiguracoesPage() {
         </header>
         <div className="flex flex-1 flex-col gap-6 p-4 pt-0 md:p-6 md:pt-0">
           <div className="flex flex-col gap-1">
-            <h1 className="font-heading text-2xl font-medium text-foreground">Configurações</h1>
+            <h1 className="font-sans text-2xl font-medium text-foreground">Configurações</h1>
             <p className="text-sm text-muted-foreground">
               Gerencie suas informações pessoais e preferências da conta. Esta área é
-              privativa — visível apenas para administradores.
+              privativa, visível apenas para administradores.
             </p>
           </div>
           <ConfiguracoesTabs
@@ -105,7 +107,6 @@ export default async function ConfiguracoesPage() {
               notify_email_editais: registration.notify_email_editais,
             }}
             authEmail={authUser.email ?? ""}
-            admins={admins ?? []}
           />
         </div>
       </SidebarInset>

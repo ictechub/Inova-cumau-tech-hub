@@ -1,19 +1,90 @@
 import type { Metadata } from "next";
-import { IconNews } from "@tabler/icons-react";
+import Link from "next/link";
 
-import { PagePlaceholder } from "@/components/page-placeholder";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { PageHeader } from "@/components/page-header";
+import { createClient } from "@inova-cumau/supabase/server";
 
 export const metadata: Metadata = {
   title: "Artigos | Inova Cumaú",
 };
 
-export default function ArtigosPage() {
+type ArtigoResumo = {
+  slug: string;
+  title: string;
+  cover_image_url: string | null;
+  tags: string[];
+  published_at: string | null;
+};
+
+function formatData(iso: string) {
+  return new Date(iso).toLocaleDateString("pt-BR", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+  });
+}
+
+async function getArtigos(): Promise<ArtigoResumo[]> {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("projects")
+    .select("slug, title, cover_image_url, tags, published_at")
+    .eq("status", "publicado")
+    .order("published_at", { ascending: false });
+
+  return data ?? [];
+}
+
+export default async function ArtigosPage() {
+  const artigos = await getArtigos();
+
   return (
-    <PagePlaceholder
-      icon={IconNews}
-      eyebrow="Notícias"
-      title="Artigos"
-      description="Artigos e conteúdos sobre inovação, bioeconomia e tecnologia na Amazônia estão em construção."
-    />
+    <>
+      <PageHeader
+        eyebrow="Notícias"
+        title="Artigos"
+        description="Conteúdos sobre inovação, bioeconomia e tecnologia na Amazônia."
+      />
+      <section className="mx-auto max-w-6xl px-4 pb-20 sm:px-6">
+        {artigos.length === 0 ? (
+          <p className="py-12 text-center text-sm text-muted-foreground">
+            Nenhum artigo publicado até o momento.
+          </p>
+        ) : (
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {artigos.map((artigo) => (
+              <Link key={artigo.slug} href={`/noticias/artigos/${artigo.slug}`}>
+                <Card className="h-full transition-colors hover:ring-foreground/20">
+                  {artigo.cover_image_url ? (
+                    <img
+                      src={artigo.cover_image_url}
+                      alt=""
+                      className="aspect-video w-full object-cover"
+                    />
+                  ) : null}
+                  <CardHeader>
+                    {artigo.tags.length > 0 ? (
+                      <div className="flex flex-wrap gap-1">
+                        {artigo.tags.map((tag) => (
+                          <Badge key={tag} variant="secondary">
+                            {tag}
+                          </Badge>
+                        ))}
+                      </div>
+                    ) : null}
+                    <CardTitle className="mt-2 font-serif text-lg">{artigo.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent className="text-sm text-muted-foreground">
+                    {artigo.published_at ? formatData(artigo.published_at) : ""}
+                  </CardContent>
+                </Card>
+              </Link>
+            ))}
+          </div>
+        )}
+      </section>
+    </>
   );
 }

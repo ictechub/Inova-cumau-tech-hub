@@ -5,10 +5,8 @@ import { AppSidebar } from "@/components/app-sidebar";
 import {
   Breadcrumb,
   BreadcrumbItem,
-  BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
-  BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -17,6 +15,7 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { createClient } from "@inova-cumau/supabase/server";
+import { getPlatformRole, isPlatformAdmin } from "@/lib/user-role";
 
 export const metadata: Metadata = {
   title: "Admin | Inova Cumaú",
@@ -32,17 +31,24 @@ export default async function AdminPage() {
     redirect("/entrar");
   }
 
-  const { data: registration } = await supabase
-    .from("startup_registrations")
-    .select("responsavel_nome, responsavel_email, avatar_url, role")
-    .eq("user_id", authUser.id)
-    .single();
+  const [{ data: registration }, role] = await Promise.all([
+    supabase
+      .from("startup_registrations")
+      .select("responsavel_nome, responsavel_email, avatar_url")
+      .eq("user_id", authUser.id)
+      .single(),
+    getPlatformRole(supabase, authUser.id),
+  ]);
+
+  if (!isPlatformAdmin(role) && role !== "consultor") {
+    redirect("/area-do-associado");
+  }
 
   const user = {
     name: registration?.responsavel_nome ?? "Associado",
     email: registration?.responsavel_email ?? authUser.email ?? "",
     avatar: registration?.avatar_url ?? "",
-    role: (registration?.role ?? "associado") as "admin" | "associado",
+    role,
   };
 
   return (
@@ -58,14 +64,8 @@ export default async function AdminPage() {
             />
             <Breadcrumb>
               <BreadcrumbList>
-                <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink href="#">
-                    Construir sua aplicação
-                  </BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator className="hidden md:block" />
                 <BreadcrumbItem>
-                  <BreadcrumbPage>Busca de dados</BreadcrumbPage>
+                  <BreadcrumbPage>Admin</BreadcrumbPage>
                 </BreadcrumbItem>
               </BreadcrumbList>
             </Breadcrumb>

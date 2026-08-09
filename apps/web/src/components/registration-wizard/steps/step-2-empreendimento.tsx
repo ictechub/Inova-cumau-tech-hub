@@ -137,7 +137,7 @@ export function Step2Empreendimento({
           )}
           {cnpjStatus === "success" && (
             <FieldDescription className="text-success-700">
-              CNPJ encontrado — dados preenchidos automaticamente.
+              CNPJ encontrado, dados preenchidos automaticamente.
             </FieldDescription>
           )}
           {cnpjStatus === "not_found" && (

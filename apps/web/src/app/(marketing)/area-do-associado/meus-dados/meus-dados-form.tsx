@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState, useEffect, useRef, useTransition, useState } from "react";
-import { IconCamera, IconInfoCircle } from "@tabler/icons-react";
+import { IconCamera, IconInfoCircle, IconCopy } from "@tabler/icons-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -19,7 +19,6 @@ import {
   FieldError,
   FieldGroup,
   FieldLabel,
-  FieldSeparator,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import {
@@ -35,6 +34,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "@/components/ui/toast";
 import { PhoneCountryInput } from "@/components/registration-wizard/phone-country-input";
 import { MultiSelectCombobox } from "@/components/registration-wizard/multi-select-combobox";
@@ -46,6 +46,7 @@ import {
   OBJETIVOS_FILIACAO,
 } from "@/components/registration-wizard/constants";
 import { formatCNPJ } from "@/lib/masks";
+import { formatMatricula } from "@/lib/matricula";
 import {
   updateMeusDados,
   lookupCnpj,
@@ -88,6 +89,8 @@ type InitialData = {
   segmentacao_outros_detalhes: string | null;
   objetivo_filiacao: string[];
   objetivo_filiacao_outro: string | null;
+  matricula_numero: number;
+  created_at: string;
 };
 
 export function MeusDadosForm({ initial }: { initial: InitialData }) {
@@ -201,6 +204,11 @@ export function MeusDadosForm({ initial }: { initial: InitialData }) {
     }
   }
 
+  async function handleCopyMatricula() {
+    await navigator.clipboard.writeText(formatMatricula(initial.matricula_numero));
+    toast.add({ type: "success", description: "ID copiado." });
+  }
+
   return (
     <form action={formAction}>
       {/* ── Foto de perfil ─────────────────────────────────────────── */}
@@ -256,10 +264,16 @@ export function MeusDadosForm({ initial }: { initial: InitialData }) {
         <input key={o} type="hidden" name="objetivo_filiacao" value={o} />
       ))}
 
-      <FieldGroup>
-        {/* ── Seção: Responsável ─────────────────────────────────────── */}
-        <h2 className="font-sans text-base font-semibold text-foreground">Responsável</h2>
+      <Tabs defaultValue="responsavel">
+        <TabsList variant="line">
+          <TabsTrigger value="responsavel">Responsável</TabsTrigger>
+          <TabsTrigger value="negocio">Negócio</TabsTrigger>
+          <TabsTrigger value="segmentacao">Segmentação</TabsTrigger>
+          <TabsTrigger value="matricula">ID</TabsTrigger>
+        </TabsList>
 
+        <TabsContent value="responsavel" className="pt-6">
+        <FieldGroup>
         <Field>
           <FieldLabel htmlFor="responsavel_nome" required>
             Nome completo
@@ -337,12 +351,11 @@ export function MeusDadosForm({ initial }: { initial: InitialData }) {
           />
           <FieldError errors={errors.responsavel_cargo?.map((message) => ({ message }))} />
         </Field>
+        </FieldGroup>
+        </TabsContent>
 
-        <FieldSeparator />
-
-        {/* ── Seção: Negócio ─────────────────────────────────────────── */}
-        <h2 className="font-sans text-base font-semibold text-foreground">Negócio</h2>
-
+        <TabsContent value="negocio" className="pt-6">
+        <FieldGroup>
         <Field>
           <FieldLabel
             htmlFor="startup_cnpj"
@@ -364,7 +377,7 @@ export function MeusDadosForm({ initial }: { initial: InitialData }) {
           )}
           {cnpjStatus === "success" && (
             <FieldDescription className="text-success-700">
-              CNPJ encontrado — dados preenchidos automaticamente.
+              CNPJ encontrado, dados preenchidos automaticamente.
             </FieldDescription>
           )}
           {cnpjStatus === "not_found" && (
@@ -549,12 +562,11 @@ export function MeusDadosForm({ initial }: { initial: InitialData }) {
           </Select>
           <FieldError errors={errors.fase_negocio?.map((message) => ({ message }))} />
         </Field>
+        </FieldGroup>
+        </TabsContent>
 
-        <FieldSeparator />
-
-        {/* ── Seção: Segmentação ─────────────────────────────────────── */}
-        <h2 className="font-sans text-base font-semibold text-foreground">Segmentação</h2>
-
+        <TabsContent value="segmentacao" className="pt-6">
+        <FieldGroup>
         <Field>
           <FieldLabel required>Segmentos de atuação</FieldLabel>
           <MultiSelectCombobox
@@ -634,13 +646,50 @@ export function MeusDadosForm({ initial }: { initial: InitialData }) {
             />
           </Field>
         )}
+        </FieldGroup>
+        </TabsContent>
 
-        <Field orientation="horizontal" className="mt-2 justify-end">
-          <Button type="submit" disabled={isPending}>
-            {isPending ? "Salvando..." : "Salvar alterações"}
-          </Button>
-        </Field>
-      </FieldGroup>
+        <TabsContent value="matricula" className="pt-6">
+          <FieldGroup>
+            <Field>
+              <FieldLabel>ID</FieldLabel>
+              <div className="flex items-center gap-1.5">
+                <p className="font-mono text-2xl font-medium text-foreground">
+                  {formatMatricula(initial.matricula_numero)}
+                </p>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon-xs"
+                  onClick={handleCopyMatricula}
+                  aria-label="Copiar ID"
+                >
+                  <IconCopy />
+                </Button>
+              </div>
+              <FieldDescription>
+                Identificador único e permanente do seu cadastro no Inova Cumaú.
+              </FieldDescription>
+            </Field>
+            <Field>
+              <FieldLabel>Associado desde</FieldLabel>
+              <p className="text-sm text-foreground">
+                {new Date(initial.created_at).toLocaleDateString("pt-BR", {
+                  day: "2-digit",
+                  month: "long",
+                  year: "numeric",
+                })}
+              </p>
+            </Field>
+          </FieldGroup>
+        </TabsContent>
+      </Tabs>
+
+      <Field orientation="horizontal" className="mt-6 justify-end">
+        <Button type="submit" disabled={isPending}>
+          {isPending ? "Salvando..." : "Salvar alterações"}
+        </Button>
+      </Field>
     </form>
   );
 }

@@ -9,6 +9,7 @@ import {
 
 import { NavAssociado } from "@/components/nav-associado";
 import { createClient } from "@inova-cumau/supabase/server";
+import { getPlatformRole } from "@/lib/user-role";
 
 import { BannerCarousel } from "./banner-carousel";
 
@@ -54,6 +55,12 @@ export default async function AreaDoAssociadoPage() {
 
   if (!authUser) {
     redirect("/entrar");
+  }
+
+  const role = await getPlatformRole(supabase, authUser.id);
+
+  if (role !== "associado") {
+    redirect("/admin");
   }
 
   const { data: registration } = await supabase

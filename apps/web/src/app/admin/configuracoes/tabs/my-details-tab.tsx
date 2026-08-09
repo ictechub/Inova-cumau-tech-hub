@@ -82,7 +82,7 @@ export function MyDetailsTab({ initial }: { initial: ConfiguracoesInitialData })
           </Button>
         }
       >
-        <SettingsRow label="Foto" description="JPEG, PNG ou WebP · máx. 2 MB">
+        <SettingsRow label="Foto" description="Sua foto de perfil, exibida para os demais administradores.">
           <div className="flex items-center gap-4">
             <Avatar className="size-14 rounded-lg after:hidden">
               <AvatarImage
@@ -116,9 +116,8 @@ export function MyDetailsTab({ initial }: { initial: ConfiguracoesInitialData })
                 {avatarUrl && (
                   <Button
                     type="button"
-                    variant="ghost"
+                    variant="destructive"
                     size="sm"
-                    className="text-destructive hover:bg-destructive/10 hover:text-destructive"
                     onClick={handleDeleteAvatar}
                     disabled={isUploadingAvatar}
                   >
@@ -126,6 +125,7 @@ export function MyDetailsTab({ initial }: { initial: ConfiguracoesInitialData })
                   </Button>
                 )}
               </div>
+              <span className="text-xs text-muted-foreground">JPEG, PNG ou WebP · máx. 2 MB</span>
             </div>
           </div>
         </SettingsRow>

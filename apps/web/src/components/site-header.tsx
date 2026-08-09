@@ -301,7 +301,15 @@ function MegaMenuFooter() {
 export function SiteHeader({
   user,
 }: {
-  user?: { name: string; email: string; avatar: string; role?: string } | null;
+  user?:
+    | {
+        name: string;
+        email: string;
+        avatar: string;
+        role?: string;
+        matricula_numero?: number;
+      }
+    | null;
 } = {}) {
   const headerRef = React.useRef<HTMLElement>(null);
   const [menuOpen, setMenuOpen] = React.useState(false);

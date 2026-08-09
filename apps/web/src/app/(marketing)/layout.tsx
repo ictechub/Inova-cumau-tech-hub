@@ -1,6 +1,7 @@
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { createClient } from "@inova-cumau/supabase/server";
+import { getPlatformRole } from "@/lib/user-role";
 
 export default async function MarketingLayout({
   children,
@@ -17,14 +18,18 @@ export default async function MarketingLayout({
     email: string;
     avatar: string;
     role?: string;
+    matricula_numero?: number;
   } | null = null;
 
   if (authUser) {
-    const { data: registration } = await supabase
-      .from("startup_registrations")
-      .select("responsavel_nome, responsavel_email, avatar_url, role")
-      .eq("user_id", authUser.id)
-      .single();
+    const [{ data: registration }, role] = await Promise.all([
+      supabase
+        .from("startup_registrations")
+        .select("responsavel_nome, responsavel_email, avatar_url, matricula_numero")
+        .eq("user_id", authUser.id)
+        .single(),
+      getPlatformRole(supabase, authUser.id),
+    ]);
 
     const primeiroNome = registration?.responsavel_nome
       ?.trim()
@@ -34,7 +39,8 @@ export default async function MarketingLayout({
       name: primeiroNome ?? "Associado",
       email: registration?.responsavel_email ?? authUser.email ?? "",
       avatar: registration?.avatar_url ?? "",
-      role: registration?.role ?? "associado",
+      role,
+      matricula_numero: registration?.matricula_numero,
     };
   }
 

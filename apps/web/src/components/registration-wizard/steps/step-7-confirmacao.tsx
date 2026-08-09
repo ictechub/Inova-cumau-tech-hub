@@ -36,7 +36,7 @@ export function Step7Confirmacao({
   );
   const [isResending, startResend] = useTransition();
   // O e-mail de confirmação já é enviado pelo signUp ao entrar neste step, então o
-  // cooldown começa "quente" — evita bater no rate limit do Supabase (~60s por e-mail).
+  // cooldown começa "quente", evita bater no rate limit do Supabase (~60s por e-mail).
   const [cooldown, setCooldown] = useState(RESEND_COOLDOWN_SECONDS);
 
   useEffect(() => {

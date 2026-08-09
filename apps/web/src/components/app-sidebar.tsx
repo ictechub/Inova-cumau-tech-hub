@@ -4,7 +4,6 @@ import * as React from "react"
 
 import { Logo } from "@/components/logo"
 import { NavMain } from "@/components/nav-main"
-import { NavProjects } from "@/components/nav-projects"
 import { NavUser } from "@/components/nav-user"
 import { TeamSwitcher } from "@/components/team-switcher"
 import {
@@ -18,8 +17,6 @@ import {
   IconLayoutDashboard,
   IconTools,
   IconAdjustmentsCog,
-  IconFrame,
-  IconChartPie,
 } from "@tabler/icons-react"
 
 // This is sample data.
@@ -53,6 +50,7 @@ const data = {
         {
           title: "Métricas",
           url: "/admin/metricas",
+          roles: ["owner", "administrador", "consultor"],
         },
         {
           title: "Configurações",
@@ -61,24 +59,17 @@ const data = {
       ],
     },
     {
-      title: "Editor de conteúdo",
+      title: "Ferramentas",
       url: "#",
       icon: (
         <IconTools
         />
       ),
+      roles: ["owner", "administrador", "consultor"],
       items: [
         {
-          title: "Gênesis",
-          url: "#",
-        },
-        {
-          title: "Explorador",
-          url: "#",
-        },
-        {
-          title: "Quântico",
-          url: "#",
+          title: "Projetos",
+          url: "/admin/ferramentas/projetos",
         },
       ],
     },
@@ -93,44 +84,37 @@ const data = {
         {
           title: "Geral",
           url: "/admin/configuracoes",
+          roles: ["owner", "administrador", "consultor"],
+        },
+        {
+          title: "Usuários",
+          url: "/admin/usuarios",
+          roles: ["owner", "administrador"],
         },
         {
           title: "Equipe",
-          url: "#",
+          url: "/admin/equipe",
+          roles: ["owner", "administrador"],
         },
         {
           title: "Faturamento",
           url: "#",
+          roles: ["owner", "administrador"],
         },
         {
           title: "Limites",
           url: "#",
+          roles: ["owner", "administrador"],
         },
       ],
-    },
-  ],
-  projects: [
-    {
-      name: "Engenharia de Design",
-      url: "#",
-      icon: (
-        <IconFrame
-        />
-      ),
-    },
-    {
-      name: "Vendas e Marketing",
-      url: "#",
-      icon: (
-        <IconChartPie
-        />
-      ),
     },
   ],
 }
 
 const ROLE_LABEL: Record<string, string> = {
-  admin: "Administrador",
+  owner: "Owner",
+  administrador: "Administrador",
+  consultor: "Consultor",
   associado: "Associado",
 }
 
@@ -153,8 +137,7 @@ export function AppSidebar({
         <TeamSwitcher teams={team} />
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
+        <NavMain items={data.navMain} role={user.role} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={user} />

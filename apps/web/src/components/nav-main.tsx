@@ -19,23 +19,36 @@ import { ChevronRightIcon } from "lucide-react"
 
 export function NavMain({
   items,
+  role,
 }: {
   items: {
     title: string
     url: string
     icon?: React.ReactNode
     isActive?: boolean
+    roles?: string[]
     items?: {
       title: string
       url: string
+      roles?: string[]
     }[]
   }[]
+  role?: string
 }) {
+  const visibleItems = items
+    .filter((item) => !item.roles || (role && item.roles.includes(role)))
+    .map((item) => ({
+      ...item,
+      items: item.items?.filter(
+        (subItem) => !subItem.roles || (role && subItem.roles.includes(role)),
+      ),
+    }))
+
   return (
     <SidebarGroup>
       <SidebarGroupLabel>Plataforma</SidebarGroupLabel>
       <SidebarMenu>
-        {items.map((item) => (
+        {visibleItems.map((item) => (
           <Collapsible
             key={item.title}
             defaultOpen={item.isActive}

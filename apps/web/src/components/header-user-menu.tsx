@@ -14,6 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { signOut } from "@/app/(marketing)/actions";
+import { formatMatricula } from "@/lib/matricula";
 
 function getInitials(name: string) {
   const words = name.trim().split(/\s+/).filter(Boolean);
@@ -25,7 +26,13 @@ function getInitials(name: string) {
 export function HeaderUserMenu({
   user,
 }: {
-  user: { name: string; email: string; avatar: string; role?: string };
+  user: {
+    name: string;
+    email: string;
+    avatar: string;
+    role?: string;
+    matricula_numero?: number;
+  };
 }) {
   const initials = getInitials(user.name);
 
@@ -43,8 +50,15 @@ export function HeaderUserMenu({
           <AvatarImage className="rounded-lg" src={user.avatar} alt={user.name} />
           <AvatarFallback className="rounded-lg">{initials}</AvatarFallback>
         </Avatar>
-        <span className="max-w-[140px] truncate text-sm font-medium">
-          {user.name}
+        <span className="grid text-left leading-tight">
+          <span className="max-w-[140px] truncate text-sm font-medium">
+            {user.name}
+          </span>
+          {user.matricula_numero !== undefined && (
+            <span className="truncate font-mono text-xs text-muted-foreground">
+              {formatMatricula(user.matricula_numero)}
+            </span>
+          )}
         </span>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" sideOffset={4} className="w-56">
@@ -73,7 +87,7 @@ export function HeaderUserMenu({
           <IconUserCircle />
           Área do associado
         </DropdownMenuItem>
-        {user.role === "admin" && (
+        {user.role === "administrador" && (
           <DropdownMenuItem render={<Link href="/admin" />}>
             <IconShieldCog />
             Área administrativa

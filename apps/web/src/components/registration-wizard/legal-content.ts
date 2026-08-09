@@ -21,7 +21,7 @@ export const TERMS_OF_USE: LegalSection[] = [
     paragraphs: [
       "O cadastro de startups é feito por meio do formulário de associação, no qual o responsável pela inscrição informa dados pessoais e do negócio (como nome, CNPJ, endereço, contatos e segmento de atuação) e cria uma conta de acesso com e-mail e senha.",
       "Ao se cadastrar, você se compromete a fornecer informações verdadeiras, completas e atualizadas; manter a confidencialidade da senha de acesso e responder por toda atividade realizada com sua conta; e comunicar à Inova Cumaú qualquer uso não autorizado da conta assim que tiver conhecimento.",
-      "O cadastro está sujeito a análise e não garante, por si só, a admissão da startup como associada — critérios de elegibilidade podem ser definidos pela diretoria da associação.",
+      "O cadastro está sujeito a análise e não garante, por si só, a admissão da startup como associada. Critérios de elegibilidade podem ser definidos pela diretoria da associação.",
     ],
   },
   {
@@ -39,7 +39,7 @@ export const TERMS_OF_USE: LegalSection[] = [
   {
     title: "6. Disponibilidade e alterações do serviço",
     paragraphs: [
-      "A Inova Cumaú busca manter o site disponível e em pleno funcionamento, mas não garante disponibilidade ininterrupta — o serviço pode ser temporariamente suspenso para manutenção, atualizações ou por motivos fora de seu controle. Novas funcionalidades, como a área logada de associados e o marketplace, poderão ser adicionadas, alteradas ou descontinuadas a qualquer momento.",
+      "A Inova Cumaú busca manter o site disponível e em pleno funcionamento, mas não garante disponibilidade ininterrupta. O serviço pode ser temporariamente suspenso para manutenção, atualizações ou por motivos fora de seu controle. Novas funcionalidades, como a área logada de associados e o marketplace, poderão ser adicionadas, alteradas ou descontinuadas a qualquer momento.",
     ],
   },
   {
@@ -72,7 +72,7 @@ export const PRIVACY_POLICY: LegalSection[] = [
   {
     title: "1. Sobre esta política",
     paragraphs: [
-      "Esta Política de Privacidade descreve como a Inova Cumaú coleta, usa, armazena e protege os dados pessoais tratados por meio deste site, em conformidade com a Lei Geral de Proteção de Dados (Lei nº 13.709/2018 — LGPD). Ao utilizar o site e enviar seus dados, você concorda com as práticas aqui descritas.",
+      "Esta Política de Privacidade descreve como a Inova Cumaú coleta, usa, armazena e protege os dados pessoais tratados por meio deste site, em conformidade com a Lei Geral de Proteção de Dados (Lei nº 13.709/2018, LGPD). Ao utilizar o site e enviar seus dados, você concorda com as práticas aqui descritas.",
     ],
   },
   {

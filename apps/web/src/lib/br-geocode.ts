@@ -32,7 +32,7 @@ for (const m of DATA) {
 
 // Geocodifica cidade+UF de texto livre (contato_cidade/contato_estado) para
 // [lng, lat] usando o dataset kelvins/municipios-brasileiros. Retorna null
-// quando não há correspondência confiável — nunca inventa coordenadas.
+// quando não há correspondência confiável; nunca inventa coordenadas.
 export function geocodeCidade(
   cidade: string,
   uf: string | null,

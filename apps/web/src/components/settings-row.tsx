@@ -19,7 +19,7 @@ function SettingsSection({
     <div className={cn("flex flex-col", className)}>
       <div className="flex flex-col gap-4 border-b border-border pb-5 sm:flex-row sm:items-start sm:justify-between">
         <div className="flex flex-col gap-1">
-          <h2 className="font-heading text-base font-medium text-foreground">{title}</h2>
+          <h2 className="font-sans text-base font-medium text-foreground">{title}</h2>
           {description && <p className="text-sm text-muted-foreground">{description}</p>}
         </div>
         {actions && <div className="flex shrink-0 items-center gap-2">{actions}</div>}

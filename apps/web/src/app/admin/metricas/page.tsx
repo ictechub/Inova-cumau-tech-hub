@@ -30,6 +30,7 @@ import { createAdminClient } from "@inova-cumau/supabase/admin";
 import { createClient } from "@inova-cumau/supabase/server";
 import { BusinessMapCard, type CityPoint } from "@/components/business-map-card";
 import { geocodeCidade } from "@/lib/br-geocode";
+import { getPlatformRole, isPlatformAdmin } from "@/lib/user-role";
 
 export const metadata: Metadata = {
   title: "Métricas | Admin | Inova Cumaú",
@@ -62,7 +63,7 @@ async function getContagens(supabase: Awaited<ReturnType<typeof createClient>>) 
   return { total: total ?? 0, novosNoMes: novosNoMes ?? 0 };
 }
 
-// Retorna null quando a service role key não está configurada — o card de
+// Retorna null quando a service role key não está configurada; o card de
 // contas ativas degrada para um estado "não configurado" em vez de quebrar a
 // página (ver apps/web/.env.example).
 async function getContasAtivas() {
@@ -93,7 +94,7 @@ async function getContasAtivas() {
 
 // Agrupa startup_registrations por cidade/UF e geocodifica via
 // br-geocode. Registros sem cidade/UF reconhecíveis são descartados
-// silenciosamente — o card recebe só o que tem localização confiável.
+// silenciosamente; o card recebe só o que tem localização confiável.
 async function getNegociosPorLocalidade(
   supabase: Awaited<ReturnType<typeof createClient>>,
 ): Promise<CityPoint[]> {
@@ -136,17 +137,24 @@ export default async function MetricasPage() {
     redirect("/entrar");
   }
 
-  const { data: registration } = await supabase
-    .from("startup_registrations")
-    .select("responsavel_nome, responsavel_email, avatar_url, role")
-    .eq("user_id", authUser.id)
-    .single();
+  const [{ data: registration }, role] = await Promise.all([
+    supabase
+      .from("startup_registrations")
+      .select("responsavel_nome, responsavel_email, avatar_url")
+      .eq("user_id", authUser.id)
+      .single(),
+    getPlatformRole(supabase, authUser.id),
+  ]);
+
+  if (!isPlatformAdmin(role) && role !== "consultor") {
+    redirect("/area-do-associado");
+  }
 
   const user = {
     name: registration?.responsavel_nome ?? "Associado",
     email: registration?.responsavel_email ?? authUser.email ?? "",
     avatar: registration?.avatar_url ?? "",
-    role: (registration?.role ?? "associado") as "admin" | "associado",
+    role,
   };
 
   const [{ total, novosNoMes }, contasAtivas, negociosPorLocalidade] =
@@ -174,7 +182,11 @@ export default async function MetricasPage() {
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink href="/admin">Dashboard</BreadcrumbLink>
+                  <BreadcrumbLink href="/admin">Admin</BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator className="hidden md:block" />
+                <BreadcrumbItem className="hidden md:block">
+                  <span>Dashboard</span>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator className="hidden md:block" />
                 <BreadcrumbItem>
