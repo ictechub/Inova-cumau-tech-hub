@@ -20,11 +20,6 @@ export type MediaUploadResult =
   | { status: "success"; url: string }
   | { status: "error"; message: string };
 
-const SERVICE_UNAVAILABLE: ActionResult = {
-  status: "error",
-  message: "Serviço não configurado. Contate o administrador do sistema.",
-};
-
 const NOT_AUTHORIZED: ActionResult = {
   status: "error",
   message: "Acesso não autorizado.",

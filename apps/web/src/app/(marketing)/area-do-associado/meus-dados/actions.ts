@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 
 import { createClient } from "@inova-cumau/supabase/server";
 import { lookupCnpj } from "@/app/associe-se/actions";
-import { meusDadosSchema, type MeusDadosData } from "./schema";
+import { meusDadosSchema } from "./schema";
 
 export type UpdateResult =
   | { status: "success" }
