@@ -49,7 +49,7 @@ export function BannerCarousel() {
             >
               <div className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-black/40 to-transparent" />
               <div className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-black/40 to-transparent" />
-              <h2 className="relative font-serif text-xl font-medium sm:text-2xl">
+              <h2 className="relative font-sans text-xl font-medium sm:text-2xl">
                 {slide.title}
               </h2>
               <p className="relative mt-2 max-w-md text-sm text-white/90 sm:text-base">

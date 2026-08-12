@@ -79,14 +79,14 @@ export default async function AreaDoAssociadoPage() {
           <NavAssociado />
         </aside>
         <div className="flex-1">
-          <h1 className="font-serif text-2xl font-medium">
+          <h1 className="font-sans text-2xl font-medium">
             Boas-vindas, {nome}
           </h1>
 
           <BannerCarousel />
 
           <div className="mt-10">
-            <h2 className="font-serif text-xl font-medium">Novidades</h2>
+            <h2 className="font-sans text-xl font-medium">Novidades</h2>
             <div className="mt-4 grid gap-4 sm:grid-cols-3">
               {NOVIDADES.map((item) => (
                 <div

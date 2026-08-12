@@ -18,7 +18,6 @@ export type DeleteUserData = z.infer<typeof deleteUserSchema>;
 export const inviteConsultorSchema = z.object({
   responsavel_nome: z.string().trim().min(1, "Informe o nome."),
   responsavel_email: z.string().trim().email("Informe um e-mail válido."),
-  responsavel_cargo: z.string().trim().min(1, "Informe o cargo."),
 });
 
 export type InviteConsultorData = z.infer<typeof inviteConsultorSchema>;

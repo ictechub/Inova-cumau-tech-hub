@@ -117,7 +117,7 @@ function UserPermissionsDialog({
       <DialogContent>
         <form ref={formRef} action={formAction} className="flex flex-col gap-4">
           <DialogHeader>
-            <DialogTitle>Permissões de acesso</DialogTitle>
+            <DialogTitle className="font-sans">Permissões de acesso</DialogTitle>
             <DialogDescription>
               Defina o nível de acesso de {usuario.responsavel_nome} na plataforma.
             </DialogDescription>
@@ -184,7 +184,7 @@ function DeleteUserDialog({
       <DialogContent>
         <form action={formAction} className="flex flex-col gap-4">
           <DialogHeader>
-            <DialogTitle>Excluir conta</DialogTitle>
+            <DialogTitle className="font-sans">Excluir conta</DialogTitle>
             <DialogDescription>
               Tem certeza que deseja excluir a conta de {usuario.responsavel_nome}?
               Essa ação não pode ser desfeita: todos os dados de cadastro e acesso
@@ -264,18 +264,24 @@ export function UsuariosTab({
   }, [usuarios, busca, filtroRole]);
 
   return (
-    <div className="rounded-lg border border-border">
-      <div className="flex flex-col gap-2 border-b border-border p-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="relative sm:w-64">
-          <IconSearch className="pointer-events-none absolute top-1/2 left-2.5 size-4 -translate-y-1/2 text-muted-foreground" />
-          <Input
-            value={busca}
-            onChange={(event) => setBusca(event.target.value)}
-            placeholder="Buscar por nome, e-mail ou ID"
-            className="pl-8"
-          />
-        </div>
-        <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+    <div className="flex flex-col gap-3">
+      <div className="flex justify-end">
+        <Button size="sm" onClick={() => setInviteOpen(true)}>
+          <IconMailForward />
+          Convidar Consultor
+        </Button>
+      </div>
+      <div className="rounded-lg border border-border">
+        <div className="flex flex-col gap-2 border-b border-border p-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="relative sm:w-64">
+            <IconSearch className="pointer-events-none absolute top-1/2 left-2.5 size-4 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              value={busca}
+              onChange={(event) => setBusca(event.target.value)}
+              placeholder="Buscar por nome, e-mail ou ID"
+              className="pl-8"
+            />
+          </div>
           <ToggleGroup
             variant="outline"
             spacing={0}
@@ -291,14 +297,9 @@ export function UsuariosTab({
               </ToggleGroupItem>
             ))}
           </ToggleGroup>
-          <Button size="sm" onClick={() => setInviteOpen(true)}>
-            <IconMailForward />
-            Convidar Consultor
-          </Button>
         </div>
-      </div>
-      <div>
-        <Table>
+        <div>
+          <Table>
           <TableHeader className="bg-muted/50">
             <TableRow>
               <TableHead className="w-28">ID</TableHead>
@@ -358,7 +359,8 @@ export function UsuariosTab({
               ))
             )}
           </TableBody>
-        </Table>
+          </Table>
+        </div>
       </div>
       <InviteConsultorDialog open={inviteOpen} onOpenChange={setInviteOpen} />
     </div>

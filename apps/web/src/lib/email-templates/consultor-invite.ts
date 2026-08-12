@@ -1,10 +1,8 @@
 export function renderConsultorInviteEmail({
   nome,
-  cargo,
   actionLink,
 }: {
   nome: string;
-  cargo: string;
   actionLink: string;
 }) {
   return `<!doctype html>
@@ -32,7 +30,7 @@ export function renderConsultorInviteEmail({
             <td style="padding:36px 32px 8px;">
               <h1 style="margin:0 0 12px; font-family:Georgia, 'Times New Roman', serif; font-size:24px; font-weight:600; color:#262626;">Você foi convidado como Consultor</h1>
               <p style="margin:0 0 20px; font-family:Arial, Helvetica, sans-serif; font-size:15px; line-height:1.6; color:#525252;">
-                Olá, ${nome}. Você foi convidado para atuar como Consultor (${cargo}) na plataforma da Inova Cumaú. Clique no botão abaixo para definir sua senha e acessar sua conta.
+                Olá, ${nome}. Você foi convidado para atuar como Consultor na plataforma da Inova Cumaú. Clique no botão abaixo para definir sua senha e acessar sua conta.
               </p>
             </td>
           </tr>

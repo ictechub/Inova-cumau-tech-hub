@@ -48,7 +48,7 @@ export function InviteConsultorDialog({
       <DialogContent>
         <form action={formAction} className="flex flex-col gap-4">
           <DialogHeader>
-            <DialogTitle>Convidar Consultor</DialogTitle>
+            <DialogTitle className="font-sans">Convidar Consultor</DialogTitle>
             <DialogDescription>
               Envie um convite por e-mail para criar uma conta de Consultor.
             </DialogDescription>
@@ -73,16 +73,6 @@ export function InviteConsultorDialog({
               aria-invalid={!!errors.responsavel_email}
             />
             <FieldError errors={errors.responsavel_email?.map((message) => ({ message }))} />
-          </div>
-          <div className="flex flex-col gap-2">
-            <Label htmlFor="responsavel_cargo">Cargo</Label>
-            <Input
-              id="responsavel_cargo"
-              name="responsavel_cargo"
-              placeholder="Cargo"
-              aria-invalid={!!errors.responsavel_cargo}
-            />
-            <FieldError errors={errors.responsavel_cargo?.map((message) => ({ message }))} />
           </div>
           <DialogFooter>
             <DialogClose render={<Button type="button" variant="outline" />}>

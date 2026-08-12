@@ -122,6 +122,12 @@ isso o mesmo valor serve para claro e escuro. Usado em
 `text-muted-foreground` do ícone de seta, `ChevronDownIcon`, não é afetado por
 não ser texto de placeholder).
 
+Fonte serifada (Lora, `--font-serif`) é exclusiva da landing page (`(marketing)/page.tsx`
+e as demais páginas institucionais dentro do grupo `(marketing)`, exceto
+`area-do-associado/`). Área do Associado e área Admin sempre usam a fonte sem
+serifa (Geist, `--font-sans`), inclusive em headings, nunca `font-serif`
+nessas duas áreas.
+
 ## Supabase
 
 Tabelas principais: `leads_associacao`, `newsletter_subscribers` (RLS

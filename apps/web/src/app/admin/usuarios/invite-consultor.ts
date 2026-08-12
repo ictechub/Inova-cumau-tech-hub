@@ -34,7 +34,6 @@ export async function inviteConsultor(
   const raw = {
     responsavel_nome: formData.get("responsavel_nome") as string,
     responsavel_email: formData.get("responsavel_email") as string,
-    responsavel_cargo: formData.get("responsavel_cargo") as string,
   };
 
   const parsed = inviteConsultorSchema.safeParse(raw);
@@ -45,7 +44,8 @@ export async function inviteConsultor(
     };
   }
 
-  const { responsavel_nome, responsavel_email, responsavel_cargo } = parsed.data;
+  const { responsavel_nome, responsavel_email } = parsed.data;
+  const responsavel_cargo = "Consultor";
 
   const db = createAdminClient();
   const resend = createResendClient();
@@ -116,7 +116,6 @@ export async function inviteConsultor(
     subject: "Convite para a Inova Cumaú",
     html: renderConsultorInviteEmail({
       nome: responsavel_nome,
-      cargo: responsavel_cargo,
       actionLink: linkData.properties.action_link,
     }),
   });

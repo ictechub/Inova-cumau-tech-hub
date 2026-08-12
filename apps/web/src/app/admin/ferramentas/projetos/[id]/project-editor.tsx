@@ -388,7 +388,7 @@ function DeleteProjectDialog({ projectId, title }: { projectId: string; title: s
       <DialogContent>
         <form action={formAction} className="flex flex-col gap-4">
           <DialogHeader>
-            <DialogTitle>Excluir projeto</DialogTitle>
+            <DialogTitle className="font-sans">Excluir projeto</DialogTitle>
             <DialogDescription>
               Tem certeza que deseja excluir o projeto &quot;{title}&quot;? Essa ação não pode
               ser desfeita.
@@ -436,7 +436,7 @@ function PermissionsSection({
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Permissões de acesso</CardTitle>
+        <CardTitle className="font-sans">Permissões de acesso</CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
         <Table>

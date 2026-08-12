@@ -45,7 +45,7 @@ export default async function MeusDadosPage() {
           <NavAssociado />
         </aside>
         <div className="flex-1">
-          <h1 className="font-serif text-2xl font-medium">Meus dados</h1>
+          <h1 className="font-sans text-2xl font-medium">Meus dados</h1>
           <p className="mt-1 mb-8 text-muted-foreground">
             Atualize as informações do responsável e do seu negócio.
           </p>
