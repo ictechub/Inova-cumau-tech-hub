@@ -36,7 +36,7 @@ export function EmailTab({ currentEmail }: { currentEmail: string }) {
         title="Email"
         description="O e-mail usado para entrar na sua conta."
         actions={
-          <Button type="submit" size="sm" disabled={isPending}>
+          <Button type="submit" disabled={isPending}>
             {isPending ? "Salvando..." : "Salvar alterações"}
           </Button>
         }

@@ -3,16 +3,25 @@
 import { useActionState, useEffect, useRef, useState } from "react";
 import { EditorContent, useEditor, type Editor } from "@tiptap/react";
 import {
+  IconAlignCenter,
+  IconAlignJustified,
+  IconAlignLeft,
+  IconAlignRight,
   IconBold,
+  IconChevronDown,
   IconDeviceFloppy,
   IconEye,
   IconEyeOff,
   IconH1,
   IconH2,
   IconH3,
+  IconIndentDecrease,
+  IconIndentIncrease,
   IconItalic,
+  IconLineHeight,
   IconLink,
   IconList,
+  IconListCheck,
   IconListNumbers,
   IconPhoto,
   IconQuote,
@@ -26,6 +35,7 @@ import {
 import { MultiSelectCombobox, type MultiSelectOption } from "@/components/registration-wizard/multi-select-combobox";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { ButtonGroup } from "@/components/ui/button-group";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Dialog,
@@ -37,7 +47,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
+import { InputGroup, InputGroupAddon, InputGroupText } from "@/components/ui/input-group";
 import { Label } from "@/components/ui/label";
 import {
   Select,
@@ -57,7 +74,16 @@ import {
 import { toast } from "@/components/ui/toast";
 import type { ProjectAccessLevel } from "@/lib/project-access";
 import { PROJECT_TAGS } from "@/lib/project-tags";
-import { tiptapExtensions } from "@/lib/tiptap-extensions";
+import { slugify } from "@/lib/slug";
+import {
+  BULLET_LIST_STYLES,
+  LINE_HEIGHT_OPTIONS,
+  MAX_INDENT_LEVEL,
+  ORDERED_LIST_STYLES,
+  TASK_LIST_STYLES,
+  tiptapExtensions,
+} from "@/lib/tiptap-extensions";
+import { cn } from "@/lib/utils";
 
 import {
   deleteProject,
@@ -105,16 +131,6 @@ const PERMISSION_ITEMS = Object.fromEntries(PERMISSION_OPTIONS.map((o) => [o.val
 
 const PERMISSION_LABELS: Record<string, string> = PERMISSION_ITEMS;
 
-function slugify(value: string) {
-  return value
-    .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-}
-
 function ToolbarButton({
   onClick,
   active,
@@ -131,7 +147,7 @@ function ToolbarButton({
   return (
     <Button
       type="button"
-      variant={active ? "secondary" : "ghost"}
+      variant={active ? "secondary" : "outline"}
       size="icon-sm"
       disabled={disabled}
       onClick={onClick}
@@ -158,125 +174,493 @@ function EditorToolbar({
 
   async function handleFile(file: File, kind: "image" | "video") {
     setUploading(true);
-    const result = await uploadProjectMedia(projectId, file);
-    setUploading(false);
+    try {
+      const result = await uploadProjectMedia(projectId, file);
 
-    if (result.status !== "success") {
-      toast.add({ type: "error", description: result.message });
-      return;
-    }
+      if (result.status !== "success") {
+        toast.add({ type: "error", description: result.message });
+        return;
+      }
 
-    if (kind === "image") {
-      editor?.chain().focus().setImage({ src: result.url }).run();
-    } else {
-      editor?.chain().focus().insertContent({ type: "video", attrs: { src: result.url } }).run();
+      if (kind === "image") {
+        editor?.chain().focus().setImage({ src: result.url }).run();
+      } else {
+        editor?.chain().focus().insertContent({ type: "video", attrs: { src: result.url } }).run();
+      }
+    } catch {
+      toast.add({ type: "error", description: "Não foi possível enviar o arquivo. Tente novamente." });
+    } finally {
+      setUploading(false);
     }
   }
 
-  function handleLink() {
-    const previousUrl = editor?.getAttributes("link").href as string | undefined;
-    const url = window.prompt("Endereço do link", previousUrl ?? "https://");
-    if (url === null) return;
-    if (url === "") {
-      editor?.chain().focus().extendMarkRange("link").unsetLink().run();
+  const [linkDialogOpen, setLinkDialogOpen] = useState(false);
+  const [linkUrl, setLinkUrl] = useState("");
+  const [linkText, setLinkText] = useState("");
+  const [linkRange, setLinkRange] = useState<{ from: number; to: number } | null>(null);
+  const [linkIsEditing, setLinkIsEditing] = useState(false);
+
+  function openLinkDialog() {
+    if (!editor) return;
+    const { from, to } = editor.state.selection;
+    const previousUrl = editor.getAttributes("link").href as string | undefined;
+    setLinkRange({ from, to });
+    setLinkUrl(previousUrl ?? "");
+    setLinkText(from !== to ? editor.state.doc.textBetween(from, to, " ") : "");
+    setLinkIsEditing(editor.isActive("link"));
+    setLinkDialogOpen(true);
+  }
+
+  function confirmLink() {
+    if (!editor || !linkRange) return;
+    const url = linkUrl.trim();
+    if (!url) return;
+
+    const { from, to } = linkRange;
+    const selectedText = from !== to ? editor.state.doc.textBetween(from, to, " ") : "";
+    const text = linkText.trim() || selectedText || url;
+    editor
+      .chain()
+      .focus()
+      .insertContentAt({ from, to }, { type: "text", text, marks: [{ type: "link", attrs: { href: url } }] })
+      .setTextSelection(from + text.length)
+      .unsetMark("link")
+      .run();
+    setLinkDialogOpen(false);
+  }
+
+  function removeLink() {
+    if (!editor || !linkRange) return;
+    editor.chain().focus().setTextSelection(linkRange).extendMarkRange("link").unsetLink().run();
+    setLinkDialogOpen(false);
+  }
+
+  function applyBulletListStyle(styleId: string) {
+    if (!editor) return;
+    if (!editor.isActive("bulletList")) {
+      editor.chain().focus().toggleBulletList().run();
+    }
+    editor.chain().focus().updateAttributes("bulletList", { listStyle: styleId }).run();
+  }
+
+  function applyOrderedListStyle(styleId: string) {
+    if (!editor) return;
+    if (!editor.isActive("orderedList")) {
+      editor.chain().focus().toggleOrderedList().run();
+    }
+    editor.chain().focus().updateAttributes("orderedList", { listStyle: styleId }).run();
+  }
+
+  function applyTaskListStyle(styleId: string) {
+    if (!editor) return;
+    if (!editor.isActive("taskList")) {
+      editor.chain().focus().toggleTaskList().run();
+    }
+    editor.chain().focus().updateAttributes("taskList", { listStyle: styleId }).run();
+  }
+
+  function isInsideListItem() {
+    return editor?.isActive("taskItem") || editor?.isActive("listItem");
+  }
+
+  function indentItemType() {
+    return editor?.isActive("taskItem") ? "taskItem" : "listItem";
+  }
+
+  function textBlockType(): "paragraph" | "heading" | null {
+    if (!editor) return null;
+    if (editor.isActive("heading")) return "heading";
+    if (editor.isActive("paragraph")) return "paragraph";
+    return null;
+  }
+
+  function currentTextIndent() {
+    const type = textBlockType();
+    if (!type || !editor) return 0;
+    return (editor.getAttributes(type).indent as number | undefined) ?? 0;
+  }
+
+  function canIncreaseIndent() {
+    if (!editor) return false;
+    if (isInsideListItem()) return editor.can().sinkListItem(indentItemType());
+    return textBlockType() !== null && currentTextIndent() < MAX_INDENT_LEVEL;
+  }
+
+  function canDecreaseIndent() {
+    if (!editor) return false;
+    if (isInsideListItem()) return editor.can().liftListItem(indentItemType());
+    return textBlockType() !== null && currentTextIndent() > 0;
+  }
+
+  function increaseIndent() {
+    if (!editor) return;
+    if (isInsideListItem()) {
+      editor.chain().focus().sinkListItem(indentItemType()).run();
       return;
     }
-    editor?.chain().focus().extendMarkRange("link").setLink({ href: url }).run();
+    const type = textBlockType();
+    if (!type) return;
+    const next = Math.min(currentTextIndent() + 1, MAX_INDENT_LEVEL);
+    editor.chain().focus().updateAttributes(type, { indent: next }).run();
+  }
+
+  function decreaseIndent() {
+    if (!editor) return;
+    if (isInsideListItem()) {
+      editor.chain().focus().liftListItem(indentItemType()).run();
+      return;
+    }
+    const type = textBlockType();
+    if (!type) return;
+    const next = Math.max(currentTextIndent() - 1, 0);
+    editor.chain().focus().updateAttributes(type, { indent: next }).run();
+  }
+
+  function currentLineHeight(): string {
+    const type = textBlockType();
+    if (!type || !editor) return "1";
+    return (editor.getAttributes(type).lineHeight as string | null) || "1";
+  }
+
+  function setLineHeight(value: string) {
+    if (!editor) return;
+    const type = textBlockType();
+    if (!type) return;
+    editor
+      .chain()
+      .focus()
+      .updateAttributes(type, { lineHeight: value === "1" ? null : value })
+      .run();
+  }
+
+  function currentSpaceBefore() {
+    const type = textBlockType();
+    if (!type || !editor) return false;
+    return Boolean(editor.getAttributes(type).spaceBefore);
+  }
+
+  function currentSpaceAfter() {
+    const type = textBlockType();
+    if (!type || !editor) return true;
+    return editor.getAttributes(type).spaceAfter !== false;
+  }
+
+  function toggleSpaceBefore() {
+    if (!editor) return;
+    const type = textBlockType();
+    if (!type) return;
+    editor.chain().focus().updateAttributes(type, { spaceBefore: !currentSpaceBefore() }).run();
+  }
+
+  function toggleSpaceAfter() {
+    if (!editor) return;
+    const type = textBlockType();
+    if (!type) return;
+    editor.chain().focus().updateAttributes(type, { spaceAfter: !currentSpaceAfter() }).run();
   }
 
   if (!editor) return null;
 
   return (
+    <>
     <div className="flex flex-wrap items-center gap-1 rounded-t-lg border border-b-0 border-input bg-muted/30 p-1">
-      <ToolbarButton
-        label="Negrito"
-        active={editor.isActive("bold")}
-        disabled={disabled}
-        onClick={() => editor.chain().focus().toggleBold().run()}
-      >
-        <IconBold className="size-4" />
-      </ToolbarButton>
-      <ToolbarButton
-        label="Itálico"
-        active={editor.isActive("italic")}
-        disabled={disabled}
-        onClick={() => editor.chain().focus().toggleItalic().run()}
-      >
-        <IconItalic className="size-4" />
-      </ToolbarButton>
-      <ToolbarButton
-        label="Sublinhado"
-        active={editor.isActive("underline")}
-        disabled={disabled}
-        onClick={() => editor.chain().focus().toggleMark("underline").run()}
-      >
-        <IconUnderline className="size-4" />
-      </ToolbarButton>
-      <ToolbarButton
-        label="Título 1"
-        active={editor.isActive("heading", { level: 1 })}
-        disabled={disabled}
-        onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-      >
-        <IconH1 className="size-4" />
-      </ToolbarButton>
-      <ToolbarButton
-        label="Título 2"
-        active={editor.isActive("heading", { level: 2 })}
-        disabled={disabled}
-        onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-      >
-        <IconH2 className="size-4" />
-      </ToolbarButton>
-      <ToolbarButton
-        label="Título 3"
-        active={editor.isActive("heading", { level: 3 })}
-        disabled={disabled}
-        onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
-      >
-        <IconH3 className="size-4" />
-      </ToolbarButton>
-      <ToolbarButton
-        label="Lista com marcadores"
-        active={editor.isActive("bulletList")}
-        disabled={disabled}
-        onClick={() => editor.chain().focus().toggleBulletList().run()}
-      >
-        <IconList className="size-4" />
-      </ToolbarButton>
-      <ToolbarButton
-        label="Lista numerada"
-        active={editor.isActive("orderedList")}
-        disabled={disabled}
-        onClick={() => editor.chain().focus().toggleOrderedList().run()}
-      >
-        <IconListNumbers className="size-4" />
-      </ToolbarButton>
-      <ToolbarButton
-        label="Citação"
-        active={editor.isActive("blockquote")}
-        disabled={disabled}
-        onClick={() => editor.chain().focus().toggleBlockquote().run()}
-      >
-        <IconQuote className="size-4" />
-      </ToolbarButton>
-      <ToolbarButton label="Link" active={editor.isActive("link")} disabled={disabled} onClick={handleLink}>
-        <IconLink className="size-4" />
-      </ToolbarButton>
-      <ToolbarButton
-        label="Inserir imagem"
-        disabled={disabled || uploading}
-        onClick={() => imageInputRef.current?.click()}
-      >
-        <IconPhoto className="size-4" />
-      </ToolbarButton>
-      <ToolbarButton
-        label="Inserir vídeo"
-        disabled={disabled || uploading}
-        onClick={() => videoInputRef.current?.click()}
-      >
-        <IconVideo className="size-4" />
-      </ToolbarButton>
+      <ButtonGroup>
+        <ToolbarButton
+          label="Negrito"
+          active={editor.isActive("bold")}
+          disabled={disabled}
+          onClick={() => editor.chain().focus().toggleBold().run()}
+        >
+          <IconBold className="size-4" />
+        </ToolbarButton>
+        <ToolbarButton
+          label="Itálico"
+          active={editor.isActive("italic")}
+          disabled={disabled}
+          onClick={() => editor.chain().focus().toggleItalic().run()}
+        >
+          <IconItalic className="size-4" />
+        </ToolbarButton>
+        <ToolbarButton
+          label="Sublinhado"
+          active={editor.isActive("underline")}
+          disabled={disabled}
+          onClick={() => editor.chain().focus().toggleMark("underline").run()}
+        >
+          <IconUnderline className="size-4" />
+        </ToolbarButton>
+      </ButtonGroup>
+      <ButtonGroup>
+        <ToolbarButton
+          label="Título 1"
+          active={editor.isActive("heading", { level: 1 })}
+          disabled={disabled}
+          onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
+        >
+          <IconH1 className="size-4" />
+        </ToolbarButton>
+        <ToolbarButton
+          label="Título 2"
+          active={editor.isActive("heading", { level: 2 })}
+          disabled={disabled}
+          onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
+        >
+          <IconH2 className="size-4" />
+        </ToolbarButton>
+        <ToolbarButton
+          label="Título 3"
+          active={editor.isActive("heading", { level: 3 })}
+          disabled={disabled}
+          onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
+        >
+          <IconH3 className="size-4" />
+        </ToolbarButton>
+      </ButtonGroup>
+      <ButtonGroup>
+        <ToolbarButton
+          label="Lista com marcadores"
+          active={editor.isActive("bulletList")}
+          disabled={disabled}
+          onClick={() => editor.chain().focus().toggleBulletList().run()}
+        >
+          <IconList className="size-4" />
+        </ToolbarButton>
+        <DropdownMenu>
+          <DropdownMenuTrigger
+            render={
+              <Button
+                type="button"
+                variant="outline"
+                size="icon-sm"
+                disabled={disabled}
+                aria-label="Estilos de marcador"
+                title="Estilos de marcador"
+                className="w-4 px-0"
+              />
+            }
+          >
+            <IconChevronDown className="size-3" />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="start">
+            {BULLET_LIST_STYLES.map((style) => (
+              <DropdownMenuItem key={style.id} onClick={() => applyBulletListStyle(style.id)}>
+                <span className="flex w-6 flex-col items-start gap-0.5 font-mono text-xs leading-none text-muted-foreground">
+                  {style.preview.map((marker, index) => (
+                    <span key={index}>{marker}</span>
+                  ))}
+                </span>
+                {style.label}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </ButtonGroup>
+      <ButtonGroup>
+        <ToolbarButton
+          label="Lista numerada"
+          active={editor.isActive("orderedList")}
+          disabled={disabled}
+          onClick={() => editor.chain().focus().toggleOrderedList().run()}
+        >
+          <IconListNumbers className="size-4" />
+        </ToolbarButton>
+        <DropdownMenu>
+          <DropdownMenuTrigger
+            render={
+              <Button
+                type="button"
+                variant="outline"
+                size="icon-sm"
+                disabled={disabled}
+                aria-label="Estilos de numeração"
+                title="Estilos de numeração"
+                className="w-4 px-0"
+              />
+            }
+          >
+            <IconChevronDown className="size-3" />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="start">
+            {ORDERED_LIST_STYLES.map((style) => (
+              <DropdownMenuItem key={style.id} onClick={() => applyOrderedListStyle(style.id)}>
+                <span className="flex w-10 flex-col items-start gap-0.5 font-mono text-xs leading-none text-muted-foreground">
+                  {style.preview.map((marker, index) => (
+                    <span key={index}>{marker}</span>
+                  ))}
+                </span>
+                {style.label}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </ButtonGroup>
+      <ButtonGroup>
+        <ToolbarButton
+          label="Lista de verificação"
+          active={editor.isActive("taskList")}
+          disabled={disabled}
+          onClick={() => editor.chain().focus().toggleTaskList().run()}
+        >
+          <IconListCheck className="size-4" />
+        </ToolbarButton>
+        <DropdownMenu>
+          <DropdownMenuTrigger
+            render={
+              <Button
+                type="button"
+                variant="outline"
+                size="icon-sm"
+                disabled={disabled}
+                aria-label="Estilos de lista de verificação"
+                title="Estilos de lista de verificação"
+                className="w-4 px-0"
+              />
+            }
+          >
+            <IconChevronDown className="size-3" />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="start">
+            {TASK_LIST_STYLES.map((style) => (
+              <DropdownMenuItem key={style.id} onClick={() => applyTaskListStyle(style.id)}>
+                <span className="flex w-10 flex-col items-start gap-1">
+                  <span className="flex items-center gap-1.5">
+                    <span className="size-2.5 rounded-[3px] border border-muted-foreground" />
+                    <span className="h-1.5 w-6 rounded-full bg-muted-foreground/40" />
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <span className="flex size-2.5 items-center justify-center rounded-[3px] bg-muted-foreground">
+                      <span className="size-1 rounded-[1px] bg-background" />
+                    </span>
+                    <span
+                      className={cn(
+                        "h-1.5 w-6 rounded-full bg-muted-foreground/40",
+                        style.id === "riscado" && "relative before:absolute before:inset-x-0 before:top-1/2 before:h-px before:bg-muted-foreground",
+                      )}
+                    />
+                  </span>
+                </span>
+                {style.label}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </ButtonGroup>
+      <ButtonGroup>
+        <ToolbarButton
+          label="Diminuir recuo"
+          disabled={disabled || !canDecreaseIndent()}
+          onClick={decreaseIndent}
+        >
+          <IconIndentDecrease className="size-4" />
+        </ToolbarButton>
+        <ToolbarButton
+          label="Aumentar recuo"
+          disabled={disabled || !canIncreaseIndent()}
+          onClick={increaseIndent}
+        >
+          <IconIndentIncrease className="size-4" />
+        </ToolbarButton>
+      </ButtonGroup>
+      <ButtonGroup>
+        <DropdownMenu>
+          <DropdownMenuTrigger
+            render={
+              <Button
+                type="button"
+                variant="outline"
+                size="icon-sm"
+                disabled={disabled || textBlockType() === null}
+                aria-label="Espaçamento entre linhas e parágrafos"
+                title="Espaçamento entre linhas e parágrafos"
+              />
+            }
+          >
+            <IconLineHeight className="size-4" />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="start" className="w-72">
+            {LINE_HEIGHT_OPTIONS.map((option) => (
+              <DropdownMenuItem
+                key={option.value}
+                onClick={() => setLineHeight(option.value)}
+                className={cn(currentLineHeight() === option.value && "font-medium")}
+              >
+                {currentLineHeight() === option.value ? "✓ " : ""}
+                {option.label}
+              </DropdownMenuItem>
+            ))}
+            <div className="my-1 h-px bg-border" />
+            <DropdownMenuItem onClick={toggleSpaceBefore}>
+              {currentSpaceBefore() ? "Remover espaço antes do parágrafo" : "Adicionar espaço antes do parágrafo"}
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={toggleSpaceAfter}>
+              {currentSpaceAfter() ? "Remover espaço depois do parágrafo" : "Adicionar espaço depois do parágrafo"}
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </ButtonGroup>
+      <ButtonGroup>
+        <ToolbarButton
+          label="Alinhar à esquerda"
+          active={editor.isActive({ textAlign: "left" })}
+          disabled={disabled}
+          onClick={() => editor.chain().focus().setTextAlign("left").run()}
+        >
+          <IconAlignLeft className="size-4" />
+        </ToolbarButton>
+        <ToolbarButton
+          label="Centralizar"
+          active={editor.isActive({ textAlign: "center" })}
+          disabled={disabled}
+          onClick={() => editor.chain().focus().setTextAlign("center").run()}
+        >
+          <IconAlignCenter className="size-4" />
+        </ToolbarButton>
+        <ToolbarButton
+          label="Alinhar à direita"
+          active={editor.isActive({ textAlign: "right" })}
+          disabled={disabled}
+          onClick={() => editor.chain().focus().setTextAlign("right").run()}
+        >
+          <IconAlignRight className="size-4" />
+        </ToolbarButton>
+        <ToolbarButton
+          label="Justificar"
+          active={editor.isActive({ textAlign: "justify" })}
+          disabled={disabled}
+          onClick={() => editor.chain().focus().setTextAlign("justify").run()}
+        >
+          <IconAlignJustified className="size-4" />
+        </ToolbarButton>
+      </ButtonGroup>
+      <ButtonGroup>
+        <ToolbarButton
+          label="Citação"
+          active={editor.isActive("blockquote")}
+          disabled={disabled}
+          onClick={() => editor.chain().focus().toggleBlockquote().run()}
+        >
+          <IconQuote className="size-4" />
+        </ToolbarButton>
+        <ToolbarButton label="Link" active={editor.isActive("link")} disabled={disabled} onClick={openLinkDialog}>
+          <IconLink className="size-4" />
+        </ToolbarButton>
+      </ButtonGroup>
+      <ButtonGroup>
+        <ToolbarButton
+          label="Inserir imagem"
+          disabled={disabled || uploading}
+          onClick={() => imageInputRef.current?.click()}
+        >
+          <IconPhoto className="size-4" />
+        </ToolbarButton>
+        <ToolbarButton
+          label="Inserir vídeo"
+          disabled={disabled || uploading}
+          onClick={() => videoInputRef.current?.click()}
+        >
+          <IconVideo className="size-4" />
+        </ToolbarButton>
+      </ButtonGroup>
       <input
         ref={imageInputRef}
         type="file"
@@ -300,6 +684,59 @@ function EditorToolbar({
         }}
       />
     </div>
+    <Dialog open={linkDialogOpen} onOpenChange={setLinkDialogOpen}>
+      <DialogContent>
+        <form
+          className="flex flex-col gap-4"
+          onSubmit={(event) => {
+            event.preventDefault();
+            confirmLink();
+          }}
+        >
+          <DialogHeader>
+            <DialogTitle className="font-sans">{linkIsEditing ? "Editar link" : "Inserir link"}</DialogTitle>
+            <DialogDescription>
+              O texto é opcional, se deixado em branco o link usa o texto selecionado ou o
+              próprio endereço.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="link-url">Endereço</Label>
+            <Input
+              id="link-url"
+              type="url"
+              required
+              autoFocus
+              placeholder="https://"
+              value={linkUrl}
+              onChange={(event) => setLinkUrl(event.target.value)}
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="link-text">Texto (opcional)</Label>
+            <Input
+              id="link-text"
+              type="text"
+              placeholder="Texto personalizado"
+              value={linkText}
+              onChange={(event) => setLinkText(event.target.value)}
+            />
+          </div>
+          <DialogFooter>
+            {linkIsEditing ? (
+              <Button type="button" variant="outline" onClick={removeLink}>
+                Remover link
+              </Button>
+            ) : null}
+            <DialogClose render={<Button type="button" variant="outline" />}>Cancelar</DialogClose>
+            <Button type="submit" disabled={!linkUrl.trim()}>
+              Confirmar
+            </Button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
+    </>
   );
 }
 
@@ -381,7 +818,7 @@ function DeleteProjectDialog({ projectId, title }: { projectId: string; title: s
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger render={<Button type="button" variant="outline" />}>
+      <DialogTrigger render={<Button type="button" variant="destructive" />}>
         <IconTrash />
         Excluir
       </DialogTrigger>
@@ -434,7 +871,7 @@ function PermissionsSection({
   }, [grantState]);
 
   return (
-    <Card>
+    <Card id="permissoes">
       <CardHeader>
         <CardTitle className="font-sans">Permissões de acesso</CardTitle>
       </CardHeader>
@@ -568,12 +1005,26 @@ export function ProjectEditor({
   const coverInputRef = useRef<HTMLInputElement>(null);
 
   const [saveState, saveAction, savePending] = useActionState<ActionResult | null, FormData>(updateProject, null);
+  const [characterCount, setCharacterCount] = useState(0);
+  const [, forceToolbarUpdate] = useState(0);
 
   const editor = useEditor({
     extensions: tiptapExtensions,
     content: (project.content as Record<string, unknown>) ?? { type: "doc", content: [] },
     editable: canEdit,
     immediatelyRender: false,
+    onUpdate: ({ editor: currentEditor }) => {
+      setCharacterCount(currentEditor.storage.characterCount.characters());
+    },
+    onCreate: ({ editor: currentEditor }) => {
+      setCharacterCount(currentEditor.storage.characterCount.characters());
+    },
+    onTransaction: () => {
+      // Força o rerender da barra de ferramentas a cada transação (clique de
+      // formatação, mudança de seleção), já que editor.isActive() é lido
+      // direto no render e o Tiptap não dispara rerender do React sozinho.
+      forceToolbarUpdate((tick) => tick + 1);
+    },
   });
 
   useEffect(() => {
@@ -595,18 +1046,23 @@ export function ProjectEditor({
     if (!file) return;
 
     setCoverUploading(true);
-    const result = await uploadProjectMedia(project.id, file);
-    setCoverUploading(false);
+    try {
+      const result = await uploadProjectMedia(project.id, file);
 
-    if (result.status === "success") {
-      setCoverUrl(result.url);
-    } else {
-      toast.add({ type: "error", description: result.message });
+      if (result.status === "success") {
+        setCoverUrl(result.url);
+      } else {
+        toast.add({ type: "error", description: result.message });
+      }
+    } catch {
+      toast.add({ type: "error", description: "Não foi possível enviar o arquivo. Tente novamente." });
+    } finally {
+      setCoverUploading(false);
     }
   }
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex min-w-0 flex-col gap-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex flex-col gap-1">
           <h1 className="font-sans text-2xl font-medium text-foreground">{title || "Novo projeto"}</h1>
@@ -632,7 +1088,7 @@ export function ProjectEditor({
             contentInputRef.current.value = JSON.stringify(editor.getJSON());
           }
         }}
-        className="flex flex-col gap-4"
+        className="flex min-w-0 flex-col gap-4"
       >
         <input type="hidden" name="project_id" value={project.id} />
         <input
@@ -647,7 +1103,7 @@ export function ProjectEditor({
         ))}
 
         <Card>
-          <CardContent className="flex flex-col gap-4 pt-4">
+          <CardContent className="flex min-w-0 flex-col gap-4 pt-4">
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="flex flex-col gap-2">
                 <Label htmlFor="title">Título</Label>
@@ -696,11 +1152,15 @@ export function ProjectEditor({
 
             <div className="flex flex-col gap-2">
               <Label>Imagem de capa</Label>
+              {coverUrl && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={coverUrl}
+                  alt=""
+                  className="h-64 w-full rounded-md object-cover ring-1 ring-border"
+                />
+              )}
               <div className="flex items-center gap-3">
-                {coverUrl && (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={coverUrl} alt="" className="h-16 w-24 rounded-md object-cover ring-1 ring-border" />
-                )}
                 <Button
                   type="button"
                   variant="outline"
@@ -712,7 +1172,7 @@ export function ProjectEditor({
                   {coverUrl ? "Trocar imagem" : "Enviar imagem"}
                 </Button>
                 {coverUrl && canEdit && (
-                  <Button type="button" variant="ghost" size="sm" onClick={() => setCoverUrl(null)}>
+                  <Button type="button" variant="destructive" size="sm" onClick={() => setCoverUrl(null)}>
                     Remover
                   </Button>
                 )}
@@ -726,13 +1186,30 @@ export function ProjectEditor({
               />
             </div>
 
-            <div className="flex flex-col">
+            <div className="flex min-w-0 flex-col">
               <EditorToolbar editor={editor} projectId={project.id} disabled={!canEdit} />
               {editor && (
-                <EditorContent
-                  editor={editor}
-                  className="min-h-72 rounded-b-lg border border-input px-3 py-2 text-sm [&_.ProseMirror]:min-h-64 [&_.ProseMirror]:outline-none [&_.ProseMirror_img]:max-w-full [&_.ProseMirror_video]:max-w-full"
-                />
+                <InputGroup className="h-auto flex-col items-stretch rounded-t-none">
+                  <EditorContent
+                    editor={editor}
+                    className={cn(
+                      "min-h-72 w-full min-w-0 overflow-x-hidden px-3 py-2 text-sm break-words",
+                      "[&_.ProseMirror]:min-h-64 [&_.ProseMirror]:outline-none [&_.ProseMirror]:break-words [&_.ProseMirror]:whitespace-pre-wrap",
+                      "[&_.ProseMirror_img]:max-w-full [&_.ProseMirror_video]:max-w-full",
+                      "[&_.ProseMirror_pre]:max-w-full [&_.ProseMirror_pre]:overflow-x-auto [&_.ProseMirror_pre]:whitespace-pre-wrap",
+                      "[&_.ProseMirror_h1]:mt-4 [&_.ProseMirror_h1]:text-2xl [&_.ProseMirror_h1]:font-semibold",
+                      "[&_.ProseMirror_h2]:mt-3 [&_.ProseMirror_h2]:text-xl [&_.ProseMirror_h2]:font-semibold",
+                      "[&_.ProseMirror_h3]:mt-2 [&_.ProseMirror_h3]:text-lg [&_.ProseMirror_h3]:font-semibold",
+                      "[&_.ProseMirror_ul:not([data-type='taskList'])]:mt-2 [&_.ProseMirror_ul:not([data-type='taskList'])]:list-disc [&_.ProseMirror_ul:not([data-type='taskList'])]:pl-6",
+                      "[&_.ProseMirror_ol]:mt-2 [&_.ProseMirror_ol]:list-decimal [&_.ProseMirror_ol]:pl-6",
+                      "[&_.ProseMirror_blockquote]:mt-2 [&_.ProseMirror_blockquote]:border-l-2 [&_.ProseMirror_blockquote]:border-border [&_.ProseMirror_blockquote]:pl-4 [&_.ProseMirror_blockquote]:text-muted-foreground",
+                      "[&_.ProseMirror_a]:text-primary [&_.ProseMirror_a]:underline",
+                    )}
+                  />
+                  <InputGroupAddon align="block-end">
+                    <InputGroupText>{characterCount} caracteres</InputGroupText>
+                  </InputGroupAddon>
+                </InputGroup>
               )}
             </div>
           </CardContent>

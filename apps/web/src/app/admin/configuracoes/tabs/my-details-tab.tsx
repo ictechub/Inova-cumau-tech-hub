@@ -77,7 +77,7 @@ export function MyDetailsTab({ initial }: { initial: ConfiguracoesInitialData })
         title="My Details"
         description="Suas informações pessoais, visíveis para os demais administradores."
         actions={
-          <Button type="submit" size="sm" disabled={isPending}>
+          <Button type="submit" disabled={isPending}>
             {isPending ? "Salvando..." : "Salvar alterações"}
           </Button>
         }

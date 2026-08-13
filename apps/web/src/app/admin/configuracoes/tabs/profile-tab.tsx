@@ -35,7 +35,7 @@ export function ProfileTab({ initial }: { initial: ConfiguracoesInitialData }) {
         title="Profile"
         description="Como sua startup aparece publicamente no site da Inova Cumaú."
         actions={
-          <Button type="submit" size="sm" disabled={isPending}>
+          <Button type="submit" disabled={isPending}>
             {isPending ? "Salvando..." : "Salvar alterações"}
           </Button>
         }

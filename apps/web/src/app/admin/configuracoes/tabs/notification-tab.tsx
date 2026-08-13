@@ -31,7 +31,7 @@ export function NotificationTab({ initial }: { initial: ConfiguracoesInitialData
         title="Notification"
         description="Escolha quais e-mails você quer receber."
         actions={
-          <Button type="submit" size="sm" disabled={isPending}>
+          <Button type="submit" disabled={isPending}>
             {isPending ? "Salvando..." : "Salvar alterações"}
           </Button>
         }

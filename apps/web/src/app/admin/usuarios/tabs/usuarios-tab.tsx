@@ -266,7 +266,7 @@ export function UsuariosTab({
   return (
     <div className="flex flex-col gap-3">
       <div className="flex justify-end">
-        <Button size="sm" onClick={() => setInviteOpen(true)}>
+        <Button onClick={() => setInviteOpen(true)}>
           <IconMailForward />
           Convidar Consultor
         </Button>

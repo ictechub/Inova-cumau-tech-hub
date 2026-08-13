@@ -39,7 +39,7 @@ export function PasswordTab() {
         title="Password"
         description="Atualize a senha usada para entrar na sua conta."
         actions={
-          <Button type="submit" size="sm" disabled={isPending}>
+          <Button type="submit" disabled={isPending}>
             {isPending ? "Salvando..." : "Salvar alterações"}
           </Button>
         }
