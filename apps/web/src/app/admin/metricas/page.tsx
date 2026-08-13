@@ -63,9 +63,10 @@ async function getContagens(supabase: Awaited<ReturnType<typeof createClient>>) 
   return { total: total ?? 0, novosNoMes: novosNoMes ?? 0 };
 }
 
-// Retorna null quando a service role key não está configurada; o card de
-// contas ativas degrada para um estado "não configurado" em vez de quebrar a
-// página (ver apps/web/.env.example).
+// Retorna null quando a service role key não está configurada ou quando a
+// API admin do Supabase falha; o card de contas ativas degrada para um
+// estado "não disponível" em vez de derrubar a página inteira (ver
+// apps/web/.env.example).
 async function getContasAtivas() {
   const admin = createAdminClient();
   if (!admin) return null;
@@ -77,16 +78,21 @@ async function getContasAtivas() {
   let page = 1;
   let ativas = 0;
 
-  while (true) {
-    const { data, error } = await admin.auth.admin.listUsers({ page, perPage });
-    if (error) throw error;
+  try {
+    while (true) {
+      const { data, error } = await admin.auth.admin.listUsers({ page, perPage });
+      if (error) throw error;
 
-    ativas += data.users.filter(
-      (u) => u.last_sign_in_at && new Date(u.last_sign_in_at) >= activeSince,
-    ).length;
+      ativas += data.users.filter(
+        (u) => u.last_sign_in_at && new Date(u.last_sign_in_at) >= activeSince,
+      ).length;
 
-    if (data.users.length < perPage) break;
-    page += 1;
+      if (data.users.length < perPage) break;
+      page += 1;
+    }
+  } catch (error) {
+    console.error("Falha ao buscar contas ativas via admin.listUsers:", error);
+    return null;
   }
 
   return ativas;
@@ -274,11 +280,11 @@ export default async function MetricasPage() {
                 {contasAtivas === null ? (
                   <>
                     <div className="line-clamp-1 font-medium">
-                      Métrica não configurada
+                      Métrica indisponível
                     </div>
                     <div className="text-muted-foreground">
-                      Configure SUPABASE_SERVICE_ROLE_KEY para habilitar esta
-                      métrica.
+                      Confirme se SUPABASE_SERVICE_ROLE_KEY está configurada
+                      ou tente novamente mais tarde.
                     </div>
                   </>
                 ) : (
