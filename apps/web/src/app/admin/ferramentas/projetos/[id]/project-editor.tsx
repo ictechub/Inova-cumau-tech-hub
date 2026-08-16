@@ -30,29 +30,17 @@ import {
   IconListNumbers,
   IconPhoto,
   IconQuote,
-  IconTrash,
   IconUnderline,
   IconUserPlus,
   IconVideo,
 } from "@tabler/icons-react";
 
 import { MultiSelectCombobox, type MultiSelectOption } from "@/components/registration-wizard/multi-select-combobox";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogMedia,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { Card, CardContent } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog,
   DialogClose,
@@ -61,7 +49,6 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import {
   DropdownMenu,
@@ -87,6 +74,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { toast } from "@/components/ui/toast";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import type { ProjectAccessLevel } from "@/lib/project-access";
 import { PROJECT_SECTIONS } from "@/lib/project-sections";
 import { PROJECT_TAGS } from "@/lib/project-tags";
@@ -102,7 +90,6 @@ import {
 import { cn } from "@/lib/utils";
 
 import {
-  deleteProject,
   grantProjectPermission,
   publishProject,
   revokeProjectPermission,
@@ -112,45 +99,15 @@ import {
   uploadProjectMedia,
   type ActionResult,
 } from "./actions";
+import type { ProjectData, ProjectOwner, ProjectPermission, ShareableUser } from "./types";
 
-export type ProjectData = {
-  id: string;
-  title: string;
-  slug: string;
-  content: unknown;
-  cover_image_url: string | null;
-  tags: string[];
-  section: string;
-  status: string;
-  published_at: string | null;
-  link_access_scope: string;
-  link_access_permission: string;
-};
-
-export type ProjectPermission = {
-  id: string;
-  user_id: string;
-  permission: "ver" | "editar" | "compartilhar";
-  nome: string;
-  email: string;
-  avatar_url: string | null;
-};
-
-export type ShareableUser = {
-  user_id: string;
-  nome: string;
-  email: string;
-  avatar_url: string | null;
-};
-
-export type ProjectOwner = {
-  user_id: string;
-  nome: string;
-  email: string;
-  avatar_url: string | null;
-};
+export type { ProjectData, ProjectOwner, ProjectPermission, ShareableUser } from "./types";
 
 const TAG_OPTIONS: MultiSelectOption[] = PROJECT_TAGS.map((tag) => ({ value: tag, label: tag }));
+
+const PROJECT_SECTION_ITEMS = Object.fromEntries(
+  PROJECT_SECTIONS.map((section) => [section.value, section.label]),
+);
 
 const SHARE_PERMISSION_OPTIONS = [
   { value: "ver", label: "Pode visualizar", description: "Pode ver o conteúdo, sem fazer alterações." },
@@ -186,17 +143,24 @@ function ToolbarButton({
   children: React.ReactNode;
 }) {
   return (
-    <Button
-      type="button"
-      variant={active ? "secondary" : "outline"}
-      size="icon-sm"
-      disabled={disabled}
-      onClick={onClick}
-      aria-label={label}
-      title={label}
-    >
-      {children}
-    </Button>
+    <Tooltip>
+      <TooltipTrigger
+        render={
+          <Button
+            type="button"
+            variant="outline"
+            size="icon-sm"
+            disabled={disabled}
+            onClick={onClick}
+            aria-label={label}
+            className={active ? "bg-secondary text-secondary-foreground" : undefined}
+          >
+            {children}
+          </Button>
+        }
+      />
+      <TooltipContent>{label}</TooltipContent>
+    </Tooltip>
   );
 }
 
@@ -467,21 +431,27 @@ function EditorToolbar({
           <IconList className="size-4" />
         </ToolbarButton>
         <DropdownMenu>
-          <DropdownMenuTrigger
-            render={
-              <Button
-                type="button"
-                variant="outline"
-                size="icon-sm"
-                disabled={disabled}
-                aria-label="Estilos de marcador"
-                title="Estilos de marcador"
-                className="w-4 px-0"
-              />
-            }
-          >
-            <IconChevronDown className="size-3" />
-          </DropdownMenuTrigger>
+          <Tooltip>
+            <TooltipTrigger
+              render={
+                <DropdownMenuTrigger
+                  render={
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="icon-sm"
+                      disabled={disabled}
+                      aria-label="Estilos de marcador"
+                      className="w-4 px-0"
+                    />
+                  }
+                />
+              }
+            >
+              <IconChevronDown className="size-3" />
+            </TooltipTrigger>
+            <TooltipContent>Estilos de marcador</TooltipContent>
+          </Tooltip>
           <DropdownMenuContent align="start">
             {BULLET_LIST_STYLES.map((style) => (
               <DropdownMenuItem key={style.id} onClick={() => applyBulletListStyle(style.id)}>
@@ -506,21 +476,27 @@ function EditorToolbar({
           <IconListNumbers className="size-4" />
         </ToolbarButton>
         <DropdownMenu>
-          <DropdownMenuTrigger
-            render={
-              <Button
-                type="button"
-                variant="outline"
-                size="icon-sm"
-                disabled={disabled}
-                aria-label="Estilos de numeração"
-                title="Estilos de numeração"
-                className="w-4 px-0"
-              />
-            }
-          >
-            <IconChevronDown className="size-3" />
-          </DropdownMenuTrigger>
+          <Tooltip>
+            <TooltipTrigger
+              render={
+                <DropdownMenuTrigger
+                  render={
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="icon-sm"
+                      disabled={disabled}
+                      aria-label="Estilos de numeração"
+                      className="w-4 px-0"
+                    />
+                  }
+                />
+              }
+            >
+              <IconChevronDown className="size-3" />
+            </TooltipTrigger>
+            <TooltipContent>Estilos de numeração</TooltipContent>
+          </Tooltip>
           <DropdownMenuContent align="start">
             {ORDERED_LIST_STYLES.map((style) => (
               <DropdownMenuItem key={style.id} onClick={() => applyOrderedListStyle(style.id)}>
@@ -545,21 +521,27 @@ function EditorToolbar({
           <IconListCheck className="size-4" />
         </ToolbarButton>
         <DropdownMenu>
-          <DropdownMenuTrigger
-            render={
-              <Button
-                type="button"
-                variant="outline"
-                size="icon-sm"
-                disabled={disabled}
-                aria-label="Estilos de lista de verificação"
-                title="Estilos de lista de verificação"
-                className="w-4 px-0"
-              />
-            }
-          >
-            <IconChevronDown className="size-3" />
-          </DropdownMenuTrigger>
+          <Tooltip>
+            <TooltipTrigger
+              render={
+                <DropdownMenuTrigger
+                  render={
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="icon-sm"
+                      disabled={disabled}
+                      aria-label="Estilos de lista de verificação"
+                      className="w-4 px-0"
+                    />
+                  }
+                />
+              }
+            >
+              <IconChevronDown className="size-3" />
+            </TooltipTrigger>
+            <TooltipContent>Estilos de lista de verificação</TooltipContent>
+          </Tooltip>
           <DropdownMenuContent align="start">
             {TASK_LIST_STYLES.map((style) => (
               <DropdownMenuItem key={style.id} onClick={() => applyTaskListStyle(style.id)}>
@@ -604,20 +586,26 @@ function EditorToolbar({
       </ButtonGroup>
       <ButtonGroup>
         <DropdownMenu>
-          <DropdownMenuTrigger
-            render={
-              <Button
-                type="button"
-                variant="outline"
-                size="icon-sm"
-                disabled={disabled || textBlockType() === null}
-                aria-label="Espaçamento entre linhas e parágrafos"
-                title="Espaçamento entre linhas e parágrafos"
-              />
-            }
-          >
-            <IconLineHeight className="size-4" />
-          </DropdownMenuTrigger>
+          <Tooltip>
+            <TooltipTrigger
+              render={
+                <DropdownMenuTrigger
+                  render={
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="icon-sm"
+                      disabled={disabled || textBlockType() === null}
+                      aria-label="Espaçamento entre linhas e parágrafos"
+                    />
+                  }
+                />
+              }
+            >
+              <IconLineHeight className="size-4" />
+            </TooltipTrigger>
+            <TooltipContent>Espaçamento entre linhas e parágrafos</TooltipContent>
+          </Tooltip>
           <DropdownMenuContent align="start" className="w-72">
             {LINE_HEIGHT_OPTIONS.map((option) => (
               <DropdownMenuItem
@@ -846,50 +834,7 @@ function PublishControls({
   );
 }
 
-function DeleteProjectDialog({ projectId, title }: { projectId: string; title: string }) {
-  const [open, setOpen] = useState(false);
-  const [state, formAction] = useActionState<ActionResult | null, FormData>(deleteProject, null);
-
-  useEffect(() => {
-    if (!state) return;
-    if (state.status === "error") {
-      toast.add({ type: "error", description: state.message });
-    }
-  }, [state]);
-
-  return (
-    <AlertDialog open={open} onOpenChange={setOpen}>
-      <AlertDialogTrigger
-        render={<Button type="button" variant="destructive" size="icon" aria-label="Excluir" title="Excluir" />}
-      >
-        <IconTrash />
-      </AlertDialogTrigger>
-      <AlertDialogContent size="sm">
-        <form action={formAction} className="flex flex-col gap-4">
-          <AlertDialogHeader>
-            <AlertDialogMedia className="bg-destructive/10 text-destructive dark:bg-destructive/20 dark:text-destructive">
-              <IconTrash />
-            </AlertDialogMedia>
-            <AlertDialogTitle className="font-sans">Excluir projeto</AlertDialogTitle>
-            <AlertDialogDescription>
-              Tem certeza que deseja excluir o projeto &quot;{title}&quot;? Essa ação não pode
-              ser desfeita.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <input type="hidden" name="project_id" value={projectId} />
-          <AlertDialogFooter>
-            <AlertDialogCancel variant="outline">Cancelar</AlertDialogCancel>
-            <AlertDialogAction type="submit" variant="destructive">
-              Excluir
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </form>
-      </AlertDialogContent>
-    </AlertDialog>
-  );
-}
-
-function ShareDialog({
+export function ShareDialog({
   projectId,
   owner,
   permissions,
@@ -897,6 +842,8 @@ function ShareDialog({
   currentUserId,
   linkAccessScope,
   linkAccessPermission,
+  open,
+  onOpenChange,
 }: {
   projectId: string;
   owner: ProjectOwner | null;
@@ -905,8 +852,9 @@ function ShareDialog({
   currentUserId: string;
   linkAccessScope: string;
   linkAccessPermission: string;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
 }) {
-  const [open, setOpen] = useState(false);
   const [emailInput, setEmailInput] = useState("");
   const [sharing, setSharing] = useState(false);
   const [pendingUserId, setPendingUserId] = useState<string | null>(null);
@@ -1013,11 +961,7 @@ function ShareDialog({
   }
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger render={<Button type="button" variant="outline" />}>
-        <IconUserPlus />
-        Compartilhar
-      </DialogTrigger>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="font-sans">Compartilhar projeto</DialogTitle>
@@ -1232,7 +1176,9 @@ export function ProjectEditor({
   const [coverUrl, setCoverUrl] = useState(project.cover_image_url);
   const [tags, setTags] = useState<string[]>(project.tags);
   const [section, setSection] = useState(project.section);
+  const [showAuthor, setShowAuthor] = useState(project.show_author);
   const [coverUploading, setCoverUploading] = useState(false);
+  const [shareOpen, setShareOpen] = useState(false);
 
   const coverInputRef = useRef<HTMLInputElement>(null);
 
@@ -1254,6 +1200,7 @@ export function ProjectEditor({
     formData.set("content", JSON.stringify(editor.getJSON()));
     formData.set("cover_image_url", coverUrl ?? "");
     formData.set("section", section);
+    formData.set("show_author", String(showAuthor));
     for (const tag of tags) formData.append("tags", tag);
 
     const result = await updateProject(null, formData);
@@ -1311,7 +1258,7 @@ export function ProjectEditor({
     }
     scheduleSave();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [title, slug, tags, coverUrl, section]);
+  }, [title, slug, tags, coverUrl, section, showAuthor]);
 
   useEffect(() => {
     return () => {
@@ -1369,15 +1316,23 @@ export function ProjectEditor({
         </div>
         <div className="flex items-center gap-2">
           {canManage && (
-            <ShareDialog
-              projectId={project.id}
-              owner={owner}
-              permissions={permissions}
-              shareableUsers={shareableUsers}
-              currentUserId={currentUserId}
-              linkAccessScope={project.link_access_scope}
-              linkAccessPermission={project.link_access_permission}
-            />
+            <>
+              <Button type="button" variant="outline" onClick={() => setShareOpen(true)}>
+                <IconUserPlus />
+                Compartilhar
+              </Button>
+              <ShareDialog
+                projectId={project.id}
+                owner={owner}
+                permissions={permissions}
+                shareableUsers={shareableUsers}
+                currentUserId={currentUserId}
+                linkAccessScope={project.link_access_scope}
+                linkAccessPermission={project.link_access_permission}
+                open={shareOpen}
+                onOpenChange={setShareOpen}
+              />
+            </>
           )}
           <PublishControls
             projectId={project.id}
@@ -1385,7 +1340,6 @@ export function ProjectEditor({
             canEdit={canEdit}
             onStatusChange={(next) => setStatus(next)}
           />
-          {canManage && <DeleteProjectDialog projectId={project.id} title={title} />}
         </div>
       </div>
 
@@ -1428,40 +1382,53 @@ export function ProjectEditor({
               </div>
             </div>
 
-            <div className="flex flex-col gap-2">
-              <Label htmlFor="section">Seção de publicação</Label>
-              <Select
-                value={section}
-                onValueChange={(value) => {
-                  if (value) setSection(value);
-                }}
-                disabled={!canEdit}
-              >
-                <SelectTrigger id="section">
-                  <SelectValue placeholder="Selecione a seção" />
-                </SelectTrigger>
-                <SelectContent>
-                  {PROJECT_SECTIONS.map((option) => (
-                    <SelectItem key={option.value} value={option.value}>
-                      {option.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              {saveResult?.status === "validation_error" && saveResult.errors.section && (
-                <p className="text-xs text-destructive">{saveResult.errors.section[0]}</p>
-              )}
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="flex flex-col gap-2">
+                <Label htmlFor="section">Seção de publicação</Label>
+                <Select
+                  items={PROJECT_SECTION_ITEMS}
+                  value={section}
+                  onValueChange={(value) => {
+                    if (value) setSection(value);
+                  }}
+                  disabled={!canEdit}
+                >
+                  <SelectTrigger id="section" className="w-full">
+                    <SelectValue placeholder="Selecione a seção" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {PROJECT_SECTIONS.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                {saveResult?.status === "validation_error" && saveResult.errors.section && (
+                  <p className="text-xs text-destructive">{saveResult.errors.section[0]}</p>
+                )}
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <Label>Tags</Label>
+                <MultiSelectCombobox
+                  options={TAG_OPTIONS}
+                  value={tags}
+                  onChange={setTags}
+                  placeholder="Selecione as tags"
+                />
+              </div>
             </div>
 
-            <div className="flex flex-col gap-2">
-              <Label>Tags</Label>
-              <MultiSelectCombobox
-                options={TAG_OPTIONS}
-                value={tags}
-                onChange={setTags}
-                placeholder="Selecione as tags"
+            <label className="flex items-start gap-2 text-sm text-foreground">
+              <Checkbox
+                checked={showAuthor}
+                onCheckedChange={(value) => setShowAuthor(value === true)}
+                disabled={!canEdit}
+                className="mt-0.5"
               />
-            </div>
+              Mostrar autor na publicação
+            </label>
 
             <div className="flex flex-col gap-2">
               <Label>Imagem de capa</Label>

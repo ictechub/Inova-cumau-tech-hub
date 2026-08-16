@@ -11,6 +11,7 @@ import {
   updateLinkAccessSchema,
   updateProjectSchema,
 } from "./schema";
+import type { ProjectOwner, ProjectPermission, ShareableUser } from "./types";
 
 export type ActionResult =
   | { status: "success" }
@@ -69,6 +70,7 @@ export async function updateProject(
     cover_image_url: (formData.get("cover_image_url") as string) || null,
     tags: formData.getAll("tags") as string[],
     section: formData.get("section") as string,
+    show_author: formData.get("show_author") === "true",
   };
 
   const parsed = updateProjectSchema.safeParse(raw);
@@ -92,6 +94,7 @@ export async function updateProject(
       cover_image_url: parsed.data.cover_image_url,
       tags: parsed.data.tags,
       section: parsed.data.section,
+      show_author: parsed.data.show_author,
       updated_at: new Date().toISOString(),
     })
     .eq("id", projectId);
@@ -288,4 +291,67 @@ export async function uploadProjectMedia(projectId: string, file: File): Promise
   if (!ctx) return { status: "error", message: "Acesso não autorizado." };
 
   return uploadMedia(ctx.db, projectId, file);
+}
+
+export type ProjectShareData =
+  | {
+      status: "success";
+      owner: ProjectOwner | null;
+      permissions: ProjectPermission[];
+      shareableUsers: ShareableUser[];
+      linkAccessScope: string;
+      linkAccessPermission: string;
+    }
+  | { status: "error"; message: string };
+
+export async function getProjectShareData(projectId: string): Promise<ProjectShareData> {
+  const ctx = await authorizeProject(projectId, ["total"]);
+  if (!ctx) return { status: "error", message: "Acesso não autorizado." };
+
+  const [{ data: permissionRows }, { data: registrations }] = await Promise.all([
+    ctx.db.from("project_permissions").select("id, user_id, permission").eq("project_id", projectId),
+    ctx.db.from("startup_registrations").select("user_id, responsavel_nome, responsavel_email, avatar_url"),
+  ]);
+
+  const registrationByUserId = new Map((registrations ?? []).map((r) => [r.user_id, r]));
+
+  const permissions: ProjectPermission[] = (permissionRows ?? []).map((row) => {
+    const registration = registrationByUserId.get(row.user_id);
+    return {
+      id: row.id,
+      user_id: row.user_id,
+      permission: row.permission as "ver" | "editar" | "compartilhar",
+      nome: registration?.responsavel_nome ?? "Usuário desconhecido",
+      email: registration?.responsavel_email ?? "",
+      avatar_url: registration?.avatar_url ?? null,
+    };
+  });
+
+  const permittedUserIds = new Set(permissions.map((p) => p.user_id));
+  const shareableUsers: ShareableUser[] = (registrations ?? [])
+    .filter((r) => r.user_id !== ctx.project.owner_id && !permittedUserIds.has(r.user_id))
+    .map((r) => ({
+      user_id: r.user_id,
+      nome: r.responsavel_nome,
+      email: r.responsavel_email ?? "",
+      avatar_url: r.avatar_url ?? null,
+    }))
+    .sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"));
+
+  const ownerRegistration = registrationByUserId.get(ctx.project.owner_id);
+  const owner: ProjectOwner = {
+    user_id: ctx.project.owner_id,
+    nome: ownerRegistration?.responsavel_nome ?? "Usuário desconhecido",
+    email: ownerRegistration?.responsavel_email ?? "",
+    avatar_url: ownerRegistration?.avatar_url ?? null,
+  };
+
+  return {
+    status: "success",
+    owner,
+    permissions,
+    shareableUsers,
+    linkAccessScope: ctx.project.link_access_scope,
+    linkAccessPermission: ctx.project.link_access_permission,
+  };
 }

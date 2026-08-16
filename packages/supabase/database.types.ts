@@ -105,6 +105,7 @@ export type Database = {
           owner_id: string
           published_at: string | null
           section: string
+          show_author: boolean
           slug: string
           status: string
           tags: string[]
@@ -121,6 +122,7 @@ export type Database = {
           owner_id: string
           published_at?: string | null
           section?: string
+          show_author?: boolean
           slug: string
           status?: string
           tags?: string[]
@@ -137,6 +139,7 @@ export type Database = {
           owner_id?: string
           published_at?: string | null
           section?: string
+          show_author?: boolean
           slug?: string
           status?: string
           tags?: string[]

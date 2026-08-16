@@ -6,6 +6,7 @@ import { generateHTML } from "@tiptap/core";
 import { IconArrowLeft } from "@tabler/icons-react";
 
 import { Badge } from "@/components/ui/badge";
+import { createAdminClient } from "@inova-cumau/supabase/admin";
 import { createClient } from "@inova-cumau/supabase/server";
 import { tiptapExtensions } from "@/lib/tiptap-extensions";
 
@@ -15,6 +16,8 @@ type ProgramaDetalhe = {
   cover_image_url: string | null;
   tags: string[];
   published_at: string | null;
+  owner_id: string;
+  show_author: boolean;
 };
 
 function formatData(iso: string) {
@@ -29,13 +32,26 @@ async function getPrograma(slug: string): Promise<ProgramaDetalhe | null> {
   const supabase = await createClient();
   const { data } = await supabase
     .from("projects")
-    .select("title, content, cover_image_url, tags, published_at")
+    .select("title, content, cover_image_url, tags, published_at, owner_id, show_author")
     .eq("slug", slug)
     .eq("status", "publicado")
     .eq("section", "programas-e-editais")
     .maybeSingle();
 
   return data;
+}
+
+async function getAutorNome(ownerId: string): Promise<string | null> {
+  const admin = createAdminClient();
+  if (!admin) return null;
+
+  const { data } = await admin
+    .from("startup_registrations")
+    .select("responsavel_nome")
+    .eq("user_id", ownerId)
+    .maybeSingle();
+
+  return data?.responsavel_nome ?? null;
 }
 
 export async function generateMetadata({
@@ -61,6 +77,8 @@ export default async function ProgramaPage({
 
   if (!programa) notFound();
 
+  const autorNome = programa.show_author ? await getAutorNome(programa.owner_id) : null;
+
   const html = generateHTML(
     (programa.content as Record<string, unknown>) ?? { type: "doc", content: [] },
     tiptapExtensions,
@@ -84,6 +102,9 @@ export default async function ProgramaPage({
             {tag}
           </Badge>
         ))}
+        {autorNome ? (
+          <span className="text-sm text-muted-foreground">Por {autorNome}</span>
+        ) : null}
         {programa.published_at ? (
           <span className="text-sm text-muted-foreground">{formatData(programa.published_at)}</span>
         ) : null}

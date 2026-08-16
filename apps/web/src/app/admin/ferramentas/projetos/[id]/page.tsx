@@ -62,7 +62,7 @@ export default async function ProjetoPage({
   const { data: project } = await db
     .from("projects")
     .select(
-      "id, title, slug, content, cover_image_url, tags, section, status, owner_id, published_at, updated_at, link_access_scope, link_access_permission",
+      "id, title, slug, content, cover_image_url, tags, section, status, owner_id, published_at, updated_at, link_access_scope, link_access_permission, show_author",
     )
     .eq("id", id)
     .maybeSingle();
@@ -133,6 +133,7 @@ export default async function ProjetoPage({
     section: project.section,
     status: project.status,
     published_at: project.published_at,
+    show_author: project.show_author,
     link_access_scope: project.link_access_scope,
     link_access_permission: project.link_access_permission,
   };

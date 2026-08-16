@@ -16,6 +16,7 @@ export const updateProjectSchema = z.object({
   cover_image_url: z.string().trim().nullable(),
   tags: z.array(z.enum(PROJECT_TAGS)),
   section: z.enum(PROJECT_SECTION_VALUES, { message: "Selecione uma seção." }),
+  show_author: z.boolean(),
 });
 
 export type UpdateProjectData = z.infer<typeof updateProjectSchema>;

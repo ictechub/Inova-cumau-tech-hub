@@ -4,6 +4,7 @@ import { useMemo, useState, useEffect, useRef, useCallback, useLayoutEffect } fr
 import { IconChevronLeft, IconMaximize, IconMinimize, IconPlus, IconMinus, IconCurrentLocation } from "@tabler/icons-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
 import brazilPaths from "@/data/brazil-states-paths.json"
 
@@ -530,15 +531,36 @@ export function BusinessMapCard({ cities }: { cities: CityPoint[] }) {
 
             {/* Controles de zoom + foco */}
             <div className="absolute bottom-3 left-3 z-10 flex flex-col gap-1.5">
-              <Button variant="outline" size="icon" className="h-7 w-7 bg-background/90 backdrop-blur-sm shadow-sm" onClick={() => zoomByButton(1 / 1.4)} title="Aproximar">
-                <IconPlus size={14} />
-              </Button>
-              <Button variant="outline" size="icon" className="h-7 w-7 bg-background/90 backdrop-blur-sm shadow-sm" onClick={() => zoomByButton(1.4)} title="Afastar">
-                <IconMinus size={14} />
-              </Button>
-              <Button variant="outline" size="icon" className="h-7 w-7 bg-background/90 backdrop-blur-sm shadow-sm" onClick={focusBrazil} title="Focar no Brasil">
-                <IconCurrentLocation size={14} />
-              </Button>
+              <Tooltip>
+                <TooltipTrigger
+                  render={
+                    <Button variant="outline" size="icon" className="h-7 w-7 bg-background/90 backdrop-blur-sm shadow-sm" onClick={() => zoomByButton(1 / 1.4)}>
+                      <IconPlus size={14} />
+                    </Button>
+                  }
+                />
+                <TooltipContent side="right">Aproximar</TooltipContent>
+              </Tooltip>
+              <Tooltip>
+                <TooltipTrigger
+                  render={
+                    <Button variant="outline" size="icon" className="h-7 w-7 bg-background/90 backdrop-blur-sm shadow-sm" onClick={() => zoomByButton(1.4)}>
+                      <IconMinus size={14} />
+                    </Button>
+                  }
+                />
+                <TooltipContent side="right">Afastar</TooltipContent>
+              </Tooltip>
+              <Tooltip>
+                <TooltipTrigger
+                  render={
+                    <Button variant="outline" size="icon" className="h-7 w-7 bg-background/90 backdrop-blur-sm shadow-sm" onClick={focusBrazil}>
+                      <IconCurrentLocation size={14} />
+                    </Button>
+                  }
+                />
+                <TooltipContent side="right">Focar no Brasil</TooltipContent>
+              </Tooltip>
             </div>
 
             <svg

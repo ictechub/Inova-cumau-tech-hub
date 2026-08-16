@@ -178,7 +178,7 @@ export default async function ProjetosPage() {
               Crie, edite e gerencie permissões de cada projeto.
             </p>
           </div>
-          <ProjetosTab projetos={projetos} />
+          <ProjetosTab projetos={projetos} currentUserId={authUser.id} />
         </div>
       </SidebarInset>
     </SidebarProvider>

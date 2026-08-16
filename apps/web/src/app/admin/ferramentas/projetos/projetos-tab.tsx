@@ -63,7 +63,13 @@ import { toast } from "@/components/ui/toast";
 import { MultiSelectCombobox } from "@/components/registration-wizard/multi-select-combobox";
 import { PROJECT_TAGS } from "@/lib/project-tags";
 import { createProject, type ActionResult } from "./actions";
-import { deleteProject, type ActionResult as ProjectActionResult } from "./[id]/actions";
+import {
+  deleteProject,
+  getProjectShareData,
+  type ActionResult as ProjectActionResult,
+  type ProjectShareData,
+} from "./[id]/actions";
+import { ShareDialog } from "./[id]/project-editor";
 
 const TAG_OPTIONS = PROJECT_TAGS.map((tag) => ({ value: tag, label: tag }));
 
@@ -240,9 +246,83 @@ function DeleteProjetoDialog({
   );
 }
 
-function ProjetoActionsMenu({ projeto }: { projeto: AdminProject }) {
+function ShareProjetoDialog({
+  projeto,
+  currentUserId,
+  open,
+  onOpenChange,
+}: {
+  projeto: AdminProject;
+  currentUserId: string;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}) {
+  const [data, setData] = useState<ProjectShareData | null>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    let cancelled = false;
+    getProjectShareData(projeto.id).then((result) => {
+      if (!cancelled) setData(result);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [open, projeto.id]);
+
+  if (!open) return null;
+
+  if (!data) {
+    return (
+      <Dialog open={open} onOpenChange={onOpenChange}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="font-sans">Compartilhar projeto</DialogTitle>
+            <DialogDescription>Carregando...</DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
+    );
+  }
+
+  if (data.status === "error") {
+    return (
+      <Dialog open={open} onOpenChange={onOpenChange}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="font-sans">Compartilhar projeto</DialogTitle>
+            <DialogDescription>{data.message}</DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
+    );
+  }
+
+  return (
+    <ShareDialog
+      projectId={projeto.id}
+      owner={data.owner}
+      permissions={data.permissions}
+      shareableUsers={data.shareableUsers}
+      currentUserId={currentUserId}
+      linkAccessScope={data.linkAccessScope}
+      linkAccessPermission={data.linkAccessPermission}
+      open={open}
+      onOpenChange={onOpenChange}
+    />
+  );
+}
+
+function ProjetoActionsMenu({
+  projeto,
+  currentUserId,
+}: {
+  projeto: AdminProject;
+  currentUserId: string;
+}) {
   const router = useRouter();
   const [deleteOpen, setDeleteOpen] = useState(false);
+  const [shareOpen, setShareOpen] = useState(false);
 
   return (
     <>
@@ -258,9 +338,7 @@ function ProjetoActionsMenu({ projeto }: { projeto: AdminProject }) {
             <IconPencil />
             Editar
           </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={() => router.push(`/admin/ferramentas/projetos/${projeto.id}#permissoes`)}
-          >
+          <DropdownMenuItem onClick={() => setShareOpen(true)}>
             <IconShare2 />
             Compartilhar
           </DropdownMenuItem>
@@ -272,11 +350,23 @@ function ProjetoActionsMenu({ projeto }: { projeto: AdminProject }) {
         </DropdownMenuContent>
       </DropdownMenu>
       <DeleteProjetoDialog projeto={projeto} open={deleteOpen} onOpenChange={setDeleteOpen} />
+      <ShareProjetoDialog
+        projeto={projeto}
+        currentUserId={currentUserId}
+        open={shareOpen}
+        onOpenChange={setShareOpen}
+      />
     </>
   );
 }
 
-export function ProjetosTab({ projetos }: { projetos: AdminProject[] }) {
+export function ProjetosTab({
+  projetos,
+  currentUserId,
+}: {
+  projetos: AdminProject[];
+  currentUserId: string;
+}) {
   const router = useRouter();
   const [busca, setBusca] = useState("");
   const [filtroTag, setFiltroTag] = useState<string>(TODAS);
@@ -442,7 +532,7 @@ export function ProjetosTab({ projetos }: { projetos: AdminProject[] }) {
                     {formatData(projeto.updated_at)}
                   </TableCell>
                   <TableCell className="text-right" onClick={(event) => event.stopPropagation()}>
-                    <ProjetoActionsMenu projeto={projeto} />
+                    <ProjetoActionsMenu projeto={projeto} currentUserId={currentUserId} />
                   </TableCell>
                 </TableRow>
               ))}
