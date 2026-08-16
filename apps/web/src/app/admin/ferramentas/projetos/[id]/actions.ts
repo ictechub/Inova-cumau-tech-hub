@@ -8,6 +8,7 @@ import { getProjectAccessLevel, type ProjectAccessLevel } from "@/lib/project-ac
 import {
   grantPermissionSchema,
   revokePermissionSchema,
+  updateLinkAccessSchema,
   updateProjectSchema,
 } from "./schema";
 
@@ -36,7 +37,7 @@ async function authorizeProject(projectId: string, allowed: ProjectAccessLevel[]
 
   const { data: project } = await db
     .from("projects")
-    .select("id, owner_id")
+    .select("id, owner_id, link_access_scope, link_access_permission")
     .eq("id", projectId)
     .maybeSingle();
 
@@ -67,6 +68,7 @@ export async function updateProject(
     content: formData.get("content") as string,
     cover_image_url: (formData.get("cover_image_url") as string) || null,
     tags: formData.getAll("tags") as string[],
+    section: formData.get("section") as string,
   };
 
   const parsed = updateProjectSchema.safeParse(raw);
@@ -89,6 +91,7 @@ export async function updateProject(
       content: content as never,
       cover_image_url: parsed.data.cover_image_url,
       tags: parsed.data.tags,
+      section: parsed.data.section,
       updated_at: new Date().toISOString(),
     })
     .eq("id", projectId);
@@ -211,6 +214,36 @@ export async function revokeProjectPermission(
     .eq("project_id", projectId);
 
   if (error) return { status: "error", message: "Não foi possível remover a permissão. Tente novamente." };
+
+  revalidateProject(projectId);
+  return { status: "success" };
+}
+
+export async function updateProjectLinkAccess(
+  _prev: ActionResult | null,
+  formData: FormData,
+): Promise<ActionResult> {
+  const projectId = formData.get("project_id") as string;
+  const ctx = await authorizeProject(projectId, ["total"]);
+  if (!ctx) return NOT_AUTHORIZED;
+
+  const parsed = updateLinkAccessSchema.safeParse({
+    scope: formData.get("scope") as string,
+    permission: formData.get("permission") as string,
+  });
+  if (!parsed.success) {
+    return { status: "validation_error", errors: parsed.error.flatten().fieldErrors as Record<string, string[]> };
+  }
+
+  const { error } = await ctx.db
+    .from("projects")
+    .update({
+      link_access_scope: parsed.data.scope,
+      link_access_permission: parsed.data.permission,
+    })
+    .eq("id", projectId);
+
+  if (error) return { status: "error", message: "Não foi possível atualizar o acesso por link. Tente novamente." };
 
   revalidateProject(projectId);
   return { status: "success" };

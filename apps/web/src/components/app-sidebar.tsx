@@ -68,7 +68,7 @@ const data = {
       roles: ["owner", "administrador", "consultor"],
       items: [
         {
-          title: "Projetos",
+          title: "Editor de publicação",
           url: "/admin/ferramentas/projetos",
         },
       ],

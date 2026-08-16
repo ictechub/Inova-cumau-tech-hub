@@ -8,8 +8,13 @@ import {
   IconAlignLeft,
   IconAlignRight,
   IconBold,
+  IconCheck,
   IconChevronDown,
-  IconDeviceFloppy,
+  IconCloudCheck,
+  IconCloudOff,
+  IconCloudUpload,
+  IconCopy,
+  IconWorld,
   IconEye,
   IconEyeOff,
   IconH1,
@@ -29,14 +34,25 @@ import {
   IconUnderline,
   IconUserPlus,
   IconVideo,
-  IconX,
 } from "@tabler/icons-react";
 
 import { MultiSelectCombobox, type MultiSelectOption } from "@/components/registration-wizard/multi-select-combobox";
-import { Badge } from "@/components/ui/badge";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogMedia,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Dialog,
   DialogClose,
@@ -51,10 +67,17 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
-import { InputGroup, InputGroupAddon, InputGroupText } from "@/components/ui/input-group";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+  InputGroupText,
+} from "@/components/ui/input-group";
 import { Label } from "@/components/ui/label";
 import {
   Select,
@@ -63,16 +86,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { toast } from "@/components/ui/toast";
 import type { ProjectAccessLevel } from "@/lib/project-access";
+import { PROJECT_SECTIONS } from "@/lib/project-sections";
 import { PROJECT_TAGS } from "@/lib/project-tags";
 import { slugify } from "@/lib/slug";
 import {
@@ -92,6 +108,7 @@ import {
   revokeProjectPermission,
   unpublishProject,
   updateProject,
+  updateProjectLinkAccess,
   uploadProjectMedia,
   type ActionResult,
 } from "./actions";
@@ -103,8 +120,11 @@ export type ProjectData = {
   content: unknown;
   cover_image_url: string | null;
   tags: string[];
+  section: string;
   status: string;
   published_at: string | null;
+  link_access_scope: string;
+  link_access_permission: string;
 };
 
 export type ProjectPermission = {
@@ -112,24 +132,45 @@ export type ProjectPermission = {
   user_id: string;
   permission: "ver" | "editar" | "compartilhar";
   nome: string;
+  email: string;
+  avatar_url: string | null;
 };
 
 export type ShareableUser = {
   user_id: string;
   nome: string;
+  email: string;
+  avatar_url: string | null;
+};
+
+export type ProjectOwner = {
+  user_id: string;
+  nome: string;
+  email: string;
+  avatar_url: string | null;
 };
 
 const TAG_OPTIONS: MultiSelectOption[] = PROJECT_TAGS.map((tag) => ({ value: tag, label: tag }));
 
-const PERMISSION_OPTIONS = [
-  { value: "ver", label: "Ver" },
-  { value: "editar", label: "Editar" },
-  { value: "compartilhar", label: "Compartilhar" },
+const SHARE_PERMISSION_OPTIONS = [
+  { value: "ver", label: "Pode visualizar", description: "Pode ver o conteúdo, sem fazer alterações." },
+  { value: "editar", label: "Pode editar", description: "Pode alterar o conteúdo do projeto." },
+  { value: "compartilhar", label: "Acesso completo", description: "Pode editar e gerenciar quem tem acesso." },
 ] as const;
 
-const PERMISSION_ITEMS = Object.fromEntries(PERMISSION_OPTIONS.map((o) => [o.value, o.label]));
+const SHARE_PERMISSION_LABELS: Record<string, string> = Object.fromEntries(
+  SHARE_PERMISSION_OPTIONS.map((o) => [o.value, o.label]),
+);
 
-const PERMISSION_LABELS: Record<string, string> = PERMISSION_ITEMS;
+const LINK_ACCESS_SCOPE_OPTIONS = [
+  { value: "restrito", label: "Somente pessoas convidadas", description: "Apenas quem foi convidado pode acessar." },
+  { value: "equipe", label: "Todos no time", description: "Qualquer pessoa da equipe com acesso ao admin pode abrir o link." },
+] as const;
+
+const LINK_ACCESS_PERMISSION_OPTIONS = [
+  { value: "ver", label: "Pode visualizar", description: "Pode ver o conteúdo, sem fazer alterações." },
+  { value: "editar", label: "Pode editar", description: "Pode alterar o conteúdo do projeto." },
+] as const;
 
 function ToolbarButton({
   onClick,
@@ -817,165 +858,352 @@ function DeleteProjectDialog({ projectId, title }: { projectId: string; title: s
   }, [state]);
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger render={<Button type="button" variant="destructive" />}>
+    <AlertDialog open={open} onOpenChange={setOpen}>
+      <AlertDialogTrigger
+        render={<Button type="button" variant="destructive" size="icon" aria-label="Excluir" title="Excluir" />}
+      >
         <IconTrash />
-        Excluir
-      </DialogTrigger>
-      <DialogContent>
+      </AlertDialogTrigger>
+      <AlertDialogContent size="sm">
         <form action={formAction} className="flex flex-col gap-4">
-          <DialogHeader>
-            <DialogTitle className="font-sans">Excluir projeto</DialogTitle>
-            <DialogDescription>
+          <AlertDialogHeader>
+            <AlertDialogMedia className="bg-destructive/10 text-destructive dark:bg-destructive/20 dark:text-destructive">
+              <IconTrash />
+            </AlertDialogMedia>
+            <AlertDialogTitle className="font-sans">Excluir projeto</AlertDialogTitle>
+            <AlertDialogDescription>
               Tem certeza que deseja excluir o projeto &quot;{title}&quot;? Essa ação não pode
               ser desfeita.
-            </DialogDescription>
-          </DialogHeader>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
           <input type="hidden" name="project_id" value={projectId} />
-          <DialogFooter>
-            <DialogClose render={<Button type="button" variant="outline" />}>Cancelar</DialogClose>
-            <Button type="submit" variant="destructive">
+          <AlertDialogFooter>
+            <AlertDialogCancel variant="outline">Cancelar</AlertDialogCancel>
+            <AlertDialogAction type="submit" variant="destructive">
               Excluir
-            </Button>
-          </DialogFooter>
+            </AlertDialogAction>
+          </AlertDialogFooter>
         </form>
-      </DialogContent>
-    </Dialog>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 }
 
-function PermissionsSection({
+function ShareDialog({
   projectId,
+  owner,
   permissions,
   shareableUsers,
+  currentUserId,
+  linkAccessScope,
+  linkAccessPermission,
 }: {
   projectId: string;
+  owner: ProjectOwner | null;
   permissions: ProjectPermission[];
   shareableUsers: ShareableUser[];
+  currentUserId: string;
+  linkAccessScope: string;
+  linkAccessPermission: string;
 }) {
-  const [grantState, grantAction, grantPending] = useActionState<ActionResult | null, FormData>(
-    grantProjectPermission,
-    null,
-  );
-  const [selectedUserId, setSelectedUserId] = useState("");
-  const [selectedPermission, setSelectedPermission] = useState<string>("ver");
+  const [open, setOpen] = useState(false);
+  const [emailInput, setEmailInput] = useState("");
+  const [sharing, setSharing] = useState(false);
+  const [pendingUserId, setPendingUserId] = useState<string | null>(null);
+  const [scope, setScope] = useState(linkAccessScope);
+  const [permission, setPermission] = useState(linkAccessPermission);
+  const [linkPending, setLinkPending] = useState(false);
+  const [shareUrl, setShareUrl] = useState("");
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
-    if (!grantState) return;
-    if (grantState.status === "success") {
-      toast.add({ type: "success", description: "Permissão concedida." });
-      setSelectedUserId("");
-    } else if (grantState.status === "error") {
-      toast.add({ type: "error", description: grantState.message });
+    setShareUrl(`${window.location.origin}/admin/ferramentas/projetos/${projectId}`);
+  }, [projectId]);
+
+  async function handleShare() {
+    const emails = emailInput
+      .split(",")
+      .map((email) => email.trim().toLowerCase())
+      .filter(Boolean);
+    if (emails.length === 0) return;
+
+    const matched = shareableUsers.filter((user) => emails.includes(user.email.toLowerCase()));
+    if (matched.length === 0) {
+      toast.add({ type: "error", description: "Nenhum usuário encontrado para os e-mails informados." });
+      return;
     }
-  }, [grantState]);
+
+    setSharing(true);
+    try {
+      for (const user of matched) {
+        const formData = new FormData();
+        formData.set("project_id", projectId);
+        formData.set("user_id", user.user_id);
+        formData.set("permission", "ver");
+        const result = await grantProjectPermission(null, formData);
+        if (result.status === "error") {
+          toast.add({ type: "error", description: result.message });
+        }
+      }
+      toast.add({ type: "success", description: "Convite enviado." });
+      setEmailInput("");
+    } finally {
+      setSharing(false);
+    }
+  }
+
+  async function handlePermissionChange(userId: string, permission: string) {
+    setPendingUserId(userId);
+    try {
+      const formData = new FormData();
+      formData.set("project_id", projectId);
+      formData.set("user_id", userId);
+      formData.set("permission", permission);
+      const result = await grantProjectPermission(null, formData);
+      if (result.status === "error") {
+        toast.add({ type: "error", description: result.message });
+      }
+    } finally {
+      setPendingUserId(null);
+    }
+  }
+
+  async function handleRevoke(permissionId: string, userId: string) {
+    setPendingUserId(userId);
+    try {
+      const formData = new FormData();
+      formData.set("project_id", projectId);
+      formData.set("permission_id", permissionId);
+      const result = await revokeProjectPermission(null, formData);
+      if (result.status === "error") {
+        toast.add({ type: "error", description: result.message });
+      } else {
+        toast.add({ type: "success", description: "Acesso removido." });
+      }
+    } finally {
+      setPendingUserId(null);
+    }
+  }
+
+  async function handleLinkAccessChange(field: "scope" | "permission", value: string) {
+    const nextScope = field === "scope" ? value : scope;
+    const nextPermission = field === "permission" ? value : permission;
+    setScope(nextScope);
+    setPermission(nextPermission);
+    setLinkPending(true);
+    try {
+      const formData = new FormData();
+      formData.set("project_id", projectId);
+      formData.set("scope", nextScope);
+      formData.set("permission", nextPermission);
+      const result = await updateProjectLinkAccess(null, formData);
+      if (result.status === "error") {
+        toast.add({ type: "error", description: result.message });
+      }
+    } finally {
+      setLinkPending(false);
+    }
+  }
+
+  function handleCopyLink() {
+    if (!shareUrl) return;
+    navigator.clipboard.writeText(shareUrl);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  }
 
   return (
-    <Card id="permissoes">
-      <CardHeader>
-        <CardTitle className="font-sans">Permissões de acesso</CardTitle>
-      </CardHeader>
-      <CardContent className="flex flex-col gap-4">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Usuário</TableHead>
-              <TableHead className="w-40">Nível</TableHead>
-              <TableHead className="w-16 text-right">Ações</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {permissions.length === 0 ? (
-              <TableRow>
-                <TableCell colSpan={3} className="py-4 text-center text-sm text-muted-foreground">
-                  Nenhuma permissão concedida.
-                </TableCell>
-              </TableRow>
-            ) : (
-              permissions.map((permission) => (
-                <TableRow key={permission.id}>
-                  <TableCell>{permission.nome}</TableCell>
-                  <TableCell>
-                    <Badge variant="secondary">{PERMISSION_LABELS[permission.permission] ?? permission.permission}</Badge>
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <RevokePermissionButton projectId={projectId} permissionId={permission.id} />
-                  </TableCell>
-                </TableRow>
-              ))
-            )}
-          </TableBody>
-        </Table>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger render={<Button type="button" variant="outline" />}>
+        <IconUserPlus />
+        Compartilhar
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle className="font-sans">Compartilhar projeto</DialogTitle>
+          <DialogDescription>Convide pessoas para visualizar ou editar este projeto.</DialogDescription>
+        </DialogHeader>
 
-        {shareableUsers.length > 0 && (
-          <form action={grantAction} className="flex flex-col gap-2 border-t border-border pt-4 sm:flex-row sm:items-end">
-            <input type="hidden" name="project_id" value={projectId} />
-            <input type="hidden" name="user_id" value={selectedUserId} />
-            <input type="hidden" name="permission" value={selectedPermission} />
-            <div className="flex flex-1 flex-col gap-2">
-              <Label>Usuário</Label>
-              <Select
-                items={Object.fromEntries(shareableUsers.map((u) => [u.user_id, u.nome]))}
-                value={selectedUserId}
-                onValueChange={(value) => setSelectedUserId(value as string)}
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Selecione um usuário" />
-                </SelectTrigger>
-                <SelectContent>
-                  {shareableUsers.map((u) => (
-                    <SelectItem key={u.user_id} value={u.user_id}>
-                      {u.nome}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="flex flex-col gap-2">
-              <Label>Nível</Label>
-              <Select
-                items={PERMISSION_ITEMS}
-                value={selectedPermission}
-                onValueChange={(value) => setSelectedPermission(value as string)}
-              >
-                <SelectTrigger className="w-full sm:w-36">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {PERMISSION_OPTIONS.map((option) => (
-                    <SelectItem key={option.value} value={option.value}>
-                      {option.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <Button type="submit" disabled={!selectedUserId || grantPending}>
-              <IconUserPlus />
-              Conceder
+        <div className="flex flex-col gap-4">
+          <div className="flex items-center gap-2">
+            <Input
+              id="share-emails"
+              value={emailInput}
+              onChange={(event) => setEmailInput(event.target.value)}
+              placeholder="Email ou time, separados por vírgulas"
+              aria-label="Email ou time, separados por vírgulas"
+              className="flex-1"
+            />
+            <Button type="button" onClick={handleShare} disabled={!emailInput.trim() || sharing}>
+              Compartilhar
             </Button>
-          </form>
-        )}
-      </CardContent>
-    </Card>
-  );
-}
+          </div>
 
-function RevokePermissionButton({ projectId, permissionId }: { projectId: string; permissionId: string }) {
-  const [state, formAction] = useActionState<ActionResult | null, FormData>(revokeProjectPermission, null);
+          <div className="flex max-h-72 flex-col gap-1 overflow-y-auto border-t border-border pt-4">
+            {owner && (
+              <div className="flex items-center gap-3 py-2">
+                <Avatar size="sm">
+                  {owner.avatar_url && <AvatarImage src={owner.avatar_url} alt="" />}
+                  <AvatarFallback>{owner.nome.charAt(0).toUpperCase()}</AvatarFallback>
+                </Avatar>
+                <div className="flex min-w-0 flex-1 flex-col">
+                  <span className="truncate text-sm font-medium text-foreground">
+                    {owner.nome}
+                    {owner.user_id === currentUserId && " (Você)"}
+                  </span>
+                  <span className="truncate text-xs text-muted-foreground">{owner.email}</span>
+                </div>
+                <span className="text-sm text-muted-foreground">Proprietário</span>
+              </div>
+            )}
 
-  useEffect(() => {
-    if (state?.status === "error") toast.add({ type: "error", description: state.message });
-  }, [state]);
+            {permissions.map((permission) => (
+              <div key={permission.id} className="flex items-center gap-3 py-2">
+                <Avatar size="sm">
+                  {permission.avatar_url && <AvatarImage src={permission.avatar_url} alt="" />}
+                  <AvatarFallback>{permission.nome.charAt(0).toUpperCase()}</AvatarFallback>
+                </Avatar>
+                <div className="flex min-w-0 flex-1 flex-col">
+                  <span className="truncate text-sm font-medium text-foreground">
+                    {permission.nome}
+                    {permission.user_id === currentUserId && " (Você)"}
+                  </span>
+                  <span className="truncate text-xs text-muted-foreground">{permission.email}</span>
+                </div>
+                <DropdownMenu>
+                  <DropdownMenuTrigger
+                    render={
+                      <button
+                        type="button"
+                        className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-sm text-muted-foreground hover:bg-accent hover:text-accent-foreground disabled:pointer-events-none disabled:opacity-50"
+                        disabled={pendingUserId === permission.user_id}
+                      >
+                        {SHARE_PERMISSION_LABELS[permission.permission] ?? permission.permission}
+                        <IconChevronDown className="size-3.5" />
+                      </button>
+                    }
+                  />
+                  <DropdownMenuContent align="end" className="w-64">
+                    {SHARE_PERMISSION_OPTIONS.map((option) => (
+                      <DropdownMenuItem
+                        key={option.value}
+                        className="flex flex-col items-start gap-0.5 whitespace-normal"
+                        onClick={() => handlePermissionChange(permission.user_id, option.value)}
+                      >
+                        <span className="flex w-full items-center justify-between gap-2 text-sm font-medium text-foreground">
+                          {option.label}
+                          {permission.permission === option.value && <IconCheck className="size-4 shrink-0" />}
+                        </span>
+                        <span className="text-xs text-muted-foreground">{option.description}</span>
+                      </DropdownMenuItem>
+                    ))}
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem
+                      variant="destructive"
+                      onClick={() => handleRevoke(permission.id, permission.user_id)}
+                    >
+                      Remover
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+            ))}
+          </div>
 
-  return (
-    <form action={formAction}>
-      <input type="hidden" name="project_id" value={projectId} />
-      <input type="hidden" name="permission_id" value={permissionId} />
-      <Button type="submit" variant="ghost" size="icon-sm" aria-label="Remover permissão">
-        <IconX className="size-4" />
-      </Button>
-    </form>
+          <div className="flex flex-col gap-1 border-t border-border pt-4">
+            <span className="text-xs font-medium text-muted-foreground">Acesso geral</span>
+
+            <div className="flex items-center gap-3 py-2">
+              <div className="flex size-6 shrink-0 items-center justify-center rounded-full bg-muted text-muted-foreground">
+                <IconWorld className="size-3.5" />
+              </div>
+
+              <DropdownMenu>
+                <DropdownMenuTrigger
+                  render={
+                    <button
+                      type="button"
+                      className="-ml-2 inline-flex items-center gap-1 rounded-md px-2 py-1 text-sm font-medium text-foreground hover:bg-accent disabled:pointer-events-none disabled:opacity-50"
+                      disabled={linkPending}
+                    >
+                      {LINK_ACCESS_SCOPE_OPTIONS.find((option) => option.value === scope)?.label ?? scope}
+                      <IconChevronDown className="size-3.5" />
+                    </button>
+                  }
+                />
+                <DropdownMenuContent align="start" className="w-72">
+                  {LINK_ACCESS_SCOPE_OPTIONS.map((option) => (
+                    <DropdownMenuItem
+                      key={option.value}
+                      className="flex flex-col items-start gap-0.5 whitespace-normal"
+                      onClick={() => handleLinkAccessChange("scope", option.value)}
+                    >
+                      <span className="flex w-full items-center justify-between gap-2 text-sm font-medium text-foreground">
+                        {option.label}
+                        {scope === option.value && <IconCheck className="size-4 shrink-0" />}
+                      </span>
+                      <span className="text-xs text-muted-foreground">{option.description}</span>
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+
+              <div className="flex-1" />
+
+              <DropdownMenu>
+                <DropdownMenuTrigger
+                  render={
+                    <button
+                      type="button"
+                      className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-sm text-muted-foreground hover:bg-accent hover:text-accent-foreground disabled:pointer-events-none disabled:opacity-50"
+                      disabled={linkPending || scope === "restrito"}
+                    >
+                      {LINK_ACCESS_PERMISSION_OPTIONS.find((option) => option.value === permission)?.label ?? permission}
+                      <IconChevronDown className="size-3.5" />
+                    </button>
+                  }
+                />
+                <DropdownMenuContent align="end" className="w-64">
+                  {LINK_ACCESS_PERMISSION_OPTIONS.map((option) => (
+                    <DropdownMenuItem
+                      key={option.value}
+                      className="flex flex-col items-start gap-0.5 whitespace-normal"
+                      onClick={() => handleLinkAccessChange("permission", option.value)}
+                    >
+                      <span className="flex w-full items-center justify-between gap-2 text-sm font-medium text-foreground">
+                        {option.label}
+                        {permission === option.value && <IconCheck className="size-4 shrink-0" />}
+                      </span>
+                      <span className="text-xs text-muted-foreground">{option.description}</span>
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+
+            <InputGroup>
+              <InputGroupInput readOnly value={shareUrl} onFocus={(event) => event.currentTarget.select()} />
+              <InputGroupAddon align="inline-end">
+                <InputGroupButton size="icon-xs" onClick={handleCopyLink} aria-label="Copiar link">
+                  {copied ? <IconCheck className="size-3.5" /> : <IconCopy className="size-3.5" />}
+                </InputGroupButton>
+              </InputGroupAddon>
+            </InputGroup>
+          </div>
+
+          <button
+            type="button"
+            className="text-left text-xs text-muted-foreground underline underline-offset-2 hover:text-foreground"
+          >
+            Saiba mais sobre compartilhamento
+          </button>
+        </div>
+
+        <DialogFooter>
+          <DialogClose render={<Button type="button" variant="outline" />}>Concluído</DialogClose>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -984,11 +1212,15 @@ export function ProjectEditor({
   accessLevel,
   permissions,
   shareableUsers,
+  owner,
+  currentUserId,
 }: {
   project: ProjectData;
   accessLevel: ProjectAccessLevel;
   permissions: ProjectPermission[];
   shareableUsers: ShareableUser[];
+  owner: ProjectOwner | null;
+  currentUserId: string;
 }) {
   const canEdit = accessLevel === "total" || accessLevel === "editar";
   const canManage = accessLevel === "total";
@@ -999,14 +1231,54 @@ export function ProjectEditor({
   const [slugEdited, setSlugEdited] = useState(true);
   const [coverUrl, setCoverUrl] = useState(project.cover_image_url);
   const [tags, setTags] = useState<string[]>(project.tags);
+  const [section, setSection] = useState(project.section);
   const [coverUploading, setCoverUploading] = useState(false);
 
-  const contentInputRef = useRef<HTMLInputElement>(null);
   const coverInputRef = useRef<HTMLInputElement>(null);
 
-  const [saveState, saveAction, savePending] = useActionState<ActionResult | null, FormData>(updateProject, null);
+  const [saveResult, setSaveResult] = useState<ActionResult | null>(null);
+  const [saveStatus, setSaveStatus] = useState<"saving" | "saved" | "error">("saved");
   const [characterCount, setCharacterCount] = useState(0);
   const [, forceToolbarUpdate] = useState(0);
+
+  const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const skipNextAutoSaveRef = useRef(true);
+
+  async function performSave() {
+    if (!editor) return;
+
+    const formData = new FormData();
+    formData.set("project_id", project.id);
+    formData.set("title", title);
+    formData.set("slug", slug);
+    formData.set("content", JSON.stringify(editor.getJSON()));
+    formData.set("cover_image_url", coverUrl ?? "");
+    formData.set("section", section);
+    for (const tag of tags) formData.append("tags", tag);
+
+    const result = await updateProject(null, formData);
+    setSaveResult(result);
+
+    if (result.status === "success") {
+      setSaveStatus("saved");
+      return;
+    }
+
+    setSaveStatus("error");
+    if (result.status === "error") {
+      toast.add({ type: "error", description: result.message });
+    }
+  }
+
+  function scheduleSave() {
+    if (!canEdit) return;
+
+    setSaveStatus("saving");
+    if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
+    saveTimerRef.current = setTimeout(() => {
+      void performSave();
+    }, 1200);
+  }
 
   const editor = useEditor({
     extensions: tiptapExtensions,
@@ -1015,6 +1287,7 @@ export function ProjectEditor({
     immediatelyRender: false,
     onUpdate: ({ editor: currentEditor }) => {
       setCharacterCount(currentEditor.storage.characterCount.characters());
+      scheduleSave();
     },
     onCreate: ({ editor: currentEditor }) => {
       setCharacterCount(currentEditor.storage.characterCount.characters());
@@ -1032,13 +1305,19 @@ export function ProjectEditor({
   }, [editor, canEdit]);
 
   useEffect(() => {
-    if (!saveState) return;
-    if (saveState.status === "success") {
-      toast.add({ type: "success", description: "Projeto salvo." });
-    } else if (saveState.status === "error") {
-      toast.add({ type: "error", description: saveState.message });
+    if (skipNextAutoSaveRef.current) {
+      skipNextAutoSaveRef.current = false;
+      return;
     }
-  }, [saveState]);
+    scheduleSave();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [title, slug, tags, coverUrl, section]);
+
+  useEffect(() => {
+    return () => {
+      if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
+    };
+  }, []);
 
   async function handleCoverChange(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
@@ -1066,11 +1345,40 @@ export function ProjectEditor({
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex flex-col gap-1">
           <h1 className="font-sans text-2xl font-medium text-foreground">{title || "Novo projeto"}</h1>
-          <Badge variant={status === "publicado" ? "default" : "secondary"} className="w-fit">
-            {status === "publicado" ? "Publicado" : "Rascunho"}
-          </Badge>
+          <div
+            className={cn(
+              "flex w-fit items-center gap-1.5 text-xs font-medium",
+              saveStatus === "error" ? "text-destructive" : "text-muted-foreground",
+            )}
+          >
+            {saveStatus === "saving" ? (
+              <IconCloudUpload className="size-3.5" />
+            ) : saveStatus === "error" ? (
+              <IconCloudOff className="size-3.5" />
+            ) : (
+              <IconCloudCheck className="size-3.5" />
+            )}
+            {saveStatus === "saving"
+              ? "Salvando alterações..."
+              : saveStatus === "error"
+                ? "Erro ao salvar"
+                : status === "publicado"
+                  ? "Publicado"
+                  : "Rascunho salvo"}
+          </div>
         </div>
         <div className="flex items-center gap-2">
+          {canManage && (
+            <ShareDialog
+              projectId={project.id}
+              owner={owner}
+              permissions={permissions}
+              shareableUsers={shareableUsers}
+              currentUserId={currentUserId}
+              linkAccessScope={project.link_access_scope}
+              linkAccessPermission={project.link_access_permission}
+            />
+          )}
           <PublishControls
             projectId={project.id}
             status={status}
@@ -1081,27 +1389,7 @@ export function ProjectEditor({
         </div>
       </div>
 
-      <form
-        action={saveAction}
-        onSubmit={() => {
-          if (contentInputRef.current && editor) {
-            contentInputRef.current.value = JSON.stringify(editor.getJSON());
-          }
-        }}
-        className="flex min-w-0 flex-col gap-4"
-      >
-        <input type="hidden" name="project_id" value={project.id} />
-        <input
-          ref={contentInputRef}
-          type="hidden"
-          name="content"
-          defaultValue={JSON.stringify(project.content ?? { type: "doc", content: [] })}
-        />
-        <input type="hidden" name="cover_image_url" value={coverUrl ?? ""} />
-        {tags.map((tag) => (
-          <input key={tag} type="hidden" name="tags" value={tag} />
-        ))}
-
+      <div className="flex min-w-0 flex-col gap-4">
         <Card>
           <CardContent className="flex min-w-0 flex-col gap-4 pt-4">
             <div className="grid gap-4 sm:grid-cols-2">
@@ -1118,8 +1406,8 @@ export function ProjectEditor({
                     if (!slugEdited) setSlug(slugify(value));
                   }}
                 />
-                {saveState?.status === "validation_error" && saveState.errors.title && (
-                  <p className="text-xs text-destructive">{saveState.errors.title[0]}</p>
+                {saveResult?.status === "validation_error" && saveResult.errors.title && (
+                  <p className="text-xs text-destructive">{saveResult.errors.title[0]}</p>
                 )}
               </div>
               <div className="flex flex-col gap-2">
@@ -1134,10 +1422,35 @@ export function ProjectEditor({
                     setSlug(slugify(event.target.value));
                   }}
                 />
-                {saveState?.status === "validation_error" && saveState.errors.slug && (
-                  <p className="text-xs text-destructive">{saveState.errors.slug[0]}</p>
+                {saveResult?.status === "validation_error" && saveResult.errors.slug && (
+                  <p className="text-xs text-destructive">{saveResult.errors.slug[0]}</p>
                 )}
               </div>
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="section">Seção de publicação</Label>
+              <Select
+                value={section}
+                onValueChange={(value) => {
+                  if (value) setSection(value);
+                }}
+                disabled={!canEdit}
+              >
+                <SelectTrigger id="section">
+                  <SelectValue placeholder="Selecione a seção" />
+                </SelectTrigger>
+                <SelectContent>
+                  {PROJECT_SECTIONS.map((option) => (
+                    <SelectItem key={option.value} value={option.value}>
+                      {option.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              {saveResult?.status === "validation_error" && saveResult.errors.section && (
+                <p className="text-xs text-destructive">{saveResult.errors.section[0]}</p>
+              )}
             </div>
 
             <div className="flex flex-col gap-2">
@@ -1214,20 +1527,7 @@ export function ProjectEditor({
             </div>
           </CardContent>
         </Card>
-
-        {canEdit && (
-          <div className="flex justify-end">
-            <Button type="submit" disabled={savePending}>
-              <IconDeviceFloppy />
-              Salvar
-            </Button>
-          </div>
-        )}
-      </form>
-
-      {canManage && (
-        <PermissionsSection projectId={project.id} permissions={permissions} shareableUsers={shareableUsers} />
-      )}
+      </div>
     </div>
   );
 }

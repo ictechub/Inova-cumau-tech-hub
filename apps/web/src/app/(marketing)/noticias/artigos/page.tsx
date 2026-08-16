@@ -32,6 +32,7 @@ async function getArtigos(): Promise<ArtigoResumo[]> {
     .from("projects")
     .select("slug, title, cover_image_url, tags, published_at")
     .eq("status", "publicado")
+    .eq("section", "artigos")
     .order("published_at", { ascending: false });
 
   return data ?? [];

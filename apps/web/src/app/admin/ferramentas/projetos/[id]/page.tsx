@@ -20,7 +20,7 @@ import { createAdminClient } from "@inova-cumau/supabase/admin";
 import { createClient } from "@inova-cumau/supabase/server";
 import { getPlatformRole, isPlatformAdmin, requirePlatformRole } from "@/lib/user-role";
 import { getProjectAccessLevel } from "@/lib/project-access";
-import { ProjectEditor, type ProjectData, type ProjectPermission, type ShareableUser } from "./project-editor";
+import { ProjectEditor, type ProjectData, type ProjectOwner, type ProjectPermission, type ShareableUser } from "./project-editor";
 
 export const metadata: Metadata = {
   title: "Editor de projeto | Ferramentas | Admin | Inova Cumaú",
@@ -61,7 +61,9 @@ export default async function ProjetoPage({
 
   const { data: project } = await db
     .from("projects")
-    .select("id, title, slug, content, cover_image_url, tags, status, owner_id, published_at, updated_at")
+    .select(
+      "id, title, slug, content, cover_image_url, tags, section, status, owner_id, published_at, updated_at, link_access_scope, link_access_permission",
+    )
     .eq("id", id)
     .maybeSingle();
 
@@ -72,27 +74,46 @@ export default async function ProjetoPage({
 
   let permissions: ProjectPermission[] = [];
   let shareableUsers: ShareableUser[] = [];
+  let owner: ProjectOwner | null = null;
 
   if (accessLevel === "total") {
     const [{ data: permissionRows }, { data: registrations }] = await Promise.all([
       db.from("project_permissions").select("id, user_id, permission").eq("project_id", id),
-      db.from("startup_registrations").select("user_id, responsavel_nome"),
+      db.from("startup_registrations").select("user_id, responsavel_nome, responsavel_email, avatar_url"),
     ]);
 
-    const nomeByUserId = new Map((registrations ?? []).map((r) => [r.user_id, r.responsavel_nome]));
+    const registrationByUserId = new Map((registrations ?? []).map((r) => [r.user_id, r]));
 
-    permissions = (permissionRows ?? []).map((row) => ({
-      id: row.id,
-      user_id: row.user_id,
-      permission: row.permission as "ver" | "editar" | "compartilhar",
-      nome: nomeByUserId.get(row.user_id) ?? "Usuário desconhecido",
-    }));
+    permissions = (permissionRows ?? []).map((row) => {
+      const registration = registrationByUserId.get(row.user_id);
+      return {
+        id: row.id,
+        user_id: row.user_id,
+        permission: row.permission as "ver" | "editar" | "compartilhar",
+        nome: registration?.responsavel_nome ?? "Usuário desconhecido",
+        email: registration?.responsavel_email ?? "",
+        avatar_url: registration?.avatar_url ?? null,
+      };
+    });
 
     const permittedUserIds = new Set(permissions.map((p) => p.user_id));
     shareableUsers = (registrations ?? [])
       .filter((r) => r.user_id !== project.owner_id && !permittedUserIds.has(r.user_id))
-      .map((r) => ({ user_id: r.user_id, nome: r.responsavel_nome }))
+      .map((r) => ({
+        user_id: r.user_id,
+        nome: r.responsavel_nome,
+        email: r.responsavel_email ?? "",
+        avatar_url: r.avatar_url ?? null,
+      }))
       .sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"));
+
+    const ownerRegistration = registrationByUserId.get(project.owner_id);
+    owner = {
+      user_id: project.owner_id,
+      nome: ownerRegistration?.responsavel_nome ?? "Usuário desconhecido",
+      email: ownerRegistration?.responsavel_email ?? "",
+      avatar_url: ownerRegistration?.avatar_url ?? null,
+    };
   }
 
   const user = {
@@ -109,8 +130,11 @@ export default async function ProjetoPage({
     content: project.content,
     cover_image_url: project.cover_image_url,
     tags: project.tags,
+    section: project.section,
     status: project.status,
     published_at: project.published_at,
+    link_access_scope: project.link_access_scope,
+    link_access_permission: project.link_access_permission,
   };
 
   return (
@@ -131,7 +155,7 @@ export default async function ProjetoPage({
                 </BreadcrumbItem>
                 <BreadcrumbSeparator className="hidden md:block" />
                 <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink href="/admin/ferramentas/projetos">Projetos</BreadcrumbLink>
+                  <BreadcrumbLink href="/admin/ferramentas/projetos">Editor de publicação</BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator className="hidden md:block" />
                 <BreadcrumbItem>
@@ -147,6 +171,8 @@ export default async function ProjetoPage({
             accessLevel={accessLevel}
             permissions={permissions}
             shareableUsers={shareableUsers}
+            owner={owner}
+            currentUserId={authUser.id}
           />
         </div>
       </SidebarInset>

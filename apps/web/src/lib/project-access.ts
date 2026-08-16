@@ -5,7 +5,10 @@ import { isPlatformAdmin, type PlatformRole } from "@/lib/user-role";
 export type ProjectAccessLevel = "total" | "editar" | "ver" | "nenhum";
 type AdminClient = NonNullable<ReturnType<typeof createAdminClient>>;
 
-type Project = Pick<Database["public"]["Tables"]["projects"]["Row"], "id" | "owner_id">;
+type Project = Pick<
+  Database["public"]["Tables"]["projects"]["Row"],
+  "id" | "owner_id" | "link_access_scope" | "link_access_permission"
+>;
 
 // Cascata "chefe direto + pares": ao criar um projeto, o gestor direto do
 // dono e os pares do dono (mesmo reports_to) ganham acesso de editar,
@@ -90,6 +93,10 @@ export async function getProjectAccessLevel(
     return "editar";
   }
   if (permission?.permission === "ver") return "ver";
+
+  if (project.link_access_scope === "equipe") {
+    return project.link_access_permission === "editar" ? "editar" : "ver";
+  }
 
   return "nenhum";
 }

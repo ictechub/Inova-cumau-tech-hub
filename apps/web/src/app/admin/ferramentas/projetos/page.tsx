@@ -28,7 +28,7 @@ import { getCascadeOwnerIds } from "@/lib/project-access";
 import { ProjetosTab, type AdminProject } from "./projetos-tab";
 
 export const metadata: Metadata = {
-  title: "Projetos | Ferramentas | Admin | Inova Cumaú",
+  title: "Editor de publicação | Ferramentas | Admin | Inova Cumaú",
 };
 
 // Admin/owner veem todos os projetos. Consultor/associado com acesso a
@@ -64,13 +64,29 @@ async function getProjetos(userId: string, role: PlatformRole): Promise<AdminPro
   const { data: projects } = await query;
   if (!projects || projects.length === 0) return [];
 
-  const ownerIds = [...new Set(projects.map((project) => project.owner_id))];
-  const { data: owners } = await db
-    .from("startup_registrations")
-    .select("user_id, responsavel_nome")
-    .in("user_id", ownerIds);
+  const projectIds = projects.map((project) => project.id);
+  const { data: permissionRows } = await db
+    .from("project_permissions")
+    .select("project_id, user_id")
+    .in("project_id", projectIds);
 
-  const nomeByOwnerId = new Map((owners ?? []).map((owner) => [owner.user_id, owner.responsavel_nome]));
+  const sharedUserIdsByProject = new Map<string, string[]>();
+  for (const row of permissionRows ?? []) {
+    const lista = sharedUserIdsByProject.get(row.project_id) ?? [];
+    lista.push(row.user_id);
+    sharedUserIdsByProject.set(row.project_id, lista);
+  }
+
+  const ownerIds = projects.map((project) => project.owner_id);
+  const sharedIds = (permissionRows ?? []).map((row) => row.user_id);
+  const allUserIds = [...new Set([...ownerIds, ...sharedIds])];
+
+  const { data: usuarios } = await db
+    .from("startup_registrations")
+    .select("user_id, responsavel_nome, avatar_url")
+    .in("user_id", allUserIds);
+
+  const usuarioById = new Map((usuarios ?? []).map((usuario) => [usuario.user_id, usuario]));
 
   return projects.map((project) => ({
     id: project.id,
@@ -79,7 +95,13 @@ async function getProjetos(userId: string, role: PlatformRole): Promise<AdminPro
     status: project.status,
     updated_at: project.updated_at,
     owner_id: project.owner_id,
-    owner_nome: nomeByOwnerId.get(project.owner_id) ?? null,
+    owner_nome: usuarioById.get(project.owner_id)?.responsavel_nome ?? null,
+    owner_avatar_url: usuarioById.get(project.owner_id)?.avatar_url ?? null,
+    compartilhado_com: (sharedUserIdsByProject.get(project.id) ?? []).map((userId) => ({
+      user_id: userId,
+      nome: usuarioById.get(userId)?.responsavel_nome ?? null,
+      avatar_url: usuarioById.get(userId)?.avatar_url ?? null,
+    })),
   }));
 }
 
@@ -142,7 +164,7 @@ export default async function ProjetosPage() {
                 </BreadcrumbItem>
                 <BreadcrumbSeparator className="hidden md:block" />
                 <BreadcrumbItem>
-                  <BreadcrumbPage>Projetos</BreadcrumbPage>
+                  <BreadcrumbPage>Editor de publicação</BreadcrumbPage>
                 </BreadcrumbItem>
               </BreadcrumbList>
             </Breadcrumb>
@@ -150,7 +172,7 @@ export default async function ProjetosPage() {
         </header>
         <div className="flex flex-1 flex-col gap-6 p-4 pt-0 md:p-6 md:pt-0">
           <div className="flex flex-col gap-1">
-            <h1 className="font-sans text-2xl font-medium text-foreground">Projetos</h1>
+            <h1 className="font-sans text-2xl font-medium text-foreground">Editor de publicação</h1>
             <p className="text-sm text-muted-foreground">
               Artigos e conteúdos publicados na coluna pública de notícias.
               Crie, edite e gerencie permissões de cada projeto.

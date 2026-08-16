@@ -128,6 +128,17 @@ e as demais páginas institucionais dentro do grupo `(marketing)`, exceto
 serifa (Geist, `--font-sans`), inclusive em headings, nunca `font-serif`
 nessas duas áreas.
 
+Atenção especial: o token `--font-heading` (usado por padrão em componentes
+como `DialogTitle`, `apps/web/src/components/ui/dialog.tsx`) resolve para
+`--font-serif`, ou seja, Lora vaza mesmo sem ninguém escrever `font-serif`
+explicitamente, basta usar um componente que aplica `font-heading` por padrão
+sem sobrescrever. Qualquer `DialogTitle` (ou outro componente com esse
+default) dentro de Área do Associado ou Admin precisa sempre do override
+explícito `className="font-sans"`, sem exceção, mesmo em dialogs novos ou
+aninhados. Antes de dar uma tarefa de UI em Admin/Área do Associado como
+concluída, conferir que nenhum `DialogTitle` (ou heading equivalente) novo
+ficou sem esse override.
+
 ## Supabase
 
 Tabelas principais: `leads_associacao`, `newsletter_subscribers` (RLS

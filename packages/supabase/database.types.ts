@@ -100,8 +100,11 @@ export type Database = {
           cover_image_url: string | null
           created_at: string
           id: string
+          link_access_permission: string
+          link_access_scope: string
           owner_id: string
           published_at: string | null
+          section: string
           slug: string
           status: string
           tags: string[]
@@ -113,8 +116,11 @@ export type Database = {
           cover_image_url?: string | null
           created_at?: string
           id?: string
+          link_access_permission?: string
+          link_access_scope?: string
           owner_id: string
           published_at?: string | null
+          section?: string
           slug: string
           status?: string
           tags?: string[]
@@ -126,8 +132,11 @@ export type Database = {
           cover_image_url?: string | null
           created_at?: string
           id?: string
+          link_access_permission?: string
+          link_access_scope?: string
           owner_id?: string
           published_at?: string | null
+          section?: string
           slug?: string
           status?: string
           tags?: string[]

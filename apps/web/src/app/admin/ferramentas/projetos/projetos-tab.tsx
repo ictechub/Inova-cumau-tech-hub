@@ -13,6 +13,7 @@ import {
   IconTrash,
 } from "@tabler/icons-react";
 
+import { Avatar, AvatarFallback, AvatarGroup, AvatarGroupCount, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -74,6 +75,8 @@ export type AdminProject = {
   updated_at: string;
   owner_id: string;
   owner_nome: string | null;
+  owner_avatar_url: string | null;
+  compartilhado_com: { user_id: string; nome: string | null; avatar_url: string | null }[];
 };
 
 const TODAS = "todas";
@@ -89,6 +92,16 @@ function formatData(iso: string) {
     month: "2-digit",
     year: "numeric",
   });
+}
+
+function getInitials(name: string | null) {
+  if (!name) return "?";
+  return name
+    .trim()
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((parte) => parte[0]?.toUpperCase())
+    .join("");
 }
 
 function NovoProjetoDialog() {
@@ -341,7 +354,8 @@ export function ProjetosTab({ projetos }: { projetos: AdminProject[] }) {
               <TableHead>Projeto</TableHead>
               <TableHead className="w-40">Tags</TableHead>
               <TableHead className="w-32">Status</TableHead>
-              <TableHead className="w-40">Responsável</TableHead>
+              <TableHead className="w-20">Responsável</TableHead>
+              <TableHead className="w-24">Compartilhado</TableHead>
               <TableHead className="w-28">Atualizado em</TableHead>
               <TableHead className="w-16 text-right">Ações</TableHead>
             </TableRow>
@@ -379,8 +393,50 @@ export function ProjetosTab({ projetos }: { projetos: AdminProject[] }) {
                       {STATUS_LABELS[projeto.status] ?? projeto.status}
                     </Badge>
                   </TableCell>
-                  <TableCell className="text-muted-foreground">
-                    {projeto.owner_nome ?? "Não informado"}
+                  <TableCell>
+                    <Avatar>
+                      <AvatarImage
+                        src={projeto.owner_avatar_url ?? ""}
+                        alt={projeto.owner_nome ?? "Responsável"}
+                      />
+                      <AvatarFallback className="text-xs font-medium">
+                        {getInitials(projeto.owner_nome)}
+                      </AvatarFallback>
+                    </Avatar>
+                  </TableCell>
+                  <TableCell>
+                    {projeto.compartilhado_com.length === 0 ? (
+                      <span className="text-xs text-muted-foreground">Não compartilhado</span>
+                    ) : projeto.compartilhado_com.length === 1 ? (
+                      <Avatar>
+                        <AvatarImage
+                          src={projeto.compartilhado_com[0]!.avatar_url ?? ""}
+                          alt={projeto.compartilhado_com[0]!.nome ?? "Usuário"}
+                        />
+                        <AvatarFallback className="text-xs font-medium">
+                          {getInitials(projeto.compartilhado_com[0]!.nome)}
+                        </AvatarFallback>
+                      </Avatar>
+                    ) : (
+                      <AvatarGroup>
+                        {projeto.compartilhado_com.slice(0, 3).map((usuario) => (
+                          <Avatar key={usuario.user_id}>
+                            <AvatarImage
+                              src={usuario.avatar_url ?? ""}
+                              alt={usuario.nome ?? "Usuário"}
+                            />
+                            <AvatarFallback className="text-xs font-medium">
+                              {getInitials(usuario.nome)}
+                            </AvatarFallback>
+                          </Avatar>
+                        ))}
+                        {projeto.compartilhado_com.length > 3 && (
+                          <AvatarGroupCount className="text-xs">
+                            +{projeto.compartilhado_com.length - 3}
+                          </AvatarGroupCount>
+                        )}
+                      </AvatarGroup>
+                    )}
                   </TableCell>
                   <TableCell className="text-muted-foreground">
                     {formatData(projeto.updated_at)}

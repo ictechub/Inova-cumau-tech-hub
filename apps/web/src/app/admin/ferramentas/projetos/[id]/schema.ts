@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { PROJECT_TAGS } from "@/lib/project-tags";
+import { PROJECT_SECTION_VALUES } from "@/lib/project-sections";
 
 const SLUG_REGEX = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
@@ -14,6 +15,7 @@ export const updateProjectSchema = z.object({
   content: z.string().min(1, "Conteúdo inválido."),
   cover_image_url: z.string().trim().nullable(),
   tags: z.array(z.enum(PROJECT_TAGS)),
+  section: z.enum(PROJECT_SECTION_VALUES, { message: "Selecione uma seção." }),
 });
 
 export type UpdateProjectData = z.infer<typeof updateProjectSchema>;
@@ -27,4 +29,9 @@ export const grantPermissionSchema = z.object({
 
 export const revokePermissionSchema = z.object({
   permission_id: z.string().uuid(),
+});
+
+export const updateLinkAccessSchema = z.object({
+  scope: z.enum(["restrito", "equipe"], { message: "Selecione um escopo válido." }),
+  permission: z.enum(["ver", "editar"], { message: "Selecione um nível de permissão." }),
 });

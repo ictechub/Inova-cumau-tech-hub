@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { createClient } from "@inova-cumau/supabase/server";
 import { tiptapExtensions } from "@/lib/tiptap-extensions";
 
-type ArtigoDetalhe = {
+type ComunicadoDetalhe = {
   title: string;
   content: unknown;
   cover_image_url: string | null;
@@ -25,14 +25,14 @@ function formatData(iso: string) {
   });
 }
 
-async function getArtigo(slug: string): Promise<ArtigoDetalhe | null> {
+async function getComunicado(slug: string): Promise<ComunicadoDetalhe | null> {
   const supabase = await createClient();
   const { data } = await supabase
     .from("projects")
     .select("title, content, cover_image_url, tags, published_at")
     .eq("slug", slug)
     .eq("status", "publicado")
-    .eq("section", "artigos")
+    .eq("section", "comunicados")
     .maybeSingle();
 
   return data;
@@ -44,54 +44,54 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const artigo = await getArtigo(slug);
+  const comunicado = await getComunicado(slug);
 
-  if (!artigo) return { title: "Artigo | Inova Cumaú" };
+  if (!comunicado) return { title: "Comunicado | Inova Cumaú" };
 
-  return { title: `${artigo.title} | Inova Cumaú` };
+  return { title: `${comunicado.title} | Inova Cumaú` };
 }
 
-export default async function ArtigoPage({
+export default async function ComunicadoPage({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const artigo = await getArtigo(slug);
+  const comunicado = await getComunicado(slug);
 
-  if (!artigo) notFound();
+  if (!comunicado) notFound();
 
   const html = generateHTML(
-    (artigo.content as Record<string, unknown>) ?? { type: "doc", content: [] },
+    (comunicado.content as Record<string, unknown>) ?? { type: "doc", content: [] },
     tiptapExtensions,
   );
 
   return (
     <article className="mx-auto max-w-2xl px-4 pt-16 pb-20 sm:px-6">
       <Link
-        href="/noticias/artigos"
+        href="/noticias/comunicados"
         className="inline-flex items-center gap-1 text-xs font-bold tracking-widest text-rio-700 uppercase"
       >
         <IconArrowLeft className="size-3.5" />
-        Artigos
+        Comunicados
       </Link>
 
-      <h1 className="mt-3 font-serif text-3xl font-medium sm:text-4xl">{artigo.title}</h1>
+      <h1 className="mt-3 font-serif text-3xl font-medium sm:text-4xl">{comunicado.title}</h1>
 
       <div className="mt-4 flex flex-wrap items-center gap-2">
-        {artigo.tags.map((tag) => (
+        {comunicado.tags.map((tag) => (
           <Badge key={tag} variant="secondary">
             {tag}
           </Badge>
         ))}
-        {artigo.published_at ? (
-          <span className="text-sm text-muted-foreground">{formatData(artigo.published_at)}</span>
+        {comunicado.published_at ? (
+          <span className="text-sm text-muted-foreground">{formatData(comunicado.published_at)}</span>
         ) : null}
       </div>
 
-      {artigo.cover_image_url ? (
+      {comunicado.cover_image_url ? (
         <img
-          src={artigo.cover_image_url}
+          src={comunicado.cover_image_url}
           alt=""
           className="mt-8 aspect-video w-full rounded-xl object-cover"
         />
