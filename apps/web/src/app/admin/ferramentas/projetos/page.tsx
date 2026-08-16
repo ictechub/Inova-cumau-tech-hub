@@ -25,7 +25,7 @@ import {
   type PlatformRole,
 } from "@/lib/user-role";
 import { getCascadeOwnerIds } from "@/lib/project-access";
-import { ProjetosTab, type AdminProject } from "./projetos-tab";
+import { NovoProjetoDialog, ProjetosTab, type AdminProject } from "./projetos-tab";
 
 export const metadata: Metadata = {
   title: "Editor de publicação | Ferramentas | Admin | Inova Cumaú",
@@ -42,7 +42,7 @@ async function getProjetos(userId: string, role: PlatformRole): Promise<AdminPro
 
   let query = db
     .from("projects")
-    .select("id, title, tags, status, updated_at, owner_id")
+    .select("id, codigo_numero, title, tags, status, updated_at, owner_id")
     .order("updated_at", { ascending: false });
 
   if (!isPlatformAdmin(role)) {
@@ -90,6 +90,7 @@ async function getProjetos(userId: string, role: PlatformRole): Promise<AdminPro
 
   return projects.map((project) => ({
     id: project.id,
+    codigo_numero: project.codigo_numero,
     title: project.title,
     tags: project.tags,
     status: project.status,
@@ -171,12 +172,15 @@ export default async function ProjetosPage() {
           </div>
         </header>
         <div className="flex flex-1 flex-col gap-6 p-4 pt-0 md:p-6 md:pt-0">
-          <div className="flex flex-col gap-1">
-            <h1 className="font-sans text-2xl font-medium text-foreground">Editor de publicação</h1>
-            <p className="text-sm text-muted-foreground">
-              Artigos e conteúdos publicados na coluna pública de notícias.
-              Crie, edite e gerencie permissões de cada projeto.
-            </p>
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="flex flex-col gap-1">
+              <h1 className="font-sans text-2xl font-medium text-foreground">Editor de publicação</h1>
+              <p className="text-sm text-muted-foreground">
+                Artigos e conteúdos publicados na coluna pública de notícias.
+                Crie, edite e gerencie permissões de cada projeto.
+              </p>
+            </div>
+            <NovoProjetoDialog />
           </div>
           <ProjetosTab projetos={projetos} currentUserId={authUser.id} />
         </div>

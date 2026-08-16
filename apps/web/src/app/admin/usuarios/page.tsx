@@ -19,6 +19,7 @@ import {
 import { createAdminClient } from "@inova-cumau/supabase/admin";
 import { createClient } from "@inova-cumau/supabase/server";
 import { getPlatformRole, isPlatformAdmin, requirePlatformAdmin } from "@/lib/user-role";
+import { InviteConsultorButton } from "./tabs/invite-consultor-dialog";
 import { UsuariosTabs, type PlatformUser } from "./usuarios-tabs";
 
 export const metadata: Metadata = {
@@ -124,12 +125,15 @@ export default async function UsuariosPage() {
           </div>
         </header>
         <div className="flex flex-1 flex-col gap-6 p-4 pt-0 md:p-6 md:pt-0">
-          <div className="flex flex-col gap-1">
-            <h1 className="font-sans text-2xl font-medium text-foreground">Usuários</h1>
-            <p className="text-sm text-muted-foreground">
-              Todas as contas cadastradas no ecossistema. Promova associados a
-              administrador ou remova o acesso administrativo de uma conta.
-            </p>
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="flex flex-col gap-1">
+              <h1 className="font-sans text-2xl font-medium text-foreground">Usuários</h1>
+              <p className="text-sm text-muted-foreground">
+                Todas as contas cadastradas no ecossistema. Promova associados a
+                administrador ou remova o acesso administrativo de uma conta.
+              </p>
+            </div>
+            <InviteConsultorButton />
           </div>
           {usuarios.length === 0 ? (
             <p className="text-sm text-muted-foreground">

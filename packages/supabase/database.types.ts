@@ -96,6 +96,7 @@ export type Database = {
       }
       projects: {
         Row: {
+          codigo_numero: number
           content: Json
           cover_image_url: string | null
           created_at: string
@@ -113,6 +114,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          codigo_numero?: number
           content?: Json
           cover_image_url?: string | null
           created_at?: string
@@ -130,6 +132,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          codigo_numero?: number
           content?: Json
           cover_image_url?: string | null
           created_at?: string

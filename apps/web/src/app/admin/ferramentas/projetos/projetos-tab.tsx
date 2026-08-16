@@ -61,6 +61,7 @@ import {
 import { toast } from "@/components/ui/toast";
 
 import { MultiSelectCombobox } from "@/components/registration-wizard/multi-select-combobox";
+import { formatProjectCode } from "@/lib/project-code";
 import { PROJECT_TAGS } from "@/lib/project-tags";
 import { createProject, type ActionResult } from "./actions";
 import {
@@ -75,6 +76,7 @@ const TAG_OPTIONS = PROJECT_TAGS.map((tag) => ({ value: tag, label: tag }));
 
 export type AdminProject = {
   id: string;
+  codigo_numero: number;
   title: string;
   tags: string[];
   status: string;
@@ -110,7 +112,7 @@ function getInitials(name: string | null) {
     .join("");
 }
 
-function NovoProjetoDialog() {
+export function NovoProjetoDialog() {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState("");
@@ -374,7 +376,10 @@ export function ProjetosTab({
   const projetosFiltrados = useMemo(() => {
     const termo = busca.trim().toLowerCase();
     return projetos.filter((projeto) => {
-      const combinaBusca = !termo || projeto.title.toLowerCase().includes(termo);
+      const combinaBusca =
+        !termo ||
+        projeto.title.toLowerCase().includes(termo) ||
+        formatProjectCode(projeto.codigo_numero).toLowerCase().includes(termo);
       const combinaTag = filtroTag === TODAS || projeto.tags.includes(filtroTag);
       return combinaBusca && combinaTag;
     });
@@ -382,9 +387,6 @@ export function ProjetosTab({
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="flex justify-end">
-        <NovoProjetoDialog />
-      </div>
       <div className="rounded-lg border border-border">
         <div className="flex flex-col gap-2 border-b border-border p-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="relative sm:w-64">
@@ -392,7 +394,7 @@ export function ProjetosTab({
             <Input
               value={busca}
               onChange={(event) => setBusca(event.target.value)}
-              placeholder="Buscar por título"
+              placeholder="Buscar por título ou ID"
               className="pl-8"
             />
           </div>
@@ -441,6 +443,7 @@ export function ProjetosTab({
           <Table>
           <TableHeader className="bg-muted/50">
             <TableRow>
+              <TableHead className="w-28">ID</TableHead>
               <TableHead>Projeto</TableHead>
               <TableHead className="w-40">Tags</TableHead>
               <TableHead className="w-32">Status</TableHead>
@@ -457,6 +460,9 @@ export function ProjetosTab({
                   className="cursor-pointer"
                   onClick={() => router.push(`/admin/ferramentas/projetos/${projeto.id}`)}
                 >
+                  <TableCell className="font-mono text-xs text-muted-foreground">
+                    {formatProjectCode(projeto.codigo_numero)}
+                  </TableCell>
                   <TableCell className="whitespace-normal font-medium text-foreground">
                     {projeto.title}
                   </TableCell>

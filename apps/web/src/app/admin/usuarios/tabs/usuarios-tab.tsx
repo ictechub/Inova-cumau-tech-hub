@@ -4,7 +4,6 @@ import { useActionState, useEffect, useMemo, useRef, useState } from "react";
 
 import {
   IconDotsVertical,
-  IconMailForward,
   IconPencil,
   IconSearch,
   IconTrash,
@@ -52,7 +51,6 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { formatMatricula } from "@/lib/matricula";
 
 import { deleteUser, updateUserRole, type ActionResult } from "../actions";
-import { InviteConsultorDialog } from "./invite-consultor-dialog";
 import type { PlatformUser } from "../usuarios-tabs";
 
 const ROLE_OPTIONS = [
@@ -248,7 +246,6 @@ export function UsuariosTab({
 }) {
   const [busca, setBusca] = useState("");
   const [filtroRole, setFiltroRole] = useState<string>(TODOS);
-  const [inviteOpen, setInviteOpen] = useState(false);
 
   const usuariosFiltrados = useMemo(() => {
     const termo = busca.trim().toLowerCase();
@@ -265,12 +262,6 @@ export function UsuariosTab({
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="flex justify-end">
-        <Button onClick={() => setInviteOpen(true)}>
-          <IconMailForward />
-          Convidar Consultor
-        </Button>
-      </div>
       <div className="rounded-lg border border-border">
         <div className="flex flex-col gap-2 border-b border-border p-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="relative sm:w-64">
@@ -362,7 +353,6 @@ export function UsuariosTab({
           </Table>
         </div>
       </div>
-      <InviteConsultorDialog open={inviteOpen} onOpenChange={setInviteOpen} />
     </div>
   );
 }

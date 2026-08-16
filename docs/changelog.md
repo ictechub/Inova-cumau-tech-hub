@@ -522,3 +522,199 @@ ainda apareciam como `FieldError` inline solto no formulário (ex.: "Este
 e-mail já está cadastrado..."). Corrigido migrando também esses casos para
 toast, mantendo só os erros de validação Zod por campo como inline (regra
 final documentada no `CLAUDE.md`).
+
+## Foto de perfil e redirecionamento pós-login por role
+
+Bucket de storage `profile-photos` (público, limite 2 MB): upload, preview e
+exclusão de avatar na página "Meus dados", com `avatar_url` propagado
+globalmente (`SiteHeader` e `NavUser` do admin, via os respectivos layouts),
+mesmo padrão depois reaproveitado pelo bucket `project-media`.
+
+Coluna `role` adicionada a `startup_registrations` (default `'associado'`,
+precursora do modelo de papéis que mais tarde migraria para `user_roles`,
+ver seção "Papel Consultor" adiante). `signIn` passou a consultar esse
+campo e redirecionar contas com `role === "admin"` para `/admin`, associados
+comuns continuam em `/area-do-associado`.
+
+## Ajustes finos na sidebar admin (pós sidebar-07)
+
+Sequência de pequenos ajustes sobre o bloco `sidebar-07` instalado stock:
+label de role dinâmico no `TeamSwitcher` (deixa de mostrar sempre
+"Associado"/"Administrador" fixos, passa a refletir a role real da conta
+logada); links para "Início do site" e "Área do associado" adicionados ao
+dropdown do `TeamSwitcher`; item "Área administrativa" (link para `/admin`)
+adicionado ao dropdown do `HeaderUserMenu` quando `role === "admin"`,
+complementando o redirecionamento pós-login (exige propagar a role também
+para `(marketing)/layout.tsx` até `SiteHeader` e `HeaderUserMenu`); rótulos
+stock "Área de Testes"/"Favoritos" trocados por "Dashboard"/"Métricas";
+`cursor-pointer` adicionado aos itens de dropdown que ficavam com cursor
+default (`nav-projects.tsx`, `nav-user.tsx`, `team-switcher.tsx`); atalho de
+teclado `⌘N` e ícone "add team" do stock removidos do `team-switcher.tsx`
+por não terem função real no projeto.
+
+**Indicador de scroll (hover) só ativava depois do primeiro scroll
+manual**: causa raiz era o hook `useScrollableList` calcular overflow num
+`useEffect` com dependências estáveis (`useRef`/`useCallback`), reagindo só
+à montagem do componente dono do hook, não ao elemento de fato aparecer,
+como listas em popover/dropdown são portaladas e montam depois, o
+indicador ficava "invisível" até o primeiro scroll manual recalcular o
+estado. Corrigido espelhando o nó em `state` via ref-callback, para o
+efeito reagir ao elemento real aparecer. Aproveitado o mesmo commit para
+introduzir `ScrollHoverButton` (setas de scroll contínuo no hover,
+espelhando o algoritmo do `SelectScrollArrow` do Base UI), aplicado em
+`Command`, `PhoneCountryInput` e `MultiSelectCombobox`.
+
+## Formulário de associação simples e campo Estado/UF via IBGE
+
+`membership-form.tsx` (formulário simples, distinto do wizard completo de
+`/associe-se`) ainda usava um `<select>` nativo para "Segmento", destoando
+do resto do app, trocado por `Select`/`SelectTrigger`/`SelectContent`/
+`SelectItem` do shadcn.
+
+Campo `contato_estado` (UF) adicionado ao wizard de cadastro e a "Meus
+dados", com um combobox de cidades (`city-combobox.tsx`) alimentado pela
+API de localidades do IBGE (`lib/ibge-actions.ts`, `listMunicipiosByUf`) no
+lugar do input livre de texto anterior, evitando erro de digitação e
+mantendo cidade/estado consistentes. A consulta de CNPJ via BrasilAPI
+passou a retornar também a UF, autopreenchendo o campo do mesmo jeito que já
+acontecia com cidade/endereço/nome. Trocar a UF limpa a cidade selecionada,
+já que a lista de municípios depende do estado escolhido.
+
+## Página de Métricas admin e mapa de negócios por região
+
+Nova página `/admin/metricas`: cards de associados/crescimento/contas
+ativas e um mapa do Brasil (`business-map-card.tsx`) plotando as startups
+associadas agrupadas por cidade, geocodificadas via um dataset de
+municípios brasileiros. Aproveitado para corrigir `admin/page.tsx`, que
+ainda lia `startup_nome`/`startup_email` em vez de `responsavel_nome`/
+`responsavel_email` de `startup_registrations`.
+
+Ícones do sidebar admin trocados de `lucide-react` para Tabler (biblioteca
+oficial do projeto), item "Modelos" renomeado para "Editor de conteúdo"
+(viria a virar "Ferramentas" mais adiante) e os placeholders stock
+"Documentação"/"Viagens" removidos.
+
+**Fallback de dados mockados mascarava o caso real de zero resultados**: o
+`business-map-card` exibia `MOCK_CITIES` quando não havia negócios
+geocodificados, escondendo o estado real de "nenhum dado ainda". Corrigido
+para usar sempre os dados vindos de `startup_registrations`, mesmo quando
+vazio.
+
+**Falha em `admin.listUsers` derrubava a página inteira de Métricas**:
+causa raiz era uma linha em `auth.users` com colunas de token `NULL` (dado
+corrompido), fazendo o GoTrue retornar 500 no `listUsers` e o código
+relançar o erro sem tratamento. Dado corrigido via SQL direto no Supabase;
+`getContasAtivas` passou a capturar falhas da API admin e degradar apenas
+aquele card, em vez de derrubar a página inteira.
+
+## Página de Configurações admin (6 abas)
+
+Nova área organizacional em `/admin/configuracoes`, alcançável via
+"Configurações > Geral" na sidebar: seis abas (Meus Dados, Perfil, Senha,
+Equipe, E-mail, Notificações). Introduziu `SettingsSection`/`SettingsRow`
+como novo padrão de construção de UI para páginas administrativas,
+reaproveitado depois em outras telas do admin.
+
+## Papel Consultor, Ferramentas/Projetos e convite via Resend
+
+A entrega mais extensa do projeto até aqui, somando o plano registrado em
+`splendid-napping-blanket.md` a uma sequência de ajustes pós-entrega.
+
+**Papéis de plataforma**: modelo migrado de uma coluna solta em
+`startup_registrations` para uma tabela dedicada `user_roles`, com
+`PlatformRole` estendido para `"owner" | "administrador" | "consultor" |
+"associado"`. `owner` é a autoridade máxima (a conta `ictechub@gmail.com`,
+"Admin dos Admin"), deliberadamente fora de qualquer enum de UI/Zod, então
+nenhum caminho do app consegue atribuí-lo, e nenhuma outra conta consegue
+alterar ou excluir uma conta `owner`. `isPlatformAdmin()` e
+`requirePlatformRole()` (helpers novos em `lib/user-role.ts`) generalizam
+os gates que antes só aceitavam `"administrador"`, permitindo Consultor
+entrar em Métricas, Ferramentas e no próprio perfil sem acesso à área de
+associados.
+
+**Convite direto de Consultor**: usa
+`supabase.auth.admin.generateLink({ type: "invite", ... })` (só gera o
+link, não dispara e-mail do Supabase) e envia o e-mail via **Resend**,
+decisão explícita do usuário e exceção deliberada à stack padrão do
+projeto (só para esse fluxo, o e-mail de confirmação de cadastro público
+continua nativo do Supabase Auth). Nova rota `convite/definir-senha`
+(client-side, lê o fragmento da URL com o token, chama
+`setSession`/`updateUser`) porque o link de convite do Supabase entrega a
+sessão via fragmento, que nunca chega ao servidor. `startup_registrations`
+reaproveitada como perfil também de um Consultor sem startup real,
+gravando valores sentinela nos campos obrigatórios de startup (mesmo
+padrão já usado por uma conta de teste anterior).
+
+**Ferramentas/Projetos**: "Editor de conteúdo" renomeado para
+"Ferramentas", implementados artigos de verdade estilo Notion via
+**Tiptap** (`lib/tiptap-extensions.ts`, fonte única de verdade do schema,
+usada tanto pelo editor quanto pelo `generateHTML()` do render público,
+para os dois nunca divergirem), tags fixas (Tecnologia, Eventos, Ciência,
+Inovação, Empreendedorismo, Bioeconomia, Política), publicação direta para
+a coluna pública de notícias e um modelo de permissão (ver/editar/
+compartilhar) com cascata automática de "chefe direto + pares" via
+organograma (`team_members`, `lib/project-access.ts`): quem cria um
+projeto dá acesso de editar automaticamente ao seu gestor direto e aos
+seus pares, sem subir a cadeia inteira; excluir o projeto ou conceder
+permissão a outras pessoas continua exclusivo do dono ou de `owner`.
+
+**Páginas novas de administração**: Equipe (organograma, membros e
+permissões, reaproveitando `team_members`), Usuários (gestão de papéis e
+botão "Convidar Consultor"), coluna de matrícula (`lib/matricula.ts`) na
+tabela de Usuários, "Meus Dados" reestruturada em abas. Componentes shadcn
+novos instalados para essas telas: `Table`, `Toggle`/`ToggleGroup`.
+
+**Ajustes pós-entrega**: `RESEND_API_KEY`/`RESEND_FROM_EMAIL` declaradas
+em `turbo.json` (build parou de avisar sobre env vars não declaradas);
+campo "Cargo" removido do modal de convite de Consultor (valor sempre
+fixo "Consultor", campo era redundante); headings da área do associado e
+do editor de projetos que ainda usavam `font-serif` por engano corrigidos
+para `font-sans` (reforça a regra do `CLAUDE.md` sobre vazamento de Lora
+via `font-heading`); import e constante sem uso removidos do fluxo de
+Meus Dados e Projetos.
+
+## Editor: edição de imagem estilo Google Docs e presets de lista
+
+Editor de projetos ganhou toolbar de imagem: alças de redimensionar nos 4
+cantos, botão de excluir e menu de disposição de texto (Quebrar, Ajustar,
+Atrás e Na frente do texto). Listas passaram a ter presets de marcador
+(padrão, losango, quadrados, setas, estrela, seta circular), aplicados
+tanto no editor quanto no artigo publicado via classes CSS compartilhadas
+(mesmo raciocínio de fonte única de verdade do schema Tiptap).
+
+Criação de projeto passou a validar título e tags (`schema.ts`) e a gerar
+o slug a partir do título (`lib/slug.ts`), em vez de sempre criar como
+"Sem título". Sidebar admin passou a destacar o subitem da rota atual e a
+lembrar quais grupos ficam abertos/fechados entre navegações
+(`localStorage`).
+
+Outros ajustes do mesmo lote: limite de upload de Server Actions aumentado
+para 20 MB (mídia de artigo); lista de tarefas deixou de herdar marcador
+de bullet no artigo público; tamanho de botões padronizado; overflow/fundo
+corrigidos em telas mais estreitas.
+
+## Seção de publicação e páginas públicas das 5 seções de Notícias
+
+Campo "Seção de publicação" adicionado ao editor de Ferramentas/Projetos
+(coluna `section` em `projects`), permitindo direcionar cada artigo para
+uma das 5 seções de Notícias. Novidades, Comunicados, Eventos e Programas
+e Editais deixaram de ser placeholders e viraram listagens e páginas de
+detalhe reais, filtradas por seção, no mesmo padrão já usado em Artigos.
+
+## Autor nas páginas públicas, compartilhar in-place e tooltips no mapa
+
+Checkbox `show_author` do editor de projetos passou a de fato controlar a
+exibição de autoria: as 5 páginas públicas de detalhe de notícia/artigo
+buscam `owner_id`/`show_author` e o nome do responsável (via
+`createAdminClient()` e `startup_registrations`), exibindo "Por {nome}"
+quando habilitado.
+
+Item "Compartilhar" do menu de ações da listagem de projetos
+(`/admin/ferramentas/projetos`) deixou de navegar até o editor do projeto
+só para abrir o modal de compartilhamento (`router.push`) e passou a abrir
+o mesmo `ShareDialog` in-place, direto na listagem, buscando os dados sob
+demanda (`getProjectShareData`) só quando o modal é aberto.
+
+Tooltips (`Tooltip`/`TooltipTrigger`/`TooltipContent`) adicionados aos
+três botões de controle do mapa de negócios (aproximar, afastar, focar no
+Brasil), substituindo o atributo `title` HTML nativo.

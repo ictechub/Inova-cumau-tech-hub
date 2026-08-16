@@ -1,6 +1,8 @@
 "use client";
 
-import { useActionState, useEffect } from "react";
+import { useActionState, useEffect, useState } from "react";
+
+import { IconMailForward } from "@tabler/icons-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -83,5 +85,19 @@ export function InviteConsultorDialog({
         </form>
       </DialogContent>
     </Dialog>
+  );
+}
+
+export function InviteConsultorButton() {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <Button onClick={() => setOpen(true)}>
+        <IconMailForward />
+        Convidar Consultor
+      </Button>
+      <InviteConsultorDialog open={open} onOpenChange={setOpen} />
+    </>
   );
 }
