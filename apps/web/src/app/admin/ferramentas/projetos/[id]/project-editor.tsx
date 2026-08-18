@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useEffect, useRef, useState } from "react";
+import { useActionState, useCallback, useEffect, useRef, useState } from "react";
 import { EditorContent, useEditor, type Editor } from "@tiptap/react";
 import {
   IconAlignCenter,
@@ -10,6 +10,7 @@ import {
   IconBold,
   IconCheck,
   IconChevronDown,
+  IconChevronUp,
   IconCloudCheck,
   IconCloudOff,
   IconCloudUpload,
@@ -20,6 +21,7 @@ import {
   IconH1,
   IconH2,
   IconH3,
+  IconHighlight,
   IconIndentDecrease,
   IconIndentIncrease,
   IconItalic,
@@ -28,8 +30,11 @@ import {
   IconList,
   IconListCheck,
   IconListNumbers,
+  IconMinus,
   IconPhoto,
+  IconPlus,
   IconQuote,
+  IconTextColor,
   IconUnderline,
   IconUserPlus,
   IconVideo,
@@ -41,6 +46,7 @@ import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
+import { ColorPickerButton } from "@/components/ui/color-picker";
 import {
   Dialog,
   DialogClose,
@@ -66,6 +72,7 @@ import {
   InputGroupText,
 } from "@/components/ui/input-group";
 import { Label } from "@/components/ui/label";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import {
   Select,
   SelectContent,
@@ -81,6 +88,7 @@ import { PROJECT_TAGS } from "@/lib/project-tags";
 import { slugify } from "@/lib/slug";
 import {
   BULLET_LIST_STYLES,
+  FONT_SIZE_OPTIONS,
   LINE_HEIGHT_OPTIONS,
   MAX_INDENT_LEVEL,
   ORDERED_LIST_STYLES,
@@ -104,6 +112,13 @@ import type { ProjectData, ProjectOwner, ProjectPermission, ShareableUser } from
 export type { ProjectData, ProjectOwner, ProjectPermission, ShareableUser } from "./types";
 
 const TAG_OPTIONS: MultiSelectOption[] = PROJECT_TAGS.map((tag) => ({ value: tag, label: tag }));
+
+const DEFAULT_FONT_SIZE = 16;
+const MIN_FONT_SIZE = 8;
+const MAX_FONT_SIZE = 96;
+const FONT_SIZE_STEPS = FONT_SIZE_OPTIONS.map((option) => Number.parseInt(option.value, 10)).sort(
+  (a, b) => a - b,
+);
 
 const PROJECT_SECTION_ITEMS = Object.fromEntries(
   PROJECT_SECTIONS.map((section) => [section.value, section.label]),
@@ -164,6 +179,101 @@ function ToolbarButton({
   );
 }
 
+// Mesmo padrão do SelectContent (components/ui/select.tsx): sem barra de
+// rolagem nativa, com setas fixas no topo e no rodapé que só aparecem
+// quando há mais opções para rolar naquela direção.
+function FontSizeOptionsList({
+  currentValue,
+  onSelect,
+}: {
+  currentValue: number;
+  onSelect: (value: number) => void;
+}) {
+  const listRef = useRef<HTMLDivElement | null>(null);
+  const [scrollEdges, setScrollEdges] = useState({ top: false, bottom: false });
+
+  const updateScrollEdges = useCallback(() => {
+    const el = listRef.current;
+    if (!el) return;
+    setScrollEdges({
+      top: el.scrollTop > 0,
+      bottom: el.scrollTop + el.clientHeight < el.scrollHeight - 1,
+    });
+  }, []);
+
+  const setListRef = useCallback(
+    (el: HTMLDivElement | null) => {
+      listRef.current = el;
+      if (el) {
+        setScrollEdges({
+          top: el.scrollTop > 0,
+          bottom: el.scrollTop + el.clientHeight < el.scrollHeight - 1,
+        });
+      }
+    },
+    [],
+  );
+
+  function scrollBy(amount: number) {
+    listRef.current?.scrollBy({ top: amount, behavior: "smooth" });
+  }
+
+  return (
+    // O input que abre este popover fecha e aplica o valor digitado no
+    // blur (ver o Input de tamanho de fonte em EditorToolbar). Sem este
+    // preventDefault, o mousedown num item da lista tira o foco do input
+    // antes do click
+    // ser processado, disparando esse fechamento por blur no meio da
+    // seleção, corrida que causava o delay e o fechamento inconsistente
+    // do dropdown. Prevenir o default do mousedown mantém o foco no
+    // input até o click da opção ser resolvido.
+    <div className="relative" onMouseDown={(event) => event.preventDefault()}>
+      {scrollEdges.top ? (
+        <button
+          type="button"
+          aria-label="Rolar para cima"
+          className="absolute inset-x-0 top-0 z-10 flex h-4 items-center justify-center rounded-t-md bg-popover text-muted-foreground hover:text-foreground"
+          onClick={() => scrollBy(-84)}
+        >
+          <IconChevronUp className="size-3.5" />
+        </button>
+      ) : null}
+      <div
+        ref={setListRef}
+        onScroll={updateScrollEdges}
+        className="max-h-64 overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      >
+        {FONT_SIZE_OPTIONS.map((option) => {
+          const value = Number.parseInt(option.value, 10);
+          return (
+            <button
+              key={option.value}
+              type="button"
+              className={cn(
+                "w-full rounded-md px-2 py-1 text-center text-sm hover:bg-accent hover:text-accent-foreground",
+                currentValue === value && "bg-secondary font-medium text-secondary-foreground",
+              )}
+              onClick={() => onSelect(value)}
+            >
+              {option.label}
+            </button>
+          );
+        })}
+      </div>
+      {scrollEdges.bottom ? (
+        <button
+          type="button"
+          aria-label="Rolar para baixo"
+          className="absolute inset-x-0 bottom-0 z-10 flex h-4 items-center justify-center rounded-b-md bg-popover text-muted-foreground hover:text-foreground"
+          onClick={() => scrollBy(84)}
+        >
+          <IconChevronDown className="size-3.5" />
+        </button>
+      ) : null}
+    </div>
+  );
+}
+
 function EditorToolbar({
   editor,
   projectId,
@@ -176,6 +286,17 @@ function EditorToolbar({
   const imageInputRef = useRef<HTMLInputElement>(null);
   const videoInputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
+
+  const [, forceToolbarUpdate] = useState(0);
+
+  useEffect(() => {
+    if (!editor) return;
+    const handleTransaction = () => forceToolbarUpdate((tick) => tick + 1);
+    editor.on("transaction", handleTransaction);
+    return () => {
+      editor.off("transaction", handleTransaction);
+    };
+  }, [editor]);
 
   async function handleFile(file: File, kind: "image" | "video") {
     setUploading(true);
@@ -204,6 +325,10 @@ function EditorToolbar({
   const [linkText, setLinkText] = useState("");
   const [linkRange, setLinkRange] = useState<{ from: number; to: number } | null>(null);
   const [linkIsEditing, setLinkIsEditing] = useState(false);
+
+  const [fontSizeDraft, setFontSizeDraft] = useState<string | null>(null);
+  const [fontSizeMenuOpen, setFontSizeMenuOpen] = useState(false);
+  const fontSizeInputRef = useRef<HTMLInputElement>(null);
 
   function openLinkDialog() {
     if (!editor) return;
@@ -364,6 +489,35 @@ function EditorToolbar({
     editor.chain().focus().updateAttributes(type, { spaceAfter: !currentSpaceAfter() }).run();
   }
 
+  function currentFontSize(): number {
+    if (!editor) return DEFAULT_FONT_SIZE;
+    const raw = editor.getAttributes("textStyle").fontSize as string | undefined;
+    const parsed = raw ? Number.parseInt(raw, 10) : Number.NaN;
+    return Number.isNaN(parsed) ? DEFAULT_FONT_SIZE : parsed;
+  }
+
+  function applyFontSize(value: number) {
+    if (!editor) return;
+    const clamped = Math.min(MAX_FONT_SIZE, Math.max(MIN_FONT_SIZE, value));
+    if (clamped === DEFAULT_FONT_SIZE) {
+      editor.chain().focus().unsetFontSize().run();
+    } else {
+      editor.chain().focus().setFontSize(`${clamped}px`).run();
+    }
+    setFontSizeDraft(null);
+  }
+
+  function stepFontSize(direction: 1 | -1) {
+    const current = currentFontSize();
+    if (direction === 1) {
+      const next = FONT_SIZE_STEPS.find((step) => step > current);
+      applyFontSize(next ?? current + 1);
+    } else {
+      const previous = [...FONT_SIZE_STEPS].reverse().find((step) => step < current);
+      applyFontSize(previous ?? current - 1);
+    }
+  }
+
   if (!editor) return null;
 
   return (
@@ -394,6 +548,132 @@ function EditorToolbar({
         >
           <IconUnderline className="size-4" />
         </ToolbarButton>
+      </ButtonGroup>
+      <ButtonGroup>
+        <Tooltip>
+          <TooltipTrigger
+            render={
+              <Button
+                type="button"
+                variant="outline"
+                size="icon-sm"
+                disabled={disabled}
+                aria-label="Diminuir tamanho da fonte"
+                onClick={() => stepFontSize(-1)}
+              />
+            }
+          >
+            <IconMinus className="size-4" />
+          </TooltipTrigger>
+          <TooltipContent>Diminuir fonte</TooltipContent>
+        </Tooltip>
+        <Popover
+          open={fontSizeMenuOpen}
+          onOpenChange={(open, eventDetails) => {
+            // Esc cancela: fecha sem aplicar o rascunho digitado. Qualquer
+            // outro jeito de fechar (clique fora, selecionar uma opção,
+            // Enter) aplica o valor atual do rascunho.
+            if (!open && eventDetails.reason !== "escape-key") {
+              const parsed = Number.parseInt(fontSizeDraft ?? "", 10);
+              applyFontSize(Number.isNaN(parsed) ? currentFontSize() : parsed);
+            }
+            setFontSizeMenuOpen(open);
+          }}
+        >
+          <Tooltip>
+            <TooltipTrigger
+              render={
+                <PopoverTrigger
+                  nativeButton={false}
+                  disabled={disabled}
+                  render={
+                    <Input
+                      ref={fontSizeInputRef}
+                      type="text"
+                      inputMode="numeric"
+                      aria-label="Tamanho da fonte"
+                      disabled={disabled}
+                      className="h-7 w-12 px-1 text-center focus-visible:ring-[1.5px] focus-visible:ring-inset"
+                      value={fontSizeDraft ?? String(currentFontSize())}
+                      onFocus={(event) => {
+                        setFontSizeDraft(String(currentFontSize()));
+                        event.currentTarget.select();
+                      }}
+                      onChange={(event) => setFontSizeDraft(event.target.value.replace(/[^0-9]/g, ""))}
+                      onKeyDown={(event) => {
+                        if (event.key === "Enter") {
+                          event.preventDefault();
+                          // Evita que o próprio Base UI reabra o popover ao
+                          // tratar o Enter como um clique no trigger (ver
+                          // getButtonProps do PopoverTrigger com
+                          // nativeButton={false}).
+                          (
+                            event as unknown as { preventBaseUIHandler?: () => void }
+                          ).preventBaseUIHandler?.();
+                          const parsed = Number.parseInt(fontSizeDraft ?? "", 10);
+                          applyFontSize(Number.isNaN(parsed) ? currentFontSize() : parsed);
+                          setFontSizeMenuOpen(false);
+                        }
+                        if (event.key === "Escape") {
+                          setFontSizeMenuOpen(false);
+                        }
+                      }}
+                    />
+                  }
+                />
+              }
+            />
+            <TooltipContent>Tamanho da fonte</TooltipContent>
+          </Tooltip>
+          <PopoverContent align="center" initialFocus={fontSizeInputRef} className="w-16 gap-0 p-1">
+            <FontSizeOptionsList
+              currentValue={currentFontSize()}
+              onSelect={(value) => {
+                applyFontSize(value);
+                setFontSizeMenuOpen(false);
+              }}
+            />
+          </PopoverContent>
+        </Popover>
+        <Tooltip>
+          <TooltipTrigger
+            render={
+              <Button
+                type="button"
+                variant="outline"
+                size="icon-sm"
+                disabled={disabled}
+                aria-label="Aumentar tamanho da fonte"
+                onClick={() => stepFontSize(1)}
+              />
+            }
+          >
+            <IconPlus className="size-4" />
+          </TooltipTrigger>
+          <TooltipContent>Aumentar fonte</TooltipContent>
+        </Tooltip>
+      </ButtonGroup>
+      <ButtonGroup>
+        <ColorPickerButton
+          kind="text"
+          icon={<IconTextColor className="size-4" />}
+          label="Cor do texto"
+          value={(editor.getAttributes("textStyle").color as string | null) ?? null}
+          onChange={(color) => editor.chain().focus().setColor(color).run()}
+          onClear={() => editor.chain().focus().unsetColor().run()}
+          clearLabel="Cor padrão do texto"
+          disabled={disabled}
+        />
+        <ColorPickerButton
+          kind="highlight"
+          icon={<IconHighlight className="size-4" />}
+          label="Cor de destaque"
+          value={(editor.getAttributes("highlight").color as string | null) ?? null}
+          onChange={(color) => editor.chain().focus().setHighlight({ color }).run()}
+          onClear={() => editor.chain().focus().unsetHighlight().run()}
+          clearLabel="Remover destaque"
+          disabled={disabled}
+        />
       </ButtonGroup>
       <ButtonGroup>
         <ToolbarButton
@@ -1185,7 +1465,6 @@ export function ProjectEditor({
   const [saveResult, setSaveResult] = useState<ActionResult | null>(null);
   const [saveStatus, setSaveStatus] = useState<"saving" | "saved" | "error">("saved");
   const [characterCount, setCharacterCount] = useState(0);
-  const [, forceToolbarUpdate] = useState(0);
 
   const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const skipNextAutoSaveRef = useRef(true);
@@ -1238,12 +1517,6 @@ export function ProjectEditor({
     },
     onCreate: ({ editor: currentEditor }) => {
       setCharacterCount(currentEditor.storage.characterCount.characters());
-    },
-    onTransaction: () => {
-      // Força o rerender da barra de ferramentas a cada transação (clique de
-      // formatação, mudança de seleção), já que editor.isActive() é lido
-      // direto no render e o Tiptap não dispara rerender do React sozinho.
-      forceToolbarUpdate((tick) => tick + 1);
     },
   });
 

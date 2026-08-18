@@ -9,6 +9,17 @@ import {
   IconTrash,
 } from "@tabler/icons-react";
 
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogMedia,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -178,29 +189,30 @@ function DeleteUserDialog({
   }, [state, onOpenChange]);
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
+    <AlertDialog open={open} onOpenChange={onOpenChange}>
+      <AlertDialogContent size="sm">
         <form action={formAction} className="flex flex-col gap-4">
-          <DialogHeader>
-            <DialogTitle className="font-sans">Excluir conta</DialogTitle>
-            <DialogDescription>
+          <AlertDialogHeader>
+            <AlertDialogMedia className="bg-destructive/10 text-destructive dark:bg-destructive/20 dark:text-destructive">
+              <IconTrash />
+            </AlertDialogMedia>
+            <AlertDialogTitle className="font-sans">Excluir conta</AlertDialogTitle>
+            <AlertDialogDescription>
               Tem certeza que deseja excluir a conta de {usuario.responsavel_nome}?
               Essa ação não pode ser desfeita: todos os dados de cadastro e acesso
               dessa conta serão apagados.
-            </DialogDescription>
-          </DialogHeader>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
           <input type="hidden" name="user_id" value={usuario.user_id} />
-          <DialogFooter>
-            <DialogClose render={<Button type="button" variant="outline" />}>
-              Cancelar
-            </DialogClose>
-            <Button type="submit" variant="destructive">
+          <AlertDialogFooter>
+            <AlertDialogCancel variant="outline">Cancelar</AlertDialogCancel>
+            <AlertDialogAction type="submit" variant="destructive">
               Excluir
-            </Button>
-          </DialogFooter>
+            </AlertDialogAction>
+          </AlertDialogFooter>
         </form>
-      </DialogContent>
-    </Dialog>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 }
 

@@ -1,12 +1,15 @@
 import { Extension, Node, mergeAttributes } from "@tiptap/core";
 import { BulletList } from "@tiptap/extension-bullet-list";
 import { CharacterCount } from "@tiptap/extension-character-count";
+import { Color } from "@tiptap/extension-color";
+import { Highlight } from "@tiptap/extension-highlight";
 import { TaskItem, TaskList } from "@tiptap/extension-list";
 import { Image } from "@tiptap/extension-image";
 import { Link } from "@tiptap/extension-link";
 import { OrderedList } from "@tiptap/extension-ordered-list";
 import { Placeholder } from "@tiptap/extension-placeholder";
 import { TextAlign } from "@tiptap/extension-text-align";
+import { TextStyle } from "@tiptap/extension-text-style";
 import { StarterKit } from "@tiptap/starter-kit";
 
 // Marcadores predefinidos que o toolbar oferece via chevron ao lado do botão
@@ -185,6 +188,76 @@ export const LineSpacing = Extension.create({
         },
       },
     ];
+  },
+});
+
+// Tamanho de fonte, mark de texto (não atributo de bloco como Indent/
+// LineSpacing) porque precisa variar dentro do mesmo parágrafo. Não existe
+// extensão oficial estável do Tiptap v3 para isso, então estende os
+// atributos do mark "textStyle" (de @tiptap/extension-text-style, mesma base
+// usada por Color), seguindo o padrão de extensões equivalentes da
+// comunidade Tiptap. Renderiza como font-size inline, igual no editor e no
+// generateHTML() do render público.
+export const FONT_SIZE_OPTIONS = [
+  { value: "8px", label: "8" },
+  { value: "9px", label: "9" },
+  { value: "10px", label: "10" },
+  { value: "11px", label: "11" },
+  { value: "12px", label: "12" },
+  { value: "14px", label: "14" },
+  { value: "18px", label: "18" },
+  { value: "24px", label: "24" },
+  { value: "30px", label: "30" },
+  { value: "36px", label: "36" },
+  { value: "48px", label: "48" },
+  { value: "60px", label: "60" },
+  { value: "72px", label: "72" },
+  { value: "96px", label: "96" },
+] as const;
+
+export type FontSizeValue = (typeof FONT_SIZE_OPTIONS)[number]["value"];
+
+declare module "@tiptap/core" {
+  interface Commands<ReturnType> {
+    fontSize: {
+      setFontSize: (fontSize: string) => ReturnType;
+      unsetFontSize: () => ReturnType;
+    };
+  }
+}
+
+export const FontSize = Extension.create({
+  name: "fontSize",
+  addGlobalAttributes() {
+    return [
+      {
+        types: ["textStyle"],
+        attributes: {
+          fontSize: {
+            default: null,
+            parseHTML: (element) => element.style.fontSize || null,
+            renderHTML: (attributes) => {
+              if (!attributes.fontSize) return {};
+              return { style: `font-size: ${attributes.fontSize}` };
+            },
+          },
+        },
+      },
+    ];
+  },
+  addCommands() {
+    return {
+      setFontSize:
+        (fontSize: string) =>
+        ({ chain }) => {
+          return chain().setMark("textStyle", { fontSize }).run();
+        },
+      unsetFontSize:
+        () =>
+        ({ chain }) => {
+          return chain().setMark("textStyle", { fontSize: null }).run();
+        },
+    };
   },
 });
 
@@ -570,6 +643,10 @@ export const tiptapExtensions = [
   Indent,
   LineSpacing,
   TextAlign.configure({ types: ["paragraph", "heading"] }),
+  TextStyle,
+  Color,
+  FontSize,
+  Highlight.configure({ multicolor: true }),
   Video,
   Placeholder.configure({ placeholder: "Escreva o conteúdo do projeto..." }),
   CharacterCount,

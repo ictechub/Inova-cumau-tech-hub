@@ -13,6 +13,17 @@ import {
   IconTrash,
 } from "@tabler/icons-react";
 
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogMedia,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Avatar, AvatarFallback, AvatarGroup, AvatarGroupCount, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -223,28 +234,29 @@ function DeleteProjetoDialog({
   }, [state, onOpenChange]);
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
+    <AlertDialog open={open} onOpenChange={onOpenChange}>
+      <AlertDialogContent size="sm">
         <form action={formAction} className="flex flex-col gap-4">
-          <DialogHeader>
-            <DialogTitle className="font-sans">Excluir projeto</DialogTitle>
-            <DialogDescription>
+          <AlertDialogHeader>
+            <AlertDialogMedia className="bg-destructive/10 text-destructive dark:bg-destructive/20 dark:text-destructive">
+              <IconTrash />
+            </AlertDialogMedia>
+            <AlertDialogTitle className="font-sans">Excluir projeto</AlertDialogTitle>
+            <AlertDialogDescription>
               Tem certeza que deseja excluir o projeto &quot;{projeto.title}&quot;? Essa ação não
               pode ser desfeita.
-            </DialogDescription>
-          </DialogHeader>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
           <input type="hidden" name="project_id" value={projeto.id} />
-          <DialogFooter>
-            <DialogClose render={<Button type="button" variant="outline" />}>
-              Cancelar
-            </DialogClose>
-            <Button type="submit" variant="destructive">
+          <AlertDialogFooter>
+            <AlertDialogCancel variant="outline">Cancelar</AlertDialogCancel>
+            <AlertDialogAction type="submit" variant="destructive">
               Excluir
-            </Button>
-          </DialogFooter>
+            </AlertDialogAction>
+          </AlertDialogFooter>
         </form>
-      </DialogContent>
-    </Dialog>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 }
 
