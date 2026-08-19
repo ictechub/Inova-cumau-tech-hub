@@ -71,6 +71,10 @@ const data = {
           title: "Editor de publicação",
           url: "/admin/ferramentas/projetos",
         },
+        {
+          title: "Quadro de tarefas",
+          url: "/admin/ferramentas/tarefas",
+        },
       ],
     },
     {

@@ -277,6 +277,181 @@ export type Database = {
         }
         Relationships: []
       }
+      task_board_columns: {
+        Row: {
+          board_id: string
+          color: string
+          created_at: string
+          id: string
+          position: number
+          title: string
+        }
+        Insert: {
+          board_id: string
+          color?: string
+          created_at?: string
+          id?: string
+          position?: number
+          title: string
+        }
+        Update: {
+          board_id?: string
+          color?: string
+          created_at?: string
+          id?: string
+          position?: number
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "task_board_columns_board_id_fkey"
+            columns: ["board_id"]
+            isOneToOne: false
+            referencedRelation: "task_boards"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      task_board_permissions: {
+        Row: {
+          board_id: string
+          created_at: string
+          granted_by: string | null
+          id: string
+          permission: string
+          user_id: string
+        }
+        Insert: {
+          board_id: string
+          created_at?: string
+          granted_by?: string | null
+          id?: string
+          permission: string
+          user_id: string
+        }
+        Update: {
+          board_id?: string
+          created_at?: string
+          granted_by?: string | null
+          id?: string
+          permission?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "task_board_permissions_board_id_fkey"
+            columns: ["board_id"]
+            isOneToOne: false
+            referencedRelation: "task_boards"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      task_boards: {
+        Row: {
+          codigo_numero: number
+          created_at: string
+          description: string
+          id: string
+          link_access_permission: string
+          link_access_scope: string
+          owner_id: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          codigo_numero?: number
+          created_at?: string
+          description?: string
+          id?: string
+          link_access_permission?: string
+          link_access_scope?: string
+          owner_id: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          codigo_numero?: number
+          created_at?: string
+          description?: string
+          id?: string
+          link_access_permission?: string
+          link_access_scope?: string
+          owner_id?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      tasks: {
+        Row: {
+          assignee_ids: string[]
+          board_id: string
+          codigo_numero: number
+          column_id: string
+          created_at: string
+          created_by: string
+          description: string
+          due_date: string | null
+          id: string
+          position: number
+          priority: string
+          start_date: string | null
+          tags: string[]
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          assignee_ids?: string[]
+          board_id: string
+          codigo_numero?: number
+          column_id: string
+          created_at?: string
+          created_by: string
+          description?: string
+          due_date?: string | null
+          id?: string
+          position?: number
+          priority?: string
+          start_date?: string | null
+          tags?: string[]
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          assignee_ids?: string[]
+          board_id?: string
+          codigo_numero?: number
+          column_id?: string
+          created_at?: string
+          created_by?: string
+          description?: string
+          due_date?: string | null
+          id?: string
+          position?: number
+          priority?: string
+          start_date?: string | null
+          tags?: string[]
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tasks_board_id_fkey"
+            columns: ["board_id"]
+            isOneToOne: false
+            referencedRelation: "task_boards"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tasks_column_id_fkey"
+            columns: ["column_id"]
+            isOneToOne: false
+            referencedRelation: "task_board_columns"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       team_members: {
         Row: {
           area: string | null
